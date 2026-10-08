@@ -1,0 +1,5 @@
+# Tell Vercel to treat this repository as a 100% static HTML/CSS/JS site
+# by ignoring Node.js server scripts from serverless function detection
+local-server.js
+scan-catalogs.js
+package.json
