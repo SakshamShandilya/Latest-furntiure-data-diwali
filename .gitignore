@@ -1,3 +1,10 @@
+# Local Node tools (ignored so Vercel deploys 100% static HTML)
+package.json
+package-lock.json
+local-server.js
+scan-catalogs.js
+.vercelignore
+
 # Dependencies
 node_modules/
 .npm/
