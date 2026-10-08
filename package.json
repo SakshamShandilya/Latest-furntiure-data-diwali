@@ -1,21 +1,19 @@
 {
-  "name": "furniture-product-listing-page",
+  "name": "plypicker-furniture-store",
   "version": "1.0.0",
-  "description": "Luxury E-Commerce Product Listing Page for Furniture Catalogs",
-  "main": "server.js",
+  "description": "Plypicker Luxury Furniture Product Listing & Catalog Store",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
+    "build": "node scan-catalogs.js",
+    "start": "node local-server.js",
+    "dev": "node local-server.js",
     "sync": "node scan-catalogs.js"
   },
   "keywords": [
     "furniture",
-    "ecommerce",
-    "modani",
-    "sofa",
-    "product-listing-page",
-    "plp"
+    "plypicker",
+    "luxury",
+    "ecommerce"
   ],
-  "author": "Antigravity",
+  "author": "Plypicker",
   "license": "MIT"
 }

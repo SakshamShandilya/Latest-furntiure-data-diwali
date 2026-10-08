@@ -1,6 +1,6 @@
 /** Auto-generated catalog bundle for offline and file:// support */
 window.PRELOADED_MANIFEST = {
-  "updatedAt": "2026-10-08T08:46:10.752Z",
+  "updatedAt": "2026-10-08T08:51:46.749Z",
   "totalCatalogs": 32,
   "catalogs": [
     {
