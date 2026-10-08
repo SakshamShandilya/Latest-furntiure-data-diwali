@@ -1,0 +1,21 @@
+{
+  "name": "furniture-product-listing-page",
+  "version": "1.0.0",
+  "description": "Luxury E-Commerce Product Listing Page for Furniture Catalogs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "sync": "node scan-catalogs.js"
+  },
+  "keywords": [
+    "furniture",
+    "ecommerce",
+    "modani",
+    "sofa",
+    "product-listing-page",
+    "plp"
+  ],
+  "author": "Antigravity",
+  "license": "MIT"
+}

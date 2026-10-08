@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+.npm/
+
+# IDE and OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+.vscode/
+.idea/
+
+# Agent and IDE internal storage
+.agents/
+.gemini/
