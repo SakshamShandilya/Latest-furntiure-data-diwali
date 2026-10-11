@@ -2,7 +2,7 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Plypicker | Modern Luxury Furniture & Contemporary Living</title>
   <meta name="description" content="Plypicker - Curated contemporary luxury furniture, designer sofas, modular sectionals, platform beds, and architectural living collections.">
   <link rel="icon" type="image/png" href="assets/plypicker-icon-240.png">
@@ -243,6 +243,20 @@
     <!-- Filter Sidebar -->
     <aside class="filter-sidebar" id="filter-sidebar">
 
+      <!-- Tablet & Mobile Off-Canvas Drawer Header -->
+      <div class="filter-sidebar-mobile-header" id="filter-sidebar-mobile-header">
+        <div class="filter-sidebar-mobile-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+          <span>Filter Collection</span>
+        </div>
+        <div class="filter-sidebar-mobile-actions">
+          <button class="filter-sidebar-reset-btn" id="btn-sidebar-reset-mobile" type="button" title="Reset all filters">Reset</button>
+          <button class="filter-sidebar-close-btn" id="btn-close-filter-sidebar" type="button" aria-label="Close filters">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+      </div>
+
       <!-- 1. Category Filter (FIRST) -->
       <div class="filter-group">
         <div class="filter-group-header">
@@ -421,7 +435,17 @@
         </div>
       </div>
 
+      <!-- Sticky Apply Button for Tablet & Mobile Drawer -->
+      <div class="filter-sidebar-apply-bar" id="filter-sidebar-apply-bar">
+        <button class="filter-sidebar-apply-btn" id="btn-apply-filters-drawer" type="button">
+          <span>Apply Filters</span>
+        </button>
+      </div>
+
     </aside>
+
+    <!-- Tablet & Mobile Filter Backdrop -->
+    <div class="filter-drawer-backdrop" id="filter-drawer-backdrop"></div>
 
     <!-- Main Products Section -->
     <main class="products-main-area">

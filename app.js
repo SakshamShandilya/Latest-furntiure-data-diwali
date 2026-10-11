@@ -190,6 +190,10 @@
     DOM.btnToggleFilters = document.getElementById('btn-toggle-filters');
     DOM.activeFiltersCount = document.getElementById('active-filters-count');
     DOM.btnResetFilters = document.getElementById('btn-reset-filters');
+    DOM.btnCloseFilterSidebar = document.getElementById('btn-close-filter-sidebar');
+    DOM.filterDrawerBackdrop = document.getElementById('filter-drawer-backdrop');
+    DOM.btnSidebarResetMobile = document.getElementById('btn-sidebar-reset-mobile');
+    DOM.btnApplyFiltersDrawer = document.getElementById('btn-apply-filters-drawer');
     DOM.contentContainer = document.querySelector('.content-container');
     DOM.listingToolbar = document.querySelector('.listing-toolbar');
 
@@ -3118,6 +3122,7 @@
         DOM.globalSearchInput.focus();
       } else if (e.key === 'Escape') {
         closeQuickView();
+        toggleFilterDrawer(false);
         DOM.catalogHubModal.classList.remove('active');
         DOM.wishlistDrawerBackdrop.classList.remove('active');
         DOM.cartDrawerBackdrop.classList.remove('active');
@@ -3158,11 +3163,32 @@
       applyFiltersAndSort();
     });
 
-    // Mobile / Sidebar Toggle
-    DOM.btnToggleFilters.addEventListener('click', () => {
-      state.sidebarOpenMobile = !state.sidebarOpenMobile;
+    // Tablet & Mobile Filter Drawer Toggle & Interactions
+    const toggleFilterDrawer = (open) => {
+      state.sidebarOpenMobile = typeof open === 'boolean' ? open : !state.sidebarOpenMobile;
       DOM.filterSidebar.classList.toggle('mobile-open', state.sidebarOpenMobile);
-    });
+      if (DOM.filterDrawerBackdrop) {
+        DOM.filterDrawerBackdrop.classList.toggle('active', state.sidebarOpenMobile);
+      }
+      document.body.classList.toggle('drawer-open-lock', state.sidebarOpenMobile && window.innerWidth <= 1100);
+    };
+
+    DOM.btnToggleFilters.addEventListener('click', () => toggleFilterDrawer());
+    if (DOM.btnCloseFilterSidebar) {
+      DOM.btnCloseFilterSidebar.addEventListener('click', () => toggleFilterDrawer(false));
+    }
+    if (DOM.filterDrawerBackdrop) {
+      DOM.filterDrawerBackdrop.addEventListener('click', () => toggleFilterDrawer(false));
+    }
+    if (DOM.btnApplyFiltersDrawer) {
+      DOM.btnApplyFiltersDrawer.addEventListener('click', () => toggleFilterDrawer(false));
+    }
+    if (DOM.btnSidebarResetMobile) {
+      DOM.btnSidebarResetMobile.addEventListener('click', () => {
+        resetFilters(true);
+        toggleFilterDrawer(false);
+      });
+    }
 
     // Filter Group Accordion Collapsing
     document.querySelectorAll('.filter-group-header').forEach(header => {
