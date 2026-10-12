@@ -57,6 +57,17 @@
 
   // Brands Metadata for Directory & Hero Branding
   const BRANDS_METADATA = {
+    'Ubbaco': {
+      name: 'Ubbaco',
+      subtitle: 'Ubbaco Atelier · Contemporary Living',
+      tagline: 'Modern Architectural Furniture & Sculptural Seating',
+      description: 'Handcrafted designer sofas, architectural silhouettes, sculpted accent chairs, and bespoke statement pieces curated for refined modern interiors.',
+      origin: 'Curated Atelier',
+      badge: 'Bespoke Modernism',
+      monogram: 'UB',
+      accentColor: '#9B7B45',
+      banner: 'Manually uploaded furniture/Designer sofa/01 01.jpg'
+    },
     'Modani': {
       name: 'Modani',
       subtitle: 'Modani Atelier · Miami & Milan',
@@ -234,6 +245,17 @@
     DOM.priceSlider = document.getElementById('price-slider');
     DOM.priceMinInput = document.getElementById('price-min-input');
     DOM.priceMaxInput = document.getElementById('price-max-input');
+
+    // Ubbaco Dimension Manager Elements
+    DOM.ubbacoDimEditorWrap = document.getElementById('ubbaco-dim-editor-wrap');
+    DOM.btnOpenUbbacoHub = document.getElementById('btn-open-ubbaco-hub');
+    DOM.ubbacoBulkModal = document.getElementById('ubbaco-bulk-modal');
+    DOM.btnCloseUbbacoBulk = document.getElementById('btn-close-ubbaco-bulk');
+    DOM.ubbacoBulkList = document.getElementById('ubbaco-bulk-list');
+    DOM.ubbacoBulkTabGroup = document.getElementById('ubbaco-bulk-tab-group');
+    DOM.btnBulkSaveAll = document.getElementById('btn-bulk-save-all');
+    DOM.btnBulkDownloadSofas = document.getElementById('btn-bulk-download-sofas');
+    DOM.btnBulkDownloadChairs = document.getElementById('btn-bulk-download-chairs');
 
     // Badges & Counters
     DOM.wishlistBadge = document.getElementById('wishlist-badge');
@@ -653,7 +675,18 @@
     const price = extractPrice(item, catalog);
     const monthly = Math.round(price / 24);
 
-    // Dimension
+    // Dimension (check localStorage for user manually-entered Ubbaco dimensions first)
+    const ubbacoSavedDims = JSON.parse(localStorage.getItem('ubbaco_custom_dimensions') || '{}');
+    const ubbacoItemKey = item.base_sku || item.name;
+    let customUbbaco = ubbacoSavedDims[ubbacoItemKey];
+    if (customUbbaco && customUbbaco.raw) {
+      if (!item.dimensions) item.dimensions = {};
+      item.dimensions.raw = customUbbaco.raw;
+      if (customUbbaco.w) item.dimensions.Width = customUbbaco.w;
+      if (customUbbaco.d) item.dimensions.Depth = customUbbaco.d;
+      if (customUbbaco.h) item.dimensions.Height = customUbbaco.h;
+    }
+
     let rawDim = features.Dimension || features.Size || features.raw || (item.dimensions && (item.dimensions.raw || item.dimensions.INCH || item.dimensions.CM || item.dimensions['Total Height'])) || null;
     const dims = parseDimensions(rawDim);
 
@@ -703,7 +736,8 @@
     if (dimensionImage) mediaAssets.push('Blueprint Dimensions Included');
 
     let bNorm = catalog.brand || item.brand || 'Modani';
-    if (/estre/i.test(bNorm)) bNorm = 'Estré';
+    if (/ubbaco/i.test(bNorm)) bNorm = 'Ubbaco';
+    else if (/estre/i.test(bNorm)) bNorm = 'Estré';
     else if (/bay\s*window/i.test(bNorm)) bNorm = 'Bay Window';
     else if (/ifur/i.test(bNorm)) bNorm = 'iFur';
     else if (/ghara?ana/i.test(bNorm)) bNorm = 'Gharaana';
@@ -1422,7 +1456,8 @@
     // 2. Brand & Atelier Filter (SECOND)
     if (DOM.filterBrandsList) {
       DOM.filterBrandsList.innerHTML = '';
-      const allBrands = [
+      const defaultBrands = [
+        'Ubbaco',
         'Modani',
         'Danetti',
         'Living Shapes',
@@ -1434,6 +1469,8 @@
         'Gharaana',
         'Indian Nest'
       ];
+      const dbBrands = [...new Set(state.catalogDatabase.map(p => p.brand).filter(Boolean))];
+      const allBrands = [...new Set([...defaultBrands, ...dbBrands])];
 
       let catPool = state.catalogDatabase;
       if (state.selectedCategories.size > 0) {
@@ -2427,6 +2464,9 @@
 
     setQuickViewImage(0, 'next');
 
+    // Ubbaco Exclusive: Render Manual Dimension Editor
+    renderUbbacoDimEditor(p);
+
     // Specifications Summary Table
     if (DOM.qvSpecsTable && DOM.qvSpecsTable.querySelector('tbody')) {
       DOM.qvSpecsTable.querySelector('tbody').innerHTML = '';
@@ -3124,6 +3164,7 @@
         closeQuickView();
         toggleFilterDrawer(false);
         DOM.catalogHubModal.classList.remove('active');
+        if (DOM.ubbacoBulkModal) DOM.ubbacoBulkModal.classList.remove('active');
         DOM.wishlistDrawerBackdrop.classList.remove('active');
         DOM.cartDrawerBackdrop.classList.remove('active');
         DOM.comparisonModal.classList.remove('active');
@@ -3458,6 +3499,380 @@
         });
       });
     }
+
+    // Ubbaco Exclusive Dimension Manager Listeners
+    if (DOM.btnOpenUbbacoHub) DOM.btnOpenUbbacoHub.addEventListener('click', openUbbacoBulkModal);
+    if (DOM.btnCloseUbbacoBulk) DOM.btnCloseUbbacoBulk.addEventListener('click', () => DOM.ubbacoBulkModal.classList.remove('active'));
+    if (DOM.ubbacoBulkModal) {
+      DOM.ubbacoBulkModal.addEventListener('click', (e) => {
+        if (e.target === DOM.ubbacoBulkModal) DOM.ubbacoBulkModal.classList.remove('active');
+      });
+    }
+    if (DOM.btnBulkSaveAll) DOM.btnBulkSaveAll.addEventListener('click', saveAllUbbacoBulkDims);
+    if (DOM.btnBulkDownloadSofas) DOM.btnBulkDownloadSofas.addEventListener('click', () => downloadUbbacoCatalogJSON('Sofa'));
+    if (DOM.btnBulkDownloadChairs) DOM.btnBulkDownloadChairs.addEventListener('click', () => downloadUbbacoCatalogJSON('Accent Chair'));
+    if (DOM.ubbacoBulkTabGroup) {
+      DOM.ubbacoBulkTabGroup.querySelectorAll('.ubbaco-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          DOM.ubbacoBulkTabGroup.querySelectorAll('.ubbaco-tab-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          ubbacoBulkActiveTab = btn.getAttribute('data-tab');
+          renderUbbacoBulkList();
+        });
+      });
+    }
+  }
+
+  /* ==========================================================================
+     UBBACO EXCLUSIVE: MANUAL DIMENSION EDITOR & BULK HUB
+     ========================================================================== */
+
+  function updateQuickViewSpecsTable(p) {
+    if (DOM.qvSpecsTable && DOM.qvSpecsTable.querySelector('tbody')) {
+      DOM.qvSpecsTable.querySelector('tbody').innerHTML = '';
+      const specs = [
+        { label: 'Category & Brand', value: `${p.category} · ${p.brand}` },
+        { label: 'Dimensions', value: p.dimensions.raw.replace(/Dimension:?/i, '').trim() },
+        { label: 'Media Assets', value: `${p.images.length} Photos · ${p.hasVideo ? `${p.videos.length} HD Video${p.videos.length > 1 ? 's' : ''}` : '0 Videos'}` },
+        { label: 'Silhouettes', value: p.silhouettes.join(', ') || 'Modern Silhouette' },
+        { label: 'Upholstery & Fabric', value: p.materials.join(', ') || 'Fine Textile' },
+        { label: 'Colorway', value: p.colors.join(', ') || 'Curated Finish' }
+      ];
+
+      if (p.dimensionImage) {
+        specs.push({
+          label: 'Blueprint Diagram',
+          value: `<a href="${p.dimensionImage}" target="_blank" rel="noopener noreferrer" style="color:var(--accent-gold); font-weight:700; text-decoration:underline;">📐 View Dimension Schematic</a>`
+        });
+      }
+
+      if (p.features['Cushion Filling']) specs.push({ label: 'Cushion Filling', value: p.features['Cushion Filling'] });
+      if (p.features['Inner Frame']) specs.push({ label: 'Inner Frame', value: p.features['Inner Frame'] });
+      if (p.features['Suspension']) specs.push({ label: 'Suspension', value: p.features['Suspension'] });
+      if (p.features['Legs']) specs.push({ label: 'Legs & Base', value: p.features['Legs'] });
+
+      specs.forEach(s => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<th>${s.label}</th><td>${s.value}</td>`;
+        DOM.qvSpecsTable.querySelector('tbody').appendChild(tr);
+      });
+    }
+
+    if (DOM.pdpTechCardsGrid) {
+      const rawDimClean = p.dimensions.raw ? p.dimensions.raw.replace(/Dimension:?/i, '').trim() : 'Tailored spatial scale';
+      const firstCard = DOM.pdpTechCardsGrid.querySelector('.pdp-tech-card');
+      if (firstCard) {
+        const bodyEl = firstCard.querySelector('p');
+        if (bodyEl) bodyEl.textContent = rawDimClean;
+      }
+    }
+  }
+
+  function renderUbbacoDimEditor(p) {
+    if (!DOM.ubbacoDimEditorWrap) return;
+    if (p.brand !== 'Ubbaco') {
+      DOM.ubbacoDimEditorWrap.style.display = 'none';
+      return;
+    }
+
+    DOM.ubbacoDimEditorWrap.style.display = 'block';
+    const savedDims = JSON.parse(localStorage.getItem('ubbaco_custom_dimensions') || '{}');
+    const custom = savedDims[p.base_sku || p.name] || {};
+    const curW = custom.w || p.dimensions.Width || '';
+    const curD = custom.d || p.dimensions.Depth || '';
+    const curH = custom.h || p.dimensions.Height || '';
+    const curRaw = custom.raw || (p.dimensions.raw && p.dimensions.raw !== 'W --- x D --- x H --- cm' ? p.dimensions.raw : '');
+
+    DOM.ubbacoDimEditorWrap.innerHTML = `
+      <div class="ubbaco-dim-card">
+        <div class="ubbaco-dim-card-header">
+          <div class="ubbaco-dim-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            <span>Manual Dimension Input (Ubbaco Exclusive)</span>
+          </div>
+          <span class="ubbaco-dim-badge">Live Editable</span>
+        </div>
+        <p class="ubbaco-dim-desc">Manually enter exact measurements for this piece. Saves immediately to your live store view with instant export.</p>
+        
+        <div class="ubbaco-dim-inputs-row">
+          <div class="ubbaco-dim-field">
+            <label>Width / Length (W)</label>
+            <input type="text" id="ubbaco-input-w" placeholder="e.g. 220 cm" value="${curW}">
+          </div>
+          <div class="ubbaco-dim-field">
+            <label>Depth (D)</label>
+            <input type="text" id="ubbaco-input-d" placeholder="e.g. 95 cm" value="${curD}">
+          </div>
+          <div class="ubbaco-dim-field">
+            <label>Height (H)</label>
+            <input type="text" id="ubbaco-input-h" placeholder="e.g. 78 cm" value="${curH}">
+          </div>
+        </div>
+        
+        <div class="ubbaco-dim-field" style="margin-top:0.75rem;">
+          <label>Dimension Summary / Raw Note</label>
+          <input type="text" id="ubbaco-input-raw" placeholder="e.g. W 220 × D 95 × H 78 cm · Seat Height 44 cm" value="${curRaw}">
+        </div>
+
+        <div class="ubbaco-dim-button-bar">
+          <button type="button" class="btn-ubbaco-save" id="btn-ubbaco-save-dim">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>Save Dimensions</span>
+          </button>
+          <button type="button" class="btn-ubbaco-copy" id="btn-ubbaco-copy-item-json" title="Copy updated JSON for this item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Copy Item JSON</span>
+          </button>
+          <button type="button" class="btn-ubbaco-hub-open" id="btn-open-ubbaco-bulk-hub" title="Open full bulk dimension manager for all Ubbaco pieces">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Bulk Manage All Ubbaco</span>
+          </button>
+        </div>
+        <div id="ubbaco-save-msg" class="ubbaco-save-msg" style="display:none;"></div>
+      </div>
+    `;
+
+    const inputW = document.getElementById('ubbaco-input-w');
+    const inputD = document.getElementById('ubbaco-input-d');
+    const inputH = document.getElementById('ubbaco-input-h');
+    const inputRaw = document.getElementById('ubbaco-input-raw');
+    const saveBtn = document.getElementById('btn-ubbaco-save-dim');
+    const copyBtn = document.getElementById('btn-ubbaco-copy-item-json');
+    const bulkBtn = document.getElementById('btn-open-ubbaco-bulk-hub');
+    const msgEl = document.getElementById('ubbaco-save-msg');
+
+    saveBtn.addEventListener('click', () => {
+      const w = inputW.value.trim();
+      const d = inputD.value.trim();
+      const h = inputH.value.trim();
+      let raw = inputRaw.value.trim();
+
+      if (!raw && (w || d || h)) {
+        const parts = [];
+        if (w) parts.push(`W: ${w}`);
+        if (d) parts.push(`D: ${d}`);
+        if (h) parts.push(`H: ${h}`);
+        raw = parts.join(' × ');
+      }
+      if (!raw) raw = 'Custom Proportions';
+
+      const allSaved = JSON.parse(localStorage.getItem('ubbaco_custom_dimensions') || '{}');
+      const itemKey = p.base_sku || p.name;
+      allSaved[itemKey] = { w, d, h, raw };
+      localStorage.setItem('ubbaco_custom_dimensions', JSON.stringify(allSaved));
+
+      p.dimensions.raw = raw;
+      p.dimensions.Width = w;
+      p.dimensions.Depth = d;
+      p.dimensions.Height = h;
+      p.features.raw = raw;
+
+      updateQuickViewSpecsTable(p);
+
+      msgEl.style.display = 'block';
+      msgEl.innerHTML = `✓ Dimensions saved for ${p.name}!`;
+      setTimeout(() => { msgEl.style.display = 'none'; }, 3000);
+      showToast(`Updated dimensions for ${p.name}`);
+    });
+
+    copyBtn.addEventListener('click', () => {
+      const w = inputW.value.trim() || p.dimensions.Width || '';
+      const d = inputD.value.trim() || p.dimensions.Depth || '';
+      const h = inputH.value.trim() || p.dimensions.Height || '';
+      const raw = inputRaw.value.trim() || p.dimensions.raw || '';
+
+      const updatedObj = {
+        name: p.name,
+        base_sku: p.base_sku,
+        brand: p.brand,
+        category: p.category,
+        price: p.price,
+        regular_price: p.regular_price,
+        dimensions: {
+          raw,
+          Width: w,
+          Depth: d,
+          Height: h,
+          Length: w
+        },
+        images: p.images
+      };
+
+      navigator.clipboard.writeText(JSON.stringify(updatedObj, null, 2)).then(() => {
+        showToast('Copied JSON for this piece to clipboard!');
+      });
+    });
+
+    if (bulkBtn) {
+      bulkBtn.addEventListener('click', () => {
+        openUbbacoBulkModal();
+      });
+    }
+  }
+
+  let ubbacoBulkActiveTab = 'all';
+
+  function openUbbacoBulkModal() {
+    if (!DOM.ubbacoBulkModal) return;
+    DOM.ubbacoBulkModal.classList.add('active');
+    renderUbbacoBulkList();
+  }
+
+  function renderUbbacoBulkList() {
+    if (!DOM.ubbacoBulkList) return;
+    const ubbacoProducts = state.catalogDatabase.filter(p => p.brand === 'Ubbaco');
+    const filtered = ubbacoBulkActiveTab === 'all'
+      ? ubbacoProducts
+      : ubbacoProducts.filter(p => p.category.toLowerCase() === ubbacoBulkActiveTab.toLowerCase());
+
+    const savedDims = JSON.parse(localStorage.getItem('ubbaco_custom_dimensions') || '{}');
+
+    DOM.ubbacoBulkList.innerHTML = `
+      <div style="display:grid; grid-template-columns: 80px 1.4fr 1fr 1fr 1fr 1.5fr; gap:1rem; padding:0.5rem; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--text-tertiary); border-bottom:2px solid var(--border-medium);">
+        <div>Photo</div>
+        <div>Product Name</div>
+        <div>Width (W)</div>
+        <div>Depth (D)</div>
+        <div>Height (H)</div>
+        <div>Dimension Summary</div>
+      </div>
+    `;
+
+    filtered.forEach(p => {
+      const itemKey = p.base_sku || p.name;
+      const custom = savedDims[itemKey] || {};
+      const curW = custom.w || p.dimensions.Width || '';
+      const curD = custom.d || p.dimensions.Depth || '';
+      const curH = custom.h || p.dimensions.Height || '';
+      const curRaw = custom.raw || (p.dimensions.raw && p.dimensions.raw !== 'W --- x D --- x H --- cm' ? p.dimensions.raw : '');
+      const thumb = p.images && p.images[0] ? p.images[0] : '';
+
+      const row = document.createElement('div');
+      row.className = 'ubbaco-row-item';
+      row.setAttribute('data-sku', itemKey);
+      row.innerHTML = `
+        <img class="ubbaco-row-thumb" src="${thumb}" alt="${p.name}">
+        <div class="ubbaco-row-title-box">
+          <strong>${p.name}</strong>
+          <span>${p.category} · ${p.base_sku || ''}</span>
+        </div>
+        <div>
+          <input type="text" class="ubbaco-row-input input-w" placeholder="e.g. 220 cm" value="${curW}">
+        </div>
+        <div>
+          <input type="text" class="ubbaco-row-input input-d" placeholder="e.g. 95 cm" value="${curD}">
+        </div>
+        <div>
+          <input type="text" class="ubbaco-row-input input-h" placeholder="e.g. 78 cm" value="${curH}">
+        </div>
+        <div>
+          <input type="text" class="ubbaco-row-input input-raw" placeholder="Summary notes..." value="${curRaw}">
+        </div>
+      `;
+      DOM.ubbacoBulkList.appendChild(row);
+    });
+  }
+
+  function saveAllUbbacoBulkDims() {
+    if (!DOM.ubbacoBulkList) return;
+    const rows = DOM.ubbacoBulkList.querySelectorAll('.ubbaco-row-item');
+    const allSaved = JSON.parse(localStorage.getItem('ubbaco_custom_dimensions') || '{}');
+
+    rows.forEach(row => {
+      const sku = row.getAttribute('data-sku');
+      const w = row.querySelector('.input-w').value.trim();
+      const d = row.querySelector('.input-d').value.trim();
+      const h = row.querySelector('.input-h').value.trim();
+      let raw = row.querySelector('.input-raw').value.trim();
+
+      if (!raw && (w || d || h)) {
+        const parts = [];
+        if (w) parts.push(`W: ${w}`);
+        if (d) parts.push(`D: ${d}`);
+        if (h) parts.push(`H: ${h}`);
+        raw = parts.join(' × ');
+      }
+
+      if (w || d || h || raw) {
+        allSaved[sku] = { w, d, h, raw: raw || 'Custom Proportions' };
+        const prod = state.catalogDatabase.find(p => (p.base_sku || p.name) === sku);
+        if (prod) {
+          prod.dimensions.raw = raw || 'Custom Proportions';
+          prod.dimensions.Width = w;
+          prod.dimensions.Depth = d;
+          prod.dimensions.Height = h;
+          prod.features.raw = prod.dimensions.raw;
+        }
+      }
+    });
+
+    localStorage.setItem('ubbaco_custom_dimensions', JSON.stringify(allSaved));
+    showToast('Saved all Ubbaco measurements successfully!', '💾');
+  }
+
+  function downloadUbbacoCatalogJSON(categoryFilter) {
+    saveAllUbbacoBulkDims();
+    const savedDims = JSON.parse(localStorage.getItem('ubbaco_custom_dimensions') || '{}');
+    const ubbacoProds = state.catalogDatabase.filter(p => p.brand === 'Ubbaco' && (categoryFilter ? p.category.toLowerCase() === categoryFilter.toLowerCase() : true));
+
+    const exportItems = ubbacoProds.map(p => {
+      const itemKey = p.base_sku || p.name;
+      const custom = savedDims[itemKey] || {};
+      const w = custom.w || p.dimensions.Width || '';
+      const d = custom.d || p.dimensions.Depth || '';
+      const h = custom.h || p.dimensions.Height || '';
+      const raw = custom.raw || p.dimensions.raw || 'W --- x D --- x H --- cm';
+
+      return {
+        name: p.name,
+        base_sku: p.base_sku,
+        brand: p.brand,
+        category: p.category,
+        price: p.price,
+        regular_price: p.regular_price,
+        url: p.url,
+        description: p.description || 'Contemporary designer furniture by Ubbaco Atelier.',
+        dimensions: {
+          raw,
+          Width: w,
+          Depth: d,
+          Height: h,
+          Length: w
+        },
+        specifications: {
+          Brand: 'Ubbaco',
+          Category: p.category,
+          Price: '$100',
+          Upholstery: 'Curated Luxury Fabric',
+          Frame: 'Kiln-Dried Hardwood',
+          Assembly: 'Minimal Setup'
+        },
+        key_features: p.features['Key Features'] ? [p.features['Key Features']] : ['Curated Ubbaco Atelier Architecture'],
+        images: p.images,
+        variants: [
+          {
+            title: 'Curated Edition',
+            price: '$100',
+            regular_price: '$100',
+            sku: p.base_sku,
+            images: p.images
+          }
+        ]
+      };
+    });
+
+    const fileName = categoryFilter && categoryFilter.toLowerCase() === 'sofa'
+      ? 'ubbaco_sofas.json'
+      : (categoryFilter && categoryFilter.toLowerCase() === 'accent chair' ? 'ubbaco_accent_chairs.json' : 'ubbaco_all_catalog.json');
+
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportItems, null, 2));
+    const dlAnchor = document.createElement('a');
+    dlAnchor.setAttribute('href', dataStr);
+    dlAnchor.setAttribute('download', fileName);
+    document.body.appendChild(dlAnchor);
+    dlAnchor.click();
+    dlAnchor.remove();
+    showToast(`Downloaded ${fileName}!`, '📥');
   }
 
   /* ==========================================================================

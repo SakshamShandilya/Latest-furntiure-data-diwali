@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-10-08T08:51:46.749Z",
-  "totalCatalogs": 32,
+  "updatedAt": "2026-10-12T12:37:29.460Z",
+  "totalCatalogs": 34,
   "catalogs": [
     {
       "id": "sofa-modani-latest",
@@ -69,6 +69,20 @@
       "itemCount": 12,
       "totalImages": 267,
       "totalVideos": 16,
+      "isLatest": false,
+      "default": false
+    },
+    {
+      "id": "accent-chair-ubbaco",
+      "category": "Accent Chair",
+      "brand": "Ubbaco",
+      "rawBrand": "Ubbaco",
+      "displayName": "Ubbaco · Accent Chair",
+      "fileName": "ubbaco_accent_chairs.json",
+      "relativePath": "Accent Chair/Ubbaco/ubbaco_accent_chairs.json",
+      "itemCount": 30,
+      "totalImages": 163,
+      "totalVideos": 0,
       "isLatest": false,
       "default": false
     },
@@ -405,6 +419,20 @@
       "itemCount": 19,
       "totalImages": 370,
       "totalVideos": 2,
+      "isLatest": false,
+      "default": false
+    },
+    {
+      "id": "sofa-ubbaco",
+      "category": "Sofa",
+      "brand": "Ubbaco",
+      "rawBrand": "Ubbaco",
+      "displayName": "Ubbaco · Sofa",
+      "fileName": "ubbaco_sofas.json",
+      "relativePath": "Sofa/Ubbaco/ubbaco_sofas.json",
+      "itemCount": 37,
+      "totalImages": 231,
+      "totalVideos": 0,
       "isLatest": false,
       "default": false
     },

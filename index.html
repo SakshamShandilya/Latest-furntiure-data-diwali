@@ -34,6 +34,11 @@
         <span id="top-media-count-text">Media: 570 Img · 0 Vid</span>
       </button>
       <span style="opacity:0.3">|</span>
+      <button class="top-bar-btn" id="btn-open-ubbaco-hub" style="color:var(--accent-gold); font-weight:600;" title="Open Ubbaco Manual Dimension Editor">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+        <span>Ubbaco Dimensions (Manual)</span>
+      </button>
+      <span style="opacity:0.3">|</span>
       <button class="top-bar-btn" id="btn-open-catalog-hub-top" style="color:var(--accent-gold); font-weight:600;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
         <span>Data Hub / Add JSON</span>
@@ -653,6 +658,9 @@
             </div>
           </div>
 
+          <!-- Dedicated Manual Dimension Editor for Ubbaco Pieces -->
+          <div class="ubbaco-dim-editor-wrap" id="ubbaco-dim-editor-wrap" style="display:none;"></div>
+
           <!-- Quick Specifications Summary Table -->
           <div class="pdp-specs-card-wrap">
             <table class="specs-table pdp-specs-table" id="qv-specs-table">
@@ -936,6 +944,39 @@
         <!-- Scrollable Product Media List -->
         <div id="media-audit-items-list" class="media-audit-list">
           <!-- Populated dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       UBBACO MANUAL DIMENSION MANAGER MODAL (BULK VIEW & EDIT)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="ubbaco-bulk-modal">
+    <div class="modal-box ubbaco-bulk-modal-box">
+      <button class="modal-close-btn" id="btn-close-ubbaco-bulk" title="Close Dimension Hub">×</button>
+      <div class="ubbaco-bulk-header">
+        <div style="font-size:0.75rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent-gold); font-weight:700;">Ubbaco Exclusive Tools</div>
+        <h2 style="font-family:var(--font-serif); font-size:1.85rem; margin-top:0.25rem;">Ubbaco Manual Dimension Hub</h2>
+        <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.35rem;">
+          View photos and manually enter measurements for all 67 Ubbaco pieces. All edits save instantly to your store view and can be exported as updated JSON files.
+        </p>
+      </div>
+      <div class="ubbaco-bulk-toolbar">
+        <div class="ubbaco-bulk-filters" id="ubbaco-bulk-tab-group">
+          <button class="ubbaco-tab-btn active" data-tab="all">All Pieces (67)</button>
+          <button class="ubbaco-tab-btn" data-tab="Sofa">Sofas (37)</button>
+          <button class="ubbaco-tab-btn" data-tab="Accent Chair">Accent Chairs (30)</button>
+        </div>
+        <div class="ubbaco-bulk-actions">
+          <button class="btn-ubbaco-save" id="btn-bulk-save-all">💾 Save All Changes</button>
+          <button class="btn-ubbaco-copy" id="btn-bulk-download-sofas" title="Download updated ubbaco_sofas.json">📥 Download Sofas JSON</button>
+          <button class="btn-ubbaco-copy" id="btn-bulk-download-chairs" title="Download updated ubbaco_accent_chairs.json">📥 Download Chairs JSON</button>
+        </div>
+      </div>
+      <div class="ubbaco-bulk-table-container">
+        <div id="ubbaco-bulk-list" class="ubbaco-bulk-list">
+          <!-- Populated dynamically by app.js -->
         </div>
       </div>
     </div>
