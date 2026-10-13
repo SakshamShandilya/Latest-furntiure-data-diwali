@@ -31,7 +31,7 @@
     selectedFeatures: new Set(),
     selectedAssembly: new Set(),
     selectedMedia: new Set(),
-    priceMin: 200,
+    priceMin: 0,
     priceMax: 6000,
     sortBy: 'featured',
     layoutCols: 3,
@@ -1996,8 +1996,8 @@
         }
       });
     });
-    if (state.priceMax < 6000 || state.priceMin > 200) {
-      tags.push({ label: `$${state.priceMin} - $${state.priceMax}`, remove: () => { state.priceMin = 200; state.priceMax = 6000; DOM.priceSlider.value = 6000; DOM.priceMinInput.value = 200; DOM.priceMaxInput.value = 6000; } });
+    if (state.priceMax < 6000 || state.priceMin > 0) {
+      tags.push({ label: `$${state.priceMin} - $${state.priceMax}`, remove: () => { state.priceMin = 0; state.priceMax = 6000; DOM.priceSlider.value = 6000; DOM.priceMinInput.value = 0; DOM.priceMaxInput.value = 6000; } });
     }
 
     if (tags.length === 0) {
@@ -2045,7 +2045,7 @@
     state.selectedAssembly.clear();
     state.selectedMedia.clear();
     state.selectedCatalogs.clear();
-    state.priceMin = 200;
+    state.priceMin = 0;
     state.priceMax = 6000;
     updateCategoryAndBrandPool();
     updateBreadcrumbs();
@@ -2053,7 +2053,7 @@
 
     if (DOM.globalSearchInput) DOM.globalSearchInput.value = '';
     if (DOM.priceSlider) DOM.priceSlider.value = 6000;
-    if (DOM.priceMinInput) DOM.priceMinInput.value = 200;
+    if (DOM.priceMinInput) DOM.priceMinInput.value = 0;
     if (DOM.priceMaxInput) DOM.priceMaxInput.value = 6000;
 
     if (andRender) {
