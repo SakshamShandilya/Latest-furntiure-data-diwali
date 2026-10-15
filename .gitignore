@@ -20,3 +20,4 @@ desktop.ini
 # Agent and IDE internal storage
 .agents/
 .gemini/
+.cache_dedup/
