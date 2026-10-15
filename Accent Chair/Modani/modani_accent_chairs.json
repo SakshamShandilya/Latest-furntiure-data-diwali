@@ -250,7 +250,11 @@
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Beige_cutout-4.png?v=1785357022",
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Beige_cutout-2.png?v=1785357022",
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Beige_cutout-3.png?v=1785357022",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Beige_cutout.png?v=1785357022"
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Beige_cutout.png?v=1785357022",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Soft-Ivory_cutout-4.png?v=1785356355",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Soft-Ivory_cutout.png?v=1785356355",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Soft-Ivory_cutout-3.png?v=1785356355",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Soft-Ivory_cutout-2.png?v=1785356355"
     ],
     "description": "The Livia Lounge Chair in Beige is a beautiful dialogue between soft and structured. A rounded, enveloping seat and back cocoon you in plush, beige-upholstered comfort, while a solid walnut veneer base with clean geometric angular lines brings a grounding architectural precision beneath. The warm, versatile beige tone pairs effortlessly with virtually any interior palette, making it an elegant and adaptable addition to any living room or reading corner.",
     "features": {
@@ -258,7 +262,19 @@
       "Plywood bended, walnut veneer, walnut stained color": "Yes"
     },
     "videos": [],
-    "dimension_image": null
+    "dimension_image": null,
+    "variants": [
+      {
+        "title": "Livia Lounge Chair Soft Ivory",
+        "color": "Livia Lounge Chair Soft Ivory",
+        "images": [
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Soft-Ivory_cutout-4.png?v=1785356355",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Soft-Ivory_cutout.png?v=1785356355",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Soft-Ivory_cutout-3.png?v=1785356355",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Soft-Ivory_cutout-2.png?v=1785356355"
+        ]
+      }
+    ]
   },
   {
     "name": "Livia Lounge Chair Golden Cognac",
@@ -270,23 +286,6 @@
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Golden-Cognac_cutout.png?v=1785356796"
     ],
     "description": "The Livia Lounge Chair in Golden Cognac is a beautiful dialogue between soft and structured. A rounded, enveloping seat and back cocoon you in plush, cognac-upholstered comfort, while a solid walnut veneer base with clean geometric angular lines brings a grounding architectural precision beneath. The rich, warm golden cognac tone deepens the contrast beautifully — adding a luxurious, amber warmth that pairs naturally with the walnut finish. A refined statement for any living room or reading corner.",
-    "features": {
-      "Dimension": "W: 33 1/4\" D: 29 1/8\" x H: 29 1/2\"",
-      "Plywood bended, walnut veneer, walnut stained color": "Yes"
-    },
-    "videos": [],
-    "dimension_image": null
-  },
-  {
-    "name": "Livia Lounge Chair Soft Ivory",
-    "url": "https://modani.com/products/livia-lounge-chair-soft-ivory",
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Soft-Ivory_cutout-4.png?v=1785356355",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Soft-Ivory_cutout.png?v=1785356355",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Soft-Ivory_cutout-3.png?v=1785356355",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Livia-Lounge-Chair-Soft-Ivory_cutout-2.png?v=1785356355"
-    ],
-    "description": "The Livia Lounge Chair in Soft Ivory is a beautiful dialogue between soft and structured. A rounded, enveloping seat and back cocoon you in plush, ivory-upholstered comfort, while a solid walnut veneer base with clean geometric angular lines brings a grounding architectural precision beneath. The contrast of organic curves above and sharp, purposeful form below creates a chair that is as visually compelling as it is inviting to sit in. A refined statement for any living room or reading corner.",
     "features": {
       "Dimension": "W: 33 1/4\" D: 29 1/8\" x H: 29 1/2\"",
       "Plywood bended, walnut veneer, walnut stained color": "Yes"

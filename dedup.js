@@ -100,6 +100,15 @@
       const data = await res.json();
       const rawMatches = data.matches || [];
 
+      // Automatically sync with newly generated vision scans
+      const lastScanTimestamp = localStorage.getItem('moderna_dedup_scan_timestamp');
+      if (data.generatedAt && lastScanTimestamp !== data.generatedAt) {
+        console.log(`[Dedup] New scan timestamp detected (${data.generatedAt}). Clearing previous session cache.`);
+        localStorage.setItem('moderna_dedup_scan_timestamp', data.generatedAt);
+        localStorage.removeItem(STORAGE_KEY_ACTIONS);
+        localStorage.removeItem(STORAGE_KEY_QUEUE);
+      }
+
       // Load all auto-saved actions from localStorage
       const savedCompleted = getSavedActions();
       const completedIds = new Set(Object.keys(savedCompleted));
@@ -444,6 +453,15 @@
 
     DOM.cardsContainer.innerHTML = '';
 
+    // Calculate product repetition across active duplicate pairs
+    const productFreq = new Map();
+    allMatches.forEach(m => {
+      const nA = (m.productA?.name || '').trim().toLowerCase();
+      const nB = (m.productB?.name || '').trim().toLowerCase();
+      if (nA) productFreq.set(nA, (productFreq.get(nA) || 0) + 1);
+      if (nB) productFreq.set(nB, (productFreq.get(nB) || 0) + 1);
+    });
+
     filteredMatches.forEach(m => {
       const card = document.createElement('article');
       card.className = 'dedup-card';
@@ -452,6 +470,11 @@
 
       const pA = m.productA;
       const pB = m.productB;
+
+      const nA = (pA.name || '').trim().toLowerCase();
+      const nB = (pB.name || '').trim().toLowerCase();
+      const freqA = productFreq.get(nA) || 1;
+      const freqB = productFreq.get(nB) || 1;
 
       let matchClass = 'match-lookalike';
       if (m.similarity >= 97) matchClass = 'match-exact';
@@ -487,7 +510,10 @@
               </div>
             </div>
             <div class="dedup-meta">
-              <div class="dedup-brand">${pA.brand}</div>
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
+                <div class="dedup-brand">${pA.brand}</div>
+                ${freqA > 1 ? `<span class="dedup-multi-cluster-pill" title="This product appears in ${freqA} comparison pairs due to identical photos or silhouette similarity with multiple products. Resolving or deleting it will automatically resolve all ${freqA} pairs!">🔁 In ${freqA} Pairs</span>` : ''}
+              </div>
               <h4 class="dedup-name" data-view-pdp="A" data-match-id="${m.id}" title="Click to view details">${pA.name}</h4>
               <div class="dedup-file">📁 ${pA.catalogFile} (Item #${pA.itemIndex + 1})</div>
               <div class="dedup-price">${formatPrice(pA.price)}</div>
@@ -525,7 +551,10 @@
               </div>
             </div>
             <div class="dedup-meta">
-              <div class="dedup-brand">${pB.brand}</div>
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
+                <div class="dedup-brand">${pB.brand}</div>
+                ${freqB > 1 ? `<span class="dedup-multi-cluster-pill" title="This product appears in ${freqB} comparison pairs due to identical photos or silhouette similarity with multiple products. Resolving or deleting it will automatically resolve all ${freqB} pairs!">🔁 In ${freqB} Pairs</span>` : ''}
+              </div>
               <h4 class="dedup-name" data-view-pdp="B" data-match-id="${m.id}" title="Click to view details">${pB.name}</h4>
               <div class="dedup-file">📁 ${pB.catalogFile} (Item #${pB.itemIndex + 1})</div>
               <div class="dedup-price">${formatPrice(pB.price)}</div>
@@ -1052,6 +1081,28 @@
       timestamp: Date.now()
     };
 
+    // Auto-resolve sibling matches where the merged duplicate piece also appeared
+    const normDupName = (dup.name || '').trim().toLowerCase();
+    const siblingMatches = allMatches.filter(m => {
+      if (m.id === matchId) return false;
+      const matchNA = (m.productA?.name || '').trim().toLowerCase();
+      const matchNB = (m.productB?.name || '').trim().toLowerCase();
+      const fA = m.productA?.catalogFile;
+      const fB = m.productB?.catalogFile;
+      return (matchNA === normDupName && fA === dup.catalogFile) ||
+             (matchNB === normDupName && fB === dup.catalogFile);
+    });
+
+    siblingMatches.forEach(sm => {
+      saveActionLocally({
+        type: 'cascade_resolved',
+        matchId: sm.id,
+        match: sm,
+        reason: `Auto-resolved because "${dup.name}" was merged into "${master.name}"`,
+        timestamp: Date.now()
+      });
+    });
+
     // 1. Bulletproof local persistence
     saveActionLocally(actionRecord);
 
@@ -1082,11 +1133,15 @@
       showToastWithUndo(`Merged (Saved in browser)`, actionRecord);
     }
 
-    // Smoothly remove card from view after brief confirmation
+    // Smoothly remove card and any cascaded sibling cards from view
     setTimeout(() => {
-      allMatches = allMatches.filter(m => m.id !== matchId);
+      const removedIds = new Set([matchId, ...siblingMatches.map(sm => sm.id)]);
+      allMatches = allMatches.filter(m => !removedIds.has(m.id));
       updateLiveMetrics();
       applyFilters();
+      if (siblingMatches.length > 0) {
+        showToast(`Merged into "${master.name}" & auto-cleared ${siblingMatches.length} other related pair(s)!`, '✨');
+      }
     }, 1100);
   }
 
@@ -1119,6 +1174,28 @@
       timestamp: Date.now()
     };
 
+    // Auto-resolve sibling matches where this deleted piece appeared
+    const normDeletedName = (prod.name || '').trim().toLowerCase();
+    const siblingMatches = allMatches.filter(m => {
+      if (m.id === matchId) return false;
+      const matchNA = (m.productA?.name || '').trim().toLowerCase();
+      const matchNB = (m.productB?.name || '').trim().toLowerCase();
+      const fA = m.productA?.catalogFile;
+      const fB = m.productB?.catalogFile;
+      return (matchNA === normDeletedName && fA === prod.catalogFile) ||
+             (matchNB === normDeletedName && fB === prod.catalogFile);
+    });
+
+    siblingMatches.forEach(sm => {
+      saveActionLocally({
+        type: 'cascade_resolved',
+        matchId: sm.id,
+        match: sm,
+        reason: `Auto-resolved because "${prod.name}" was deleted from catalog`,
+        timestamp: Date.now()
+      });
+    });
+
     saveActionLocally(actionRecord);
 
     const payload = {
@@ -1147,9 +1224,13 @@
     }
 
     setTimeout(() => {
-      allMatches = allMatches.filter(m => m.id !== matchId);
+      const removedIds = new Set([matchId, ...siblingMatches.map(sm => sm.id)]);
+      allMatches = allMatches.filter(m => !removedIds.has(m.id));
       updateLiveMetrics();
       applyFilters();
+      if (siblingMatches.length > 0) {
+        showToast(`Deleted "${prod.name}" & auto-cleared ${siblingMatches.length} other related pair(s)!`, '✨');
+      }
     }, 1100);
   }
 

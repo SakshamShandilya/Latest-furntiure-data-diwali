@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-15T11:26:43.581Z",
+  "updatedAt": "2026-10-15T20:47:03.100Z",
   "totalCatalogs": 43,
   "catalogs": [
     {
@@ -10,9 +10,9 @@
       "displayName": "Modani · Sofa",
       "fileName": "Latest _modani_sofas.json",
       "relativePath": "Sofa/Modani/Latest _modani_sofas.json",
-      "itemCount": 85,
-      "totalImages": 578,
-      "totalVideos": 57,
+      "itemCount": 80,
+      "totalImages": 538,
+      "totalVideos": 54,
       "isLatest": true,
       "default": true
     },
@@ -52,7 +52,7 @@
       "displayName": "Fendi Casa · Accent Chair",
       "fileName": "fendi_casa_armchairs.json",
       "relativePath": "Accent Chair/Fendi casa/fendi_casa_armchairs.json",
-      "itemCount": 17,
+      "itemCount": 16,
       "totalImages": 80,
       "totalVideos": 0,
       "isLatest": false,
@@ -80,7 +80,7 @@
       "displayName": "Modani · Accent Chair",
       "fileName": "modani_accent_chairs.json",
       "relativePath": "Accent Chair/Modani/modani_accent_chairs.json",
-      "itemCount": 28,
+      "itemCount": 27,
       "totalImages": 184,
       "totalVideos": 2,
       "isLatest": false,
@@ -318,9 +318,9 @@
       "displayName": "Modani · Benches",
       "fileName": "modani_benches_poufs.json",
       "relativePath": "Benches/Modani/modani_benches_poufs.json",
-      "itemCount": 22,
+      "itemCount": 20,
       "totalImages": 84,
-      "totalVideos": 2,
+      "totalVideos": 1,
       "isLatest": false,
       "default": false
     },
@@ -402,8 +402,8 @@
       "displayName": "Baywindow · Sofa",
       "fileName": "sofas.json",
       "relativePath": "Sofa/Baywindow/sofas.json",
-      "itemCount": 288,
-      "totalImages": 1335,
+      "itemCount": 284,
+      "totalImages": 1331,
       "totalVideos": 0,
       "isLatest": false,
       "default": false
@@ -430,8 +430,8 @@
       "displayName": "Duraster · Sofa",
       "fileName": "duraster_sofa.json",
       "relativePath": "Sofa/Duraster/duraster_sofa.json",
-      "itemCount": 107,
-      "totalImages": 628,
+      "itemCount": 104,
+      "totalImages": 616,
       "totalVideos": 0,
       "isLatest": false,
       "default": false

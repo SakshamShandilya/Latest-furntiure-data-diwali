@@ -217,50 +217,7 @@
     "images": [
       "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDICasaBlowUparmchairControvento.jpg?v=1768409172",
       "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDI_Casa_armchair_Blow_Up_17_Controvento.jpg?v=1768409305",
-      "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDI_Casa_armchair_Blow_Up_20_Controvento.jpg?v=1768409427"
-    ],
-    "variants": [
-      {
-        "title": "Default Title",
-        "sku": "",
-        "price": "Price on Request",
-        "regular_price": "Price on Request",
-        "swatch_image": null,
-        "images": [
-          "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDICasaBlowUparmchairControvento.jpg?v=1768409172",
-          "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDI_Casa_armchair_Blow_Up_17_Controvento.jpg?v=1768409305",
-          "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDI_Casa_armchair_Blow_Up_20_Controvento.jpg?v=1768409427"
-        ],
-        "specifications": {
-          "Brand": "FENDI Casa",
-          "Category": "Armchair",
-          "Designer": "Controvento"
-        },
-        "dimensions": {}
-      }
-    ]
-  },
-  {
-    "name": "Blow Up Pequin, armchair",
-    "brand": "FENDI Casa",
-    "category": "Accent Chairs",
-    "designer": "Controvento",
-    "url": "https://www.fendicasa.com/products/blow-up-pequin-armchair",
-    "description": "Featuring generous volumes that embrace the body, the Blow Up Pequin armchair fuses Fendi's ironic spirit with contemporary design. Seat and backrest create a harmonious multilayer effect with a puffy finish, recalling the brand's iconic Pequin stripes. Available in dégradé leather or in monochromatic leather or fabric, it fits seamlessly into the living area, creating an incredible feeling of comfort and conviviality.",
-    "key_features": [
-      "Featuring generous volumes that embrace the body, the Blow Up Pequin armchair fuses Fendi's ironic spirit with contemporary design.",
-      "Seat and backrest create a harmonious multilayer effect with a puffy finish, recalling the brand's iconic Pequin stripes.",
-      "Available in dégradé leather or in monochromatic leather or fabric, it fits seamlessly into the living area, creating an incredible feeling of comfort and conviviality.."
-    ],
-    "specifications": {
-      "Brand": "FENDI Casa",
-      "Category": "Armchair",
-      "Designer": "Controvento"
-    },
-    "dimensions": {},
-    "dimension_image": null,
-    "videos": [],
-    "images": [
+      "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDI_Casa_armchair_Blow_Up_20_Controvento.jpg?v=1768409427",
       "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDICasaBlowUpPequinarmchairControvento.jpg?v=1768409489",
       "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDI_Casa_armchair_Blow_Up_14_Controvento.jpg?v=1768410206",
       "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDI_Casa_armchair_Blow_Up_07_Controvento.jpg?v=1768410206",
@@ -274,10 +231,9 @@
         "regular_price": "Price on Request",
         "swatch_image": null,
         "images": [
-          "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDICasaBlowUpPequinarmchairControvento.jpg?v=1768409489",
-          "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDI_Casa_armchair_Blow_Up_14_Controvento.jpg?v=1768410206",
-          "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDI_Casa_armchair_Blow_Up_07_Controvento.jpg?v=1768410206",
-          "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDI_Casa_armchair_Blow_Up_13_Controvento.jpg?v=1768410263"
+          "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDICasaBlowUparmchairControvento.jpg?v=1768409172",
+          "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDI_Casa_armchair_Blow_Up_17_Controvento.jpg?v=1768409305",
+          "https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDI_Casa_armchair_Blow_Up_20_Controvento.jpg?v=1768409427"
         ],
         "specifications": {
           "Brand": "FENDI Casa",
