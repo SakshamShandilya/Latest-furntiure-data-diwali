@@ -1586,6 +1586,10 @@
       allBrands.forEach(brand => {
         const count = catPool.filter(p => p.brand === brand).length;
         const isChecked = state.selectedBrands.has(brand);
+        
+        // Hide brands that have 0 products in the active category to prevent confusing zero-counts
+        if (count === 0 && !isChecked) return;
+
         const item = document.createElement('label');
         item.className = 'filter-checkbox-label';
         item.innerHTML = `
@@ -1599,6 +1603,12 @@
         item.querySelector('input').addEventListener('change', (e) => {
           if (e.target.checked) {
             state.selectedBrands.add(brand);
+            // If the selected brand has 0 pieces in the current category, expand category to 'all'
+            const brandInCat = state.catalogDatabase.filter(p => p.brand === brand && p.category.toLowerCase() === state.activeCategory.toLowerCase()).length;
+            if (brandInCat === 0 && state.activeCategory !== 'all') {
+              state.activeCategory = 'all';
+              state.selectedCategories.clear();
+            }
           } else {
             state.selectedBrands.delete(brand);
           }
