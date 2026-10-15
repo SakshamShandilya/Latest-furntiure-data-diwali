@@ -1544,52 +1544,6 @@
     ]
   },
   {
-    "name": "Ubbaco Designer Sofa #28",
-    "base_sku": "UBBACO-SF-28",
-    "brand": "Ubbaco",
-    "category": "Sofa",
-    "price": 100,
-    "regular_price": "$100",
-    "url": "#",
-    "description": "Contemporary designer sofa from Ubbaco Atelier. Handcrafted with architectural proportions, clean modern contours, and luxurious comfort.",
-    "dimensions": {
-      "raw": "W --- x D --- x H --- cm",
-      "Width": "",
-      "Depth": "",
-      "Height": "",
-      "Length": ""
-    },
-    "specifications": {
-      "Brand": "Ubbaco",
-      "Category": "Sofa",
-      "Price": "$100",
-      "Upholstery": "Curated Luxury Fabric",
-      "Structure": "Kiln-Dried Hardwood Frame",
-      "Cushioning": "High-Resilience Architectural Foam",
-      "Assembly": "Minimal Setup"
-    },
-    "key_features": [
-      "Curated Ubbaco Atelier Architecture",
-      "Reinforced Solid Hardwood Joinery",
-      "High-Density Multi-Layer Foam",
-      "Complimentary White-Glove In-Home Placement"
-    ],
-    "images": [
-      "Manually uploaded furniture/sofa/28 01.jpg"
-    ],
-    "variants": [
-      {
-        "title": "Curated Edition",
-        "price": "$100",
-        "regular_price": "$100",
-        "sku": "UBBACO-SF-28",
-        "images": [
-          "Manually uploaded furniture/sofa/28 01.jpg"
-        ]
-      }
-    ]
-  },
-  {
     "name": "Ubbaco Designer Sofa #29",
     "base_sku": "UBBACO-SF-29",
     "brand": "Ubbaco",

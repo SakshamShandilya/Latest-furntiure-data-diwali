@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-10-15T08:28:30.542Z",
-  "totalCatalogs": 44,
+  "updatedAt": "2026-10-15T11:11:25.593Z",
+  "totalCatalogs": 43,
   "catalogs": [
     {
       "id": "sofa-modani-latest",
@@ -402,8 +402,8 @@
       "displayName": "Baywindow · Sofa",
       "fileName": "sofas.json",
       "relativePath": "Sofa/Baywindow/sofas.json",
-      "itemCount": 294,
-      "totalImages": 1354,
+      "itemCount": 290,
+      "totalImages": 1343,
       "totalVideos": 0,
       "isLatest": false,
       "default": false
@@ -430,8 +430,8 @@
       "displayName": "Duraster · Sofa",
       "fileName": "duraster_sofa.json",
       "relativePath": "Sofa/Duraster/duraster_sofa.json",
-      "itemCount": 112,
-      "totalImages": 656,
+      "itemCount": 110,
+      "totalImages": 648,
       "totalVideos": 0,
       "isLatest": false,
       "default": false
@@ -542,8 +542,8 @@
       "displayName": "Ubbaco · Sofa",
       "fileName": "ubbaco_sofas.json",
       "relativePath": "Sofa/Ubbaco/ubbaco_sofas.json",
-      "itemCount": 37,
-      "totalImages": 231,
+      "itemCount": 36,
+      "totalImages": 230,
       "totalVideos": 0,
       "isLatest": false,
       "default": false
@@ -556,22 +556,8 @@
       "displayName": "Uber Decor · Sofa",
       "fileName": "uberdecor_sofas.json",
       "relativePath": "Sofa/Uber Decor/uberdecor_sofas.json",
-      "itemCount": 225,
-      "totalImages": 2322,
-      "totalVideos": 0,
-      "isLatest": false,
-      "default": false
-    },
-    {
-      "id": "sofa-wooden-it-be-nice",
-      "category": "Sofa",
-      "brand": "Wooden It Be Nice",
-      "rawBrand": "Wooden it be nice",
-      "displayName": "Wooden It Be Nice · Sofa",
-      "fileName": "wooden_it_be_nice_sofas.json",
-      "relativePath": "Sofa/Wooden it be nice/wooden_it_be_nice_sofas.json",
-      "itemCount": 49,
-      "totalImages": 907,
+      "itemCount": 224,
+      "totalImages": 2317,
       "totalVideos": 0,
       "isLatest": false,
       "default": false

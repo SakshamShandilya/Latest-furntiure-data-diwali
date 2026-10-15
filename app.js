@@ -254,17 +254,6 @@
       monogram: 'UD',
       accentColor: '#9A6F45',
       banner: 'https://cdn.shopify.com/s/files/1/0611/3768/2492/files/e629979f-c91d-4dc1-8905-e234877ff5a3.png?v=1789217011'
-    },
-    'Wooden It Be Nice': {
-      name: 'Wooden It Be Nice',
-      subtitle: 'Wooden It Be Nice · Artisan Woodworks',
-      tagline: 'Solid Teak & Handcrafted Scandinavian Seating',
-      description: 'Timeless mid-century and Scandinavian-inspired wooden-frame sofas, artisan joinery, and durable natural upholstery built for lifetime luxury.',
-      origin: 'Heritage Woodworks',
-      badge: 'Solid Teak Joinery',
-      monogram: 'WN',
-      accentColor: '#5E3E26',
-      banner: 'https://wooden-it-be-nice.in/wp-content/uploads/2026/05/9.jpg'
     }
   };
 
@@ -842,7 +831,6 @@
     else if (/furniture\s*boutiq/i.test(bNorm)) bNorm = 'Furniture Boutiq';
     else if (/flamingo/i.test(bNorm)) bNorm = 'The Flamingo Life';
     else if (/uber\s*decor/i.test(bNorm)) bNorm = 'Uber Decor';
-    else if (/wooden\s*it\s*be\s*nice/i.test(bNorm)) bNorm = 'Wooden It Be Nice';
     const brandName = bNorm;
 
     // Badges
@@ -1570,8 +1558,7 @@
         'Sepia Homes',
         'Furniture Boutiq',
         'The Flamingo Life',
-        'Uber Decor',
-        'Wooden It Be Nice'
+        'Uber Decor'
       ];
       const dbBrands = [...new Set(state.catalogDatabase.map(p => p.brand).filter(Boolean))];
       const allBrands = [...new Set([...defaultBrands, ...dbBrands])];
