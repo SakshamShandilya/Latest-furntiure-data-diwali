@@ -328,6 +328,68 @@
       color: #FFFFFF;
     }
 
+    .btn-merge-item {
+      margin-top: 0.5rem;
+      padding: 0.65rem 1rem;
+      background: rgba(155, 123, 69, 0.08);
+      border: 1px solid var(--accent-gold);
+      color: var(--accent-gold);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: var(--transition-fast);
+      width: 100%;
+    }
+    .btn-merge-item:hover {
+      background: var(--accent-gold);
+      color: #FFFFFF;
+    }
+    .btn-merge-item.active-merged {
+      background: var(--accent-gold);
+      color: #FFFFFF;
+    }
+
+    .dedup-col.marked-master {
+      border: 2px solid var(--accent-gold);
+      background: rgba(155, 123, 69, 0.04);
+    }
+    .dedup-col.marked-absorbed {
+      border: 2px dashed #9B7B45;
+      background: rgba(155, 123, 69, 0.02);
+      opacity: 0.75;
+    }
+    .master-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.6rem;
+      background: var(--accent-gold);
+      color: #FFF;
+      font-size: 0.7rem;
+      font-weight: 700;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      width: fit-content;
+    }
+    .absorbed-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.6rem;
+      background: #7D6133;
+      color: #FFF;
+      font-size: 0.7rem;
+      font-weight: 700;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      width: fit-content;
+    }
+
     .dedup-card-actions {
       display: flex;
       align-items: center;
