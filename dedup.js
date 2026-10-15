@@ -20,13 +20,27 @@
   let activeDetailProduct = null;
   let activeDetailImages = [];
   let activeDetailImageIndex = 0;
+  let totalSessionPairs = 0;
 
   const DOM = {
     statScanned: document.getElementById('stat-scanned'),
+    statScannedSub: document.getElementById('stat-scanned-sub'),
+    statPending: document.getElementById('stat-pending'),
+    statPendingSub: document.getElementById('stat-pending-sub'),
+    statCompleted: document.getElementById('stat-completed'),
+    statCompletedSub: document.getElementById('stat-completed-sub'),
     statExact: document.getElementById('stat-exact'),
-    statNear: document.getElementById('stat-near'),
+    statExactSub: document.getElementById('stat-exact-sub'),
     statLookalike: document.getElementById('stat-lookalike'),
-    statTotal: document.getElementById('stat-total'),
+    statLookalikeSub: document.getElementById('stat-lookalike-sub'),
+    progressStatusText: document.getElementById('progress-status-text'),
+    badgePendingCount: document.getElementById('badge-pending-count'),
+    badgeCompletedCount: document.getElementById('badge-completed-count'),
+    dedupProgressFill: document.getElementById('dedup-progress-fill'),
+    pillCountAll: document.getElementById('pill-count-all'),
+    pillCountExact: document.getElementById('pill-count-exact'),
+    pillCountNear: document.getElementById('pill-count-near'),
+    pillCountLookalike: document.getElementById('pill-count-lookalike'),
     scannerTimestamp: document.getElementById('scanner-timestamp'),
     categoryPills: document.getElementById('category-pills'),
     searchInput: document.getElementById('dedup-search'),
@@ -90,23 +104,20 @@
       const savedCompleted = getSavedActions();
       const completedIds = new Set(Object.keys(savedCompleted));
 
+      totalSessionPairs = rawMatches.length;
+
       // Filter out already processed matches so user never loses work or repeats decisions
       allMatches = rawMatches.filter(m => !completedIds.has(m.id));
 
       // Reconstruct recent actions stack for Undo drawer
       recentActions = Object.values(savedCompleted).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
 
-      // Update Header Stats
-      if (DOM.statScanned) DOM.statScanned.textContent = (data.totalProductsScanned || 1826).toLocaleString();
-      if (DOM.statExact) DOM.statExact.textContent = (data.breakdown?.exactDuplicates || 0).toLocaleString();
-      if (DOM.statNear) DOM.statNear.textContent = (data.breakdown?.nearIdentical || 0).toLocaleString();
-      if (DOM.statLookalike) DOM.statLookalike.textContent = (data.breakdown?.visualLookalikes || 0).toLocaleString();
-      if (DOM.statTotal) DOM.statTotal.textContent = allMatches.length.toLocaleString();
+      // Header Audited Stats
+      if (DOM.statScanned) DOM.statScanned.textContent = (data.totalProductsScanned || 1777).toLocaleString();
       if (DOM.scannerTimestamp) DOM.scannerTimestamp.textContent = `Scanned ${data.generatedAt || 'Just now'}`;
 
-      setAutoSaveStatus('saved', `✓ Auto-Save Active (${recentActions.length} Actions Saved)`);
-      updateBottomTray();
-      buildCategoryPills();
+      // Update all dynamic metrics, categories, filters, and progress bar
+      updateLiveMetrics();
       applyFilters();
 
       // Flush offline queue if any queued while disconnected
@@ -267,6 +278,87 @@
     }
   }
 
+  function updateLiveMetrics() {
+    const pendingCount = allMatches.length;
+    const completedCount = recentActions.length;
+    if (totalSessionPairs === 0 || pendingCount + completedCount > totalSessionPairs) {
+      totalSessionPairs = pendingCount + completedCount;
+    }
+
+    const pct = totalSessionPairs > 0
+      ? Math.min(100, Math.round((completedCount / totalSessionPairs) * 100))
+      : 0;
+
+    let exactLeft = 0;
+    let nearLeft = 0;
+    let lookalikeLeft = 0;
+
+    for (const m of allMatches) {
+      if (m.similarity >= 97) exactLeft++;
+      else if (m.similarity >= 90) nearLeft++;
+      else lookalikeLeft++;
+    }
+
+    // 1. Pending Action Hero Card
+    if (DOM.statPending) {
+      DOM.statPending.innerHTML = `${pendingCount.toLocaleString()} <span style="font-size:0.9rem; font-weight:600; color:#D4AF37;">Left</span>`;
+    }
+    if (DOM.statPendingSub) {
+      DOM.statPendingSub.textContent = pendingCount === 0 ? '✓ Zero Pending' : `${pendingCount} of ${totalSessionPairs} remaining`;
+    }
+
+    // 2. Completed Card
+    if (DOM.statCompleted) {
+      DOM.statCompleted.innerHTML = `${completedCount.toLocaleString()} <span style="font-size:0.9rem; font-weight:600; color:#10B981;">Done</span>`;
+    }
+    if (DOM.statCompletedSub) {
+      DOM.statCompletedSub.textContent = `${pct}% Complete (${completedCount} auto-saved)`;
+    }
+
+    // 3. Exact Pending
+    if (DOM.statExact) DOM.statExact.textContent = exactLeft.toLocaleString();
+    if (DOM.statExactSub) {
+      DOM.statExactSub.textContent = exactLeft === 0 ? '✓ All exact resolved' : `${exactLeft} pending review`;
+    }
+
+    // 4. Lookalikes Pending (Near + Lookalike)
+    if (DOM.statLookalike) DOM.statLookalike.textContent = (nearLeft + lookalikeLeft).toLocaleString();
+    if (DOM.statLookalikeSub) {
+      DOM.statLookalikeSub.textContent = `${nearLeft} near · ${lookalikeLeft} lookalikes`;
+    }
+
+    // 5. Progress Tracker Bar
+    if (DOM.progressStatusText) {
+      DOM.progressStatusText.textContent = `${completedCount} of ${totalSessionPairs} Pairs Resolved (${pct}% Complete)`;
+    }
+    if (DOM.badgePendingCount) {
+      DOM.badgePendingCount.textContent = `⏳ ${pendingCount} Pairs Left for Action`;
+    }
+    if (DOM.badgeCompletedCount) {
+      DOM.badgeCompletedCount.textContent = `✓ ${completedCount} Resolved`;
+    }
+    if (DOM.dedupProgressFill) {
+      DOM.dedupProgressFill.style.width = `${pct}%`;
+    }
+
+    // 6. Type Filter Buttons
+    if (DOM.pillCountAll) DOM.pillCountAll.textContent = `(${pendingCount})`;
+    if (DOM.pillCountExact) DOM.pillCountExact.textContent = `(${exactLeft})`;
+    if (DOM.pillCountNear) DOM.pillCountNear.textContent = `(${nearLeft})`;
+    if (DOM.pillCountLookalike) DOM.pillCountLookalike.textContent = `(${lookalikeLeft})`;
+
+    // 7. Auto-save badge in top bar
+    if (DOM.autoSaveStatusText) {
+      DOM.autoSaveStatusText.textContent = `Auto-Save Active (${pendingCount} Left for Action)`;
+    }
+
+    // 8. Re-render category pills with updated counts
+    buildCategoryPills();
+
+    // 9. Update sticky bottom tray
+    updateBottomTray();
+  }
+
   function buildCategoryPills() {
     if (!DOM.categoryPills) return;
     DOM.categoryPills.innerHTML = '';
@@ -279,10 +371,15 @@
 
     const categories = ['all', ...Object.keys(catCounts).filter(k => k !== 'all').sort()];
 
+    if (currentCategory !== 'all' && (!catCounts[currentCategory] || catCounts[currentCategory] === 0)) {
+      currentCategory = 'all';
+    }
+
     categories.forEach(cat => {
       const btn = document.createElement('button');
       btn.className = `filter-pill-btn ${cat === currentCategory ? 'active' : ''}`;
-      btn.innerHTML = `${cat === 'all' ? 'All' : cat} <span style="opacity:0.6; font-size:0.75rem;">(${catCounts[cat]})</span>`;
+      const count = catCounts[cat] || 0;
+      btn.innerHTML = `${cat === 'all' ? 'All' : cat} <span class="pill-count">(${count})</span>`;
       btn.addEventListener('click', () => {
         currentCategory = cat;
         DOM.categoryPills.querySelectorAll('.filter-pill-btn').forEach(b => b.classList.remove('active'));
@@ -318,12 +415,28 @@
   function renderCards() {
     if (!DOM.cardsContainer) return;
 
+    if (allMatches.length === 0) {
+      DOM.cardsContainer.innerHTML = `
+        <div style="text-align:center; padding:5rem 2rem; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); margin:2rem auto; max-width:800px; box-shadow:var(--shadow-md);">
+          <div style="font-size:3.5rem; margin-bottom:1rem;">🎉</div>
+          <h2 style="font-family:var(--font-serif); font-size:2rem; margin-bottom:0.75rem; color:#10B981;">All Duplicates Fully Resolved!</h2>
+          <p style="color:var(--text-secondary); max-width:550px; margin:0 auto 1.5rem; line-height:1.6;">
+            Every product across your 43 catalogs is now 100% unique. 0 pairs left for action. All changes have been auto-saved directly to catalog JSON files.
+          </p>
+          <div style="display:inline-flex; align-items:center; gap:0.5rem; background:rgba(16,185,129,0.12); color:#10B981; padding:0.5rem 1.25rem; border-radius:9999px; font-weight:700; font-size:0.9rem;">
+            <span>✓ 100% Deduplicated (${recentActions.length} Actions Saved)</span>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
     if (filteredMatches.length === 0) {
       DOM.cardsContainer.innerHTML = `
         <div style="text-align:center; padding:4rem 2rem; color:var(--text-tertiary);">
           <div style="font-size:2rem; margin-bottom:0.75rem;">✨</div>
-          <h3>No Duplicates Found Matching Filters</h3>
-          <p style="margin-top:0.25rem;">Try selecting "All Matches" or another category.</p>
+          <h3>No Duplicates Found Matching Active Filter</h3>
+          <p style="margin-top:0.25rem;">All duplicates for this filter are resolved! Switch to "All Matches" to view the remaining ${allMatches.length} pairs.</p>
         </div>
       `;
       return;
@@ -972,6 +1085,7 @@
     // Smoothly remove card from view after brief confirmation
     setTimeout(() => {
       allMatches = allMatches.filter(m => m.id !== matchId);
+      updateLiveMetrics();
       applyFilters();
     }, 1100);
   }
@@ -1034,6 +1148,7 @@
 
     setTimeout(() => {
       allMatches = allMatches.filter(m => m.id !== matchId);
+      updateLiveMetrics();
       applyFilters();
     }, 1100);
   }
@@ -1081,6 +1196,7 @@
 
     setTimeout(() => {
       allMatches = allMatches.filter(m => m.id !== matchId);
+      updateLiveMetrics();
       applyFilters();
     }, 900);
   }
@@ -1113,6 +1229,7 @@
     // Restore match into allMatches if not already there
     if (action.match && !allMatches.some(m => m.id === action.matchId)) {
       allMatches.unshift(action.match);
+      updateLiveMetrics();
       applyFilters();
     }
 
@@ -1151,8 +1268,14 @@
 
   function updateBottomTray() {
     const count = recentActions.length;
+    const pending = allMatches.length;
+
     if (DOM.trayCountText) {
-      DOM.trayCountText.textContent = `${count} Action${count === 1 ? '' : 's'} Auto-Saved`;
+      if (pending === 0 && count > 0) {
+        DOM.trayCountText.textContent = `🎉 All Pairs Resolved! (${count} Actions Saved to JSON)`;
+      } else {
+        DOM.trayCountText.textContent = `${count} Action${count === 1 ? '' : 's'} Completed · ${pending} Left for Action`;
+      }
     }
 
     const last = recentActions[recentActions.length - 1];
@@ -1161,9 +1284,9 @@
         const desc = last.type === 'merge'
           ? `Merged into ${last.master.name}`
           : (last.type === 'delete' ? `Deleted ${last.deletedProduct.name}` : 'Marked as kept');
-        DOM.traySubText.textContent = `Latest: ${desc}`;
+        DOM.traySubText.textContent = `Latest: ${desc} · Auto-saved directly to JSON`;
       } else {
-        DOM.traySubText.textContent = 'All modifications are written directly to JSON files';
+        DOM.traySubText.textContent = `${pending} duplicate pairs pending your review`;
       }
     }
 

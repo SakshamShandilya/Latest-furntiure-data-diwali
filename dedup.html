@@ -62,25 +62,121 @@
       border-radius: var(--radius-md);
       padding: 1.15rem 1.25rem;
       transition: var(--transition-normal);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .dedup-stat-card:hover {
       background: rgba(255, 255, 255, 0.08);
       border-color: rgba(155, 123, 69, 0.4);
       transform: translateY(-2px);
     }
+    .dedup-stat-card.highlight-pending {
+      border-color: rgba(212, 175, 55, 0.45);
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.08);
+    }
+    .dedup-stat-card.highlight-completed {
+      border-color: rgba(16, 185, 129, 0.45);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08);
+    }
     .dedup-stat-num {
       font-family: var(--font-serif);
-      font-size: 2rem;
+      font-size: 2.1rem;
       font-weight: 700;
       color: #FAF8F5;
       line-height: 1.1;
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
     }
     .dedup-stat-label {
-      font-size: 0.8rem;
+      font-size: 0.76rem;
       color: #8C867D;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       margin-top: 0.35rem;
+      font-weight: 700;
+    }
+    .dedup-stat-sub {
+      font-size: 0.74rem;
+      color: #AFA89F;
+      margin-top: 0.25rem;
+      font-weight: 500;
+    }
+
+    /* Live Progress Tracker Card */
+    .dedup-progress-card {
+      margin-top: 1.25rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius-md);
+      padding: 0.95rem 1.35rem;
+      backdrop-filter: blur(12px);
+    }
+    .dedup-progress-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.65rem;
+    }
+    .dedup-progress-title {
+      font-size: 0.88rem;
+      color: #E5E0D8;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .dedup-progress-title strong {
+      color: #FAF8F5;
+      font-weight: 700;
+    }
+    .dedup-progress-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .badge-pending {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #D4AF37;
+      background: rgba(212, 175, 55, 0.15);
+      padding: 0.2rem 0.65rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+    }
+    .badge-completed {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #10B981;
+      background: rgba(16, 185, 129, 0.15);
+      padding: 0.2rem 0.65rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+    .dedup-progress-track {
+      width: 100%;
+      height: 9px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 9999px;
+      overflow: hidden;
+      position: relative;
+    }
+    .dedup-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #D4AF37 0%, #10B981 100%);
+      border-radius: 9999px;
+      transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+    }
+    .pill-count {
+      opacity: 0.75;
+      font-size: 0.75rem;
+      margin-left: 0.2rem;
+      font-weight: 600;
     }
 
     /* Studio Controls Container */
@@ -641,27 +737,49 @@
         Scan, cross-reference, and prune duplicate sofas, accent chairs, and platform beds across all 44 brand catalogs. Review side-by-side visual comparisons and remove duplicates with 1 click.
       </p>
 
-      <!-- Stats Grid -->
+      <!-- Stats Grid (Live Dynamic Progress & Work-Left Metrics) -->
       <div class="dedup-stats-grid">
         <div class="dedup-stat-card">
-          <div class="dedup-stat-num" id="stat-scanned">1,903</div>
+          <div class="dedup-stat-num" id="stat-scanned">1,777</div>
           <div class="dedup-stat-label">Total Products Audited</div>
+          <div class="dedup-stat-sub" id="stat-scanned-sub">43 Brand Catalogs</div>
+        </div>
+        <div class="dedup-stat-card highlight-pending" title="Duplicate pairs currently pending your decision">
+          <div class="dedup-stat-num" id="stat-pending" style="color:#D4AF37;">155</div>
+          <div class="dedup-stat-label">Pending Action (Work Left)</div>
+          <div class="dedup-stat-sub" id="stat-pending-sub">Awaiting review</div>
+        </div>
+        <div class="dedup-stat-card highlight-completed" title="Duplicate pairs already resolved and saved to catalog JSON">
+          <div class="dedup-stat-num" id="stat-completed" style="color:#10B981;">0</div>
+          <div class="dedup-stat-label">Resolved &amp; Auto-Saved</div>
+          <div class="dedup-stat-sub" id="stat-completed-sub">0% Completed</div>
         </div>
         <div class="dedup-stat-card">
           <div class="dedup-stat-num" id="stat-exact" style="color:#4EBA6F;">0</div>
-          <div class="dedup-stat-label">Exact Photo Duplicates (≥97%)</div>
-        </div>
-        <div class="dedup-stat-card">
-          <div class="dedup-stat-num" id="stat-near" style="color:#D4AF37;">0</div>
-          <div class="dedup-stat-label">Near-Identical Designs (90%-96%)</div>
+          <div class="dedup-stat-label">Exact Photo Matches (≥97%)</div>
+          <div class="dedup-stat-sub" id="stat-exact-sub">Pending Review</div>
         </div>
         <div class="dedup-stat-card">
           <div class="dedup-stat-num" id="stat-lookalike" style="color:#6B9AC4;">0</div>
-          <div class="dedup-stat-label">Visual Lookalikes (80%-89%)</div>
+          <div class="dedup-stat-label">Lookalikes (80%-96%)</div>
+          <div class="dedup-stat-sub" id="stat-lookalike-sub">Design Variations</div>
         </div>
-        <div class="dedup-stat-card">
-          <div class="dedup-stat-num" id="stat-total" style="color:#FAF8F5;">0</div>
-          <div class="dedup-stat-label">Total Pairs Flagged</div>
+      </div>
+
+      <!-- Live Dynamic Progress Bar Tracker -->
+      <div class="dedup-progress-card">
+        <div class="dedup-progress-header">
+          <div class="dedup-progress-title">
+            <span>⚡ Work Progress:</span>
+            <strong id="progress-status-text">0 of 155 Pairs Resolved (0% Complete)</strong>
+          </div>
+          <div class="dedup-progress-badges">
+            <span class="badge-pending" id="badge-pending-count">⏳ 155 Pairs Left for Action</span>
+            <span class="badge-completed" id="badge-completed-count">✓ 0 Resolved</span>
+          </div>
+        </div>
+        <div class="dedup-progress-track">
+          <div class="dedup-progress-fill" id="dedup-progress-fill" style="width: 0%;"></div>
         </div>
       </div>
     </div>
@@ -672,10 +790,10 @@
     <div class="dedup-controls-inner">
       <div class="dedup-filter-group">
         <span style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--text-tertiary); margin-right:0.25rem;">Type:</span>
-        <button class="filter-pill-btn active" data-match-filter="all">All Matches</button>
-        <button class="filter-pill-btn" data-match-filter="exact">Exact (≥97%)</button>
-        <button class="filter-pill-btn" data-match-filter="near">Near-Identical (90-96%)</button>
-        <button class="filter-pill-btn" data-match-filter="lookalike">Lookalikes (80-89%)</button>
+        <button class="filter-pill-btn active" data-match-filter="all">All Matches <span id="pill-count-all" class="pill-count"></span></button>
+        <button class="filter-pill-btn" data-match-filter="exact">Exact (≥97%) <span id="pill-count-exact" class="pill-count"></span></button>
+        <button class="filter-pill-btn" data-match-filter="near">Near-Identical (90-96%) <span id="pill-count-near" class="pill-count"></span></button>
+        <button class="filter-pill-btn" data-match-filter="lookalike">Lookalikes (80-89%) <span id="pill-count-lookalike" class="pill-count"></span></button>
       </div>
 
       <div class="dedup-filter-group">

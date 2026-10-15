@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-15T11:11:25.593Z",
+  "updatedAt": "2026-10-15T11:26:43.581Z",
   "totalCatalogs": 43,
   "catalogs": [
     {
@@ -10,9 +10,9 @@
       "displayName": "Modani · Sofa",
       "fileName": "Latest _modani_sofas.json",
       "relativePath": "Sofa/Modani/Latest _modani_sofas.json",
-      "itemCount": 90,
+      "itemCount": 85,
       "totalImages": 578,
-      "totalVideos": 61,
+      "totalVideos": 57,
       "isLatest": true,
       "default": true
     },
@@ -220,8 +220,8 @@
       "displayName": "Baywindow · Bedside table",
       "fileName": "bedside_tables.json",
       "relativePath": "Bedside table/Baywindow/bedside_tables.json",
-      "itemCount": 41,
-      "totalImages": 126,
+      "itemCount": 39,
+      "totalImages": 123,
       "totalVideos": 0,
       "isLatest": false,
       "default": false
@@ -276,8 +276,8 @@
       "displayName": "Danetti · Benches (danetti_ottomans)",
       "fileName": "danetti_ottomans.json",
       "relativePath": "Benches/Danetti/danetti_ottomans.json",
-      "itemCount": 4,
-      "totalImages": 54,
+      "itemCount": 0,
+      "totalImages": 0,
       "totalVideos": 0,
       "isLatest": false,
       "default": false
@@ -318,9 +318,9 @@
       "displayName": "Modani · Benches",
       "fileName": "modani_benches_poufs.json",
       "relativePath": "Benches/Modani/modani_benches_poufs.json",
-      "itemCount": 24,
+      "itemCount": 22,
       "totalImages": 84,
-      "totalVideos": 3,
+      "totalVideos": 2,
       "isLatest": false,
       "default": false
     },
@@ -402,8 +402,8 @@
       "displayName": "Baywindow · Sofa",
       "fileName": "sofas.json",
       "relativePath": "Sofa/Baywindow/sofas.json",
-      "itemCount": 290,
-      "totalImages": 1343,
+      "itemCount": 288,
+      "totalImages": 1335,
       "totalVideos": 0,
       "isLatest": false,
       "default": false
@@ -430,8 +430,8 @@
       "displayName": "Duraster · Sofa",
       "fileName": "duraster_sofa.json",
       "relativePath": "Sofa/Duraster/duraster_sofa.json",
-      "itemCount": 110,
-      "totalImages": 648,
+      "itemCount": 107,
+      "totalImages": 628,
       "totalVideos": 0,
       "isLatest": false,
       "default": false
@@ -598,9 +598,9 @@
       "displayName": "Rove Concepts · Tv Unit",
       "fileName": "rove_tv_stands.json",
       "relativePath": "Tv Unit/Rove/rove_tv_stands.json",
-      "itemCount": 8,
-      "totalImages": 79,
-      "totalVideos": 6,
+      "itemCount": 7,
+      "totalImages": 64,
+      "totalVideos": 5,
       "isLatest": false,
       "default": false
     }

@@ -613,49 +613,6 @@
     ]
   },
   {
-    "name": "Jacob Bedside Table",
-    "brand": "Bay Window",
-    "category": "Bedside Tables",
-    "subcategory": "Bedside Tables",
-    "url": "https://baywindow.co.in/collections/bedside-table/products/jacob-bedside-table",
-    "description": "Clean line cubical form with sintered stone inset on top Accented with black metal handles & legs Tray detail created through the elevated panels Features Vegan Leather.",
-    "key_features": [
-      "Clean line cubical form with sintered stone inset on top Accented with black metal handles & legs Tray detail created through the elevated panels"
-    ],
-    "specifications": {
-      "Material": "Vegan Leather",
-      "Installation": "Free Installation by certified installation team",
-      "Dimensions (In CM)": "50L X 40W X 50H | 38.02.001"
-    },
-    "dimensions": {
-      "Length": "50 cm",
-      "Width": "40 cm",
-      "Height": "50 cm"
-    },
-    "dimension_image": null,
-    "videos": [],
-    "variants": [
-      {
-        "title": "38.02.001",
-        "color": "38.02.001",
-        "material": "Vegan Leather",
-        "sku": "BT13418",
-        "regular_price": "₹17,400",
-        "price": "₹15,900",
-        "swatch_image": null,
-        "images": [
-          "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/BT13418_BT13427-14.jpg",
-          "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Bay_Window___Shot_By_S.M.Hadi_16th_oct_25-026.jpg"
-        ],
-        "dimensions": {
-          "Length": "50 cm",
-          "Width": "40 cm",
-          "Height": "50 cm"
-        }
-      }
-    ]
-  },
-  {
     "name": "Lincoln Bedside Table",
     "brand": "Bay Window",
     "category": "Bedside Tables",
@@ -781,48 +738,6 @@
           "Length": "50 cm",
           "Width": "40 cm",
           "Height": "57 cm"
-        }
-      }
-    ]
-  },
-  {
-    "name": "Amber Bedside Table",
-    "brand": "Bay Window",
-    "category": "Bedside Tables",
-    "subcategory": "Bedside Tables",
-    "url": "https://baywindow.co.in/collections/bedside-table/products/amber-bedside-table",
-    "description": "Blend of modern & contemporary design Sintered stone placed on top Accented with black metal knobs & legs Features Vegan Leather.",
-    "key_features": [
-      "Blend of modern & contemporary design Sintered stone placed on top Accented with black metal knobs & legs"
-    ],
-    "specifications": {
-      "Material": "Vegan Leather",
-      "Installation": "Not required",
-      "Dimensions (In CM)": "50L X 40W X 47H | 38.07.001"
-    },
-    "dimensions": {
-      "Length": "50 cm",
-      "Width": "40 cm",
-      "Height": "47 cm"
-    },
-    "dimension_image": null,
-    "videos": [],
-    "variants": [
-      {
-        "title": "38.07.001",
-        "color": "38.07.001",
-        "material": "Vegan Leather",
-        "sku": "BT13437",
-        "regular_price": "₹13,100",
-        "price": "₹10,990",
-        "swatch_image": null,
-        "images": [
-          "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/BT13424_BT13437-02.jpg"
-        ],
-        "dimensions": {
-          "Length": "50 cm",
-          "Width": "40 cm",
-          "Height": "47 cm"
         }
       }
     ]

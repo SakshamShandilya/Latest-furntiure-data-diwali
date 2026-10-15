@@ -278,28 +278,6 @@
     "dimension_image": null
   },
   {
-    "name": "Gianni Sectional Sofa Cream",
-    "url": "https://modani.com/products/gianni-sectional-sofa-cream",
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_front_ede8b80e-0267-4567-b35e-261461351ca4.png?v=1745895866",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/GianniSectionalSofaCream1000x1000_1.jpg?v=1786132698",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_3-4_73ed63a1-7852-42cb-9a0a-f0b40a6088d4.png?v=1766777089",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_side_4d36b5f9-77e9-4be0-810d-a899ec26b535.png?v=1745895870",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_back_68c62dcc-4088-4e81-af0a-2f863687fff1.png?v=1745895872",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_sofa_cr.jpg?v=1766777089"
-    ],
-    "description": "The Gianni Sectional Sofa Cream combines contemporary design with ultimate comfort, making it the perfect centerpiece for any living space. Upholstered in a luxurious, cream-colored fabric, this L-shaped sectional invites relaxation with its soft, inviting texture. Its squared armrest and clean-lined back lend a modern, minimalist aesthetic, seamlessly blending style with functionality. Designed for comfort, the Gianni features generously padded back cushions and comes complete with four matching throw pillows for added support and coziness. Whether you're hosting a gathering or enjoying a quiet night in, the spacious seating and plush cushions ensure that every moment spent on this sofa is one of pure relaxation. Also available in Camel Velvet.",
-    "features": {
-      "Dimension": "W: 120 1/2\" | 93 1/2\"\" x D: 39 3/8\" x H: 22 13/16\" Seat Height: 15 3/4\"",
-      "Cream Fabric Material": "Yes",
-      "Padding": "Foam"
-    },
-    "videos": [
-      "https://modani.com/cdn/shop/videos/c/vp/803558b0f89d4b8d98e802f023d04b2e/803558b0f89d4b8d98e802f023d04b2e.HD-1080p-2.5Mbps-91334929.mp4?v=0"
-    ],
-    "dimension_image": null
-  },
-  {
     "name": "Forma Sectional Sofa Camel Velvet",
     "url": "https://modani.com/products/forma-sectional-sofa-camel-velvet",
     "images": [
@@ -309,7 +287,13 @@
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-3_cutout-6_camel.png?v=1778790552",
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-3_cutout-3_camel.png?v=1778790552",
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-3_cutout-5_camel.png?v=1778790552",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-3_cutout7_camel.png?v=1778790552"
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-3_cutout7_camel.png?v=1778790552",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout-3.png?v=1782957901",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/FormaSofaGraphiteLifestyleSquare_1.jpg?v=1786133012",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout-4.png?v=1782957901",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout-5.png?v=1782957901",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout-2.png?v=1782957901",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout.png?v=1782957901"
     ],
     "description": "The Forma Sectional Sofa brings modern comfort and versatility to any living space. Upholstered in a warm, Camel Velvet fabric, this sectional features deep, plush tufted seating and generously padded backrests with a signature cloud-like silhouette. Its modular design allows you to add or rearrange the pieces to suit your room layout, while the low-profile frame and rounded, organic shapes create a relaxed, contemporary look. Perfect for lounging, entertaining, or everyday living, the Forma offers both style and sink-in comfort.",
     "features": {
@@ -318,7 +302,21 @@
     "videos": [
       "https://modani.com/cdn/shop/videos/c/vp/c34b3e9c93644d72bf8a6852d8f97e06/c34b3e9c93644d72bf8a6852d8f97e06.HD-1080p-7.2Mbps-90224492.mp4?v=0"
     ],
-    "dimension_image": null
+    "dimension_image": null,
+    "variants": [
+      {
+        "title": "Forma Sectional Sofa Graphite",
+        "color": "Forma Sectional Sofa Graphite",
+        "images": [
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout-3.png?v=1782957901",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/FormaSofaGraphiteLifestyleSquare_1.jpg?v=1786133012",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout-4.png?v=1782957901",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout-5.png?v=1782957901",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout-2.png?v=1782957901",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout.png?v=1782957901"
+        ]
+      }
+    ]
   },
   {
     "name": "Forma Sectional Sofa Off White",
@@ -340,26 +338,6 @@
       "Dimension": "W: 115 3/4\" x D: 38 5/8\" ~ 77 1/4\" x H: 26\" Seat Height: 16 1/8\""
     },
     "videos": [],
-    "dimension_image": null
-  },
-  {
-    "name": "Forma Sectional Sofa Graphite",
-    "url": "https://modani.com/products/forma-sectional-sofa-graphite",
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout-3.png?v=1782957901",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/FormaSofaGraphiteLifestyleSquare_1.jpg?v=1786133012",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout-4.png?v=1782957901",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout-5.png?v=1782957901",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout-2.png?v=1782957901",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/comp-3_forma-grey_cutout.png?v=1782957901"
-    ],
-    "description": "The Forma Sectional Sofa brings modern comfort and versatility to any living space. Upholstered in a cool, Graphite fabric, this sectional features deep, plush tufted seating and generously padded backrests with a signature cloud-like silhouette. Its modular design allows you to add or rearrange the pieces to suit your room layout, while the low-profile frame and rounded, organic shapes create a relaxed, contemporary look. Perfect for lounging, entertaining, or everyday living, the Forma offers both style and sink-in comfort.",
-    "features": {
-      "Dimension": "W: 115 3/4\" x D: 38 5/8\" ~ 77 1/4\" x H: 26\" Seat Height: 16 1/8\""
-    },
-    "videos": [
-      "https://modani.com/cdn/shop/videos/c/vp/93b4ba79fcef41499d0ebf598b7e3fcf/93b4ba79fcef41499d0ebf598b7e3fcf.HD-1080p-7.2Mbps-90228423.mp4?v=0"
-    ],
     "dimension_image": null
   },
   {
@@ -410,14 +388,36 @@
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Elora-3-Seater-Sofa-Camel-Velvet_cutout-2_a87bda6b-cec1-46ce-ae79-0e60af26bdf5.png?v=1777905415",
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Elora-3-Seater-Sofa-Camel-Velvet_lifestyle.png?v=1778172099",
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Elora-3-Seater-Sofa-Camel-Velvet_cutout_900ae5a7-1def-47bf-a10d-4056e24cc43e.png?v=1777905415",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Elora-3-Seater-Sofa-Camel-Velvet_lifestyle-2.png?v=1778172095"
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Elora-3-Seater-Sofa-Camel-Velvet_lifestyle-2.png?v=1778172095",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Elora_Sofa.png?v=1777905203",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/EloraSofaGreigeLifestyle.png?v=1785952240",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/elorasofagreige_lifestyle3.png?v=1777927455",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/elora-greige32.png?v=1766772373",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/EloraSofaGreige_lifestyle_101537a3-bcf1-4f60-bb2a-f7615214d2b2.png?v=1777905244",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/elora-greige2.png?v=1766011087",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/elorasofagreige_lifestyle2.png?v=1777927417"
     ],
     "description": "The Elora 3 Seater Sofa is a luxurious and inviting centerpiece for any living area, featuring a sleek, curved design upholstered in rich Camel velvet fabric. Its plush cushioning and soft, tactile surface offer exceptional comfort, while the neutral tone adds a warm, elegant touch to modern or classic interiors. With ample seating for three, this sofa combines stylish sophistication with cozy relaxation, making it perfect for both casual lounging and entertaining guests.",
     "features": {
       "Dimension": "W: 97 5/8\" x D: 35\" x H: 29 1/2\" Seat Depth 23 5/8\""
     },
     "videos": [],
-    "dimension_image": null
+    "dimension_image": null,
+    "variants": [
+      {
+        "title": "Elora 3 Seater Sofa Greige Boucle",
+        "color": "Elora 3 Seater Sofa Greige Boucle",
+        "images": [
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Elora_Sofa.png?v=1777905203",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/EloraSofaGreigeLifestyle.png?v=1785952240",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/elorasofagreige_lifestyle3.png?v=1777927455",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/elora-greige32.png?v=1766772373",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/EloraSofaGreige_lifestyle_101537a3-bcf1-4f60-bb2a-f7615214d2b2.png?v=1777905244",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/elora-greige2.png?v=1766011087",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/elorasofagreige_lifestyle2.png?v=1777927417"
+        ]
+      }
+    ]
   },
   {
     "name": "Vetra 3 Seater Sofa Thyme",
@@ -429,7 +429,15 @@
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Sofa_2_view_03-Photoroom.png?v=1764303333",
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Vetra-3-Seater-Sofa-Thyme_lifestyle.png?v=1778181260",
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/DSC02108_1.png?v=1764303333",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/DSC02104_1.png?v=1764303333"
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/DSC02104_1.png?v=1764303333",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Sofa_1_view_01-Photoroom.png?v=1772818362",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/VetraSofa1000x1000.png?v=1784213375",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Sofa_1_view_02-Photoroom.png?v=1764303204",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Sofa_1_view_03-Photoroom.png?v=1774445383",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/vetra_living_1k_jpg.webp?v=1773150935",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/DSC02193_1.png?v=1774445383",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/DSC02196_1_7b33320e-284f-4250-9157-3a871c26af2f.png?v=1774445383",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Vetra_sofa_mocha_lifestyle.png?v=1774445383"
     ],
     "description": "Indulge in curvaceous comfort with the Vetra 3 Seater Sofa, a sculptural statement piece upholstered in rich Thyme color fabric that adds earthy warmth to any room. Its bold, tubular silhouette features oversized rounded arms and a seamless backrest, creating an inviting cocoon for relaxed lounging or lively conversations in modern or bohemian spaces.",
     "features": {
@@ -439,26 +447,23 @@
     "videos": [
       "https://modani.com/cdn/shop/videos/c/vp/124e2f65f1344eb18c2b20210370ce54/124e2f65f1344eb18c2b20210370ce54.HD-720p-3.0Mbps-90637735.mp4?v=0"
     ],
-    "dimension_image": null
-  },
-  {
-    "name": "Elora 3 Seater Sofa Greige Boucle",
-    "url": "https://modani.com/products/elora-3-seater-sofa-greige-boucle",
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Elora_Sofa.png?v=1777905203",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/EloraSofaGreigeLifestyle.png?v=1785952240",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/elorasofagreige_lifestyle3.png?v=1777927455",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/elora-greige32.png?v=1766772373",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/EloraSofaGreige_lifestyle_101537a3-bcf1-4f60-bb2a-f7615214d2b2.png?v=1777905244",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/elora-greige2.png?v=1766011087",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/elorasofagreige_lifestyle2.png?v=1777927417"
-    ],
-    "description": "The Elora 3 Seater Sofa is a luxurious and inviting centerpiece for any living area, featuring a sleek, curved design upholstered in rich Greige velvet fabric. Its plush cushioning and soft, tactile surface offer exceptional comfort, while the neutral tone adds a warm, elegant touch to modern or classic interiors. With ample seating for three, this sofa combines stylish sophistication with cozy relaxation, making it perfect for both casual lounging and entertaining guests.",
-    "features": {
-      "Dimension": "W: 97 5/8\" x D: 35\" x H: 29 1/2\" Seat Depth 23 5/8\""
-    },
-    "videos": [],
-    "dimension_image": null
+    "dimension_image": null,
+    "variants": [
+      {
+        "title": "Vetra 3 Seater Sofa Mocha",
+        "color": "Vetra 3 Seater Sofa Mocha",
+        "images": [
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Sofa_1_view_01-Photoroom.png?v=1772818362",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/VetraSofa1000x1000.png?v=1784213375",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Sofa_1_view_02-Photoroom.png?v=1764303204",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Sofa_1_view_03-Photoroom.png?v=1774445383",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/vetra_living_1k_jpg.webp?v=1773150935",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/DSC02193_1.png?v=1774445383",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/DSC02196_1_7b33320e-284f-4250-9157-3a871c26af2f.png?v=1774445383",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Vetra_sofa_mocha_lifestyle.png?v=1774445383"
+        ]
+      }
+    ]
   },
   {
     "name": "Artemis 4 Seater Sofa Beige",
@@ -532,7 +537,13 @@
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Giannisofacamel_lifestyle.png?v=1779807138",
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_sofa_side_42d726b9-b3f5-4c63-977d-cb20369442af.png?v=1745895878",
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_sofa_cam.jpg?v=1745895875",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_sofa_back_2595b958-a6ee-452f-9753-3388af894ffc.png?v=1745895879"
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_sofa_back_2595b958-a6ee-452f-9753-3388af894ffc.png?v=1745895879",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_front_ede8b80e-0267-4567-b35e-261461351ca4.png?v=1745895866",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/GianniSectionalSofaCream1000x1000_1.jpg?v=1786132698",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_3-4_73ed63a1-7852-42cb-9a0a-f0b40a6088d4.png?v=1766777089",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_side_4d36b5f9-77e9-4be0-810d-a899ec26b535.png?v=1745895870",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_back_68c62dcc-4088-4e81-af0a-2f863687fff1.png?v=1745895872",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_sofa_cr.jpg?v=1766777089"
     ],
     "description": "Elevate your living space with the Gianni Sectional Sofa Camel Velvet, where modern design meets luxurious comfort. This L-shaped sectional is beautifully upholstered in soft, camel-colored velvet fabric, offering a rich texture and inviting warmth. The plush velvet not only adds a touch of sophistication but also ensures a supremely cozy seating experience. Designed with a squared armrest and a sleek back, the Gianni sofa exudes contemporary elegance while providing ample support. Generously sized back pillows and four matching throw pillows enhance its comfort, making it the perfect place to unwind after a long day. Whether you're entertaining guests or enjoying quiet evenings at home, the Gianni Sectional Sofa Camel Velvet delivers style and relaxation in equal measure. Also available in Cream Fabric.",
     "features": {
@@ -543,7 +554,21 @@
     "videos": [
       "https://modani.com/cdn/shop/videos/c/vp/b3f15525344b4b799ee83c13768c67e5/b3f15525344b4b799ee83c13768c67e5.HD-1080p-7.2Mbps-91344885.mp4?v=0"
     ],
-    "dimension_image": null
+    "dimension_image": null,
+    "variants": [
+      {
+        "title": "Gianni Sectional Sofa Cream",
+        "color": "Gianni Sectional Sofa Cream",
+        "images": [
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_front_ede8b80e-0267-4567-b35e-261461351ca4.png?v=1745895866",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/GianniSectionalSofaCream1000x1000_1.jpg?v=1786132698",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_3-4_73ed63a1-7852-42cb-9a0a-f0b40a6088d4.png?v=1766777089",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_side_4d36b5f9-77e9-4be0-810d-a899ec26b535.png?v=1745895870",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_back_68c62dcc-4088-4e81-af0a-2f863687fff1.png?v=1745895872",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/gianni_sofa_cr.jpg?v=1766777089"
+        ]
+      }
+    ]
   },
   {
     "name": "Brera 4 Seater Sofa Cognac",
@@ -838,29 +863,6 @@
     "dimension_image": null
   },
   {
-    "name": "Vetra 3 Seater Sofa Mocha",
-    "url": "https://modani.com/products/vetra-3-seater-sofa-mocha",
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Sofa_1_view_01-Photoroom.png?v=1772818362",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/VetraSofa1000x1000.png?v=1784213375",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Sofa_1_view_02-Photoroom.png?v=1764303204",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Sofa_1_view_03-Photoroom.png?v=1774445383",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/vetra_living_1k_jpg.webp?v=1773150935",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/DSC02193_1.png?v=1774445383",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/DSC02196_1_7b33320e-284f-4250-9157-3a871c26af2f.png?v=1774445383",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Vetra_sofa_mocha_lifestyle.png?v=1774445383"
-    ],
-    "description": "Indulge in curvaceous comfort with the Vetra 3 Seater Sofa, a sculptural statement piece upholstered in rich mocha fabric that adds earthy warmth to any room. Its bold, tubular silhouette features oversized rounded arms and a seamless backrest, creating an inviting cocoon for relaxed lounging or lively conversations in modern or bohemian spaces.",
-    "features": {
-      "Dimension": "W: 90 3/4\" X D: 35 3/8\" X H: 27 3/4\" Seat Height: 19 3/8\"",
-      "Fabric": "100% Polyester"
-    },
-    "videos": [
-      "https://modani.com/cdn/shop/videos/c/vp/f364ff7c36924220b7e7aa3bc2f994f3/f364ff7c36924220b7e7aa3bc2f994f3.HD-720p-4.5Mbps-90637464.mp4?v=0"
-    ],
-    "dimension_image": null
-  },
-  {
     "name": "Rune Sectional Sofa Terracotta Velvet",
     "url": "https://modani.com/products/rune-sectional-sofa-terracotta-velvet",
     "images": [
@@ -1091,14 +1093,36 @@
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-4_cutout-3.png?v=1778869014",
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-4_cutout-2.png?v=1778869014",
       "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Forma4-PieceSofaOffWhite_lifestyle2.png?v=1779800095",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-5_cutout-3.png?v=1778869655"
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-5_cutout-3.png?v=1778869655",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-4_cutout-2_camel.png?v=1778873173",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Forma_4-Piece_Sofa_Camel_Velvet_lifestyle.png?v=1779370347",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-2_cutout_camel.png?v=1778873173",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-4_cutout-5_camel.png?v=1778873173",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-4_cutout-4_camel.png?v=1778873173",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-4_cutout-3_camel.png?v=1778873173",
+      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/FormaCamelVelvet4-piecesofa_lifestyle2.png?v=1781793297"
     ],
     "description": "The Forma 4-Piece Sofa in Off White is a luxurious seating solution with a soft, sculptural silhouette. Its generously padded, cloud-like cushions and rounded arms create an inviting, contemporary look that's both comfortable and stylish.",
     "features": {
       "Dimension": "W: 154 3/8\" x D: 38 5/8\" x H: 26\" Seat Height: 16 1/8\""
     },
     "videos": [],
-    "dimension_image": null
+    "dimension_image": null,
+    "variants": [
+      {
+        "title": "Forma 4-Piece Sofa Camel Velvet",
+        "color": "Forma 4-Piece Sofa Camel Velvet",
+        "images": [
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-4_cutout-2_camel.png?v=1778873173",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Forma_4-Piece_Sofa_Camel_Velvet_lifestyle.png?v=1779370347",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-2_cutout_camel.png?v=1778873173",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-4_cutout-5_camel.png?v=1778873173",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-4_cutout-4_camel.png?v=1778873173",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-4_cutout-3_camel.png?v=1778873173",
+          "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/FormaCamelVelvet4-piecesofa_lifestyle2.png?v=1781793297"
+        ]
+      }
+    ]
   },
   {
     "name": "Forma Large Sectional Sofa Off White",
@@ -1152,27 +1176,6 @@
     },
     "videos": [
       "https://modani.com/cdn/shop/videos/c/vp/bf35af735f46488b9dcf8440f8e02064/bf35af735f46488b9dcf8440f8e02064.HD-1080p-4.8Mbps-90224835.mp4?v=0"
-    ],
-    "dimension_image": null
-  },
-  {
-    "name": "Forma 4-Piece Sofa Camel Velvet",
-    "url": "https://modani.com/products/forma-4-piece-sofa-camel-velvet",
-    "images": [
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-4_cutout-2_camel.png?v=1778873173",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Forma_4-Piece_Sofa_Camel_Velvet_lifestyle.png?v=1779370347",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-2_cutout_camel.png?v=1778873173",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-4_cutout-5_camel.png?v=1778873173",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-4_cutout-4_camel.png?v=1778873173",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/Comp-4_cutout-3_camel.png?v=1778873173",
-      "https://cdn.shopify.com/s/files/1/0898/9048/8616/files/FormaCamelVelvet4-piecesofa_lifestyle2.png?v=1781793297"
-    ],
-    "description": "The Forma 4-Piece Sofa in rich Camel Velvet brings warm, luxurious comfort to modern living. Upholstered in a soft, plush velvet wtih a beautiful golden, tan hue, this versatile four-piece design features generously padded, tufted seat cushions and oversized back pillows for sink-in comfort.",
-    "features": {
-      "Dimension": "W: 154 3/8\" x D: 38 5/8\" x H: 26\" Seat Height: 16 1/8\""
-    },
-    "videos": [
-      "https://modani.com/cdn/shop/videos/c/vp/43eb2c3872f147b9bf7f4d862dc681f4/43eb2c3872f147b9bf7f4d862dc681f4.HD-1080p-7.2Mbps-90224678.mp4?v=0"
     ],
     "dimension_image": null
   },
