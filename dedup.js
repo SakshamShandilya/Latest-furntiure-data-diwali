@@ -17,6 +17,10 @@
   const markedMerges = new Map();    // matchId -> { masterProd, dupProd, target: 'A'|'B' }
   const reviewedPairs = new Set();   // matchId
 
+  let activeDetailProduct = null;
+  let activeDetailImages = [];
+  let activeDetailImageIndex = 0;
+
   const DOM = {
     statScanned: document.getElementById('stat-scanned'),
     statExact: document.getElementById('stat-exact'),
@@ -32,7 +36,40 @@
     btnTrayClear: document.getElementById('btn-tray-clear'),
     btnApplyPrune: document.getElementById('btn-apply-prune'),
     btnThemeToggle: document.getElementById('btn-theme-toggle'),
-    toastContainer: document.getElementById('toast-container')
+    toastContainer: document.getElementById('toast-container'),
+
+    // PDP Modal Elements
+    pdpModal: document.getElementById('dedup-pdp-modal'),
+    modalBackBtn: document.getElementById('dedup-modal-back-btn'),
+    modalCloseBtn: document.getElementById('dedup-modal-close-btn'),
+    modalStorefrontLink: document.getElementById('dedup-modal-storefront-link'),
+    modalBadge: document.getElementById('dedup-modal-badge'),
+    modalMiniTitle: document.getElementById('dedup-modal-mini-title'),
+    modalMiniPrice: document.getElementById('dedup-modal-mini-price'),
+    modalBrand: document.getElementById('dedup-modal-brand'),
+    modalCategory: document.getElementById('dedup-modal-category'),
+    modalTitle: document.getElementById('dedup-modal-title'),
+    modalPrice: document.getElementById('dedup-modal-price'),
+    modalFileText: document.getElementById('dedup-modal-file-text'),
+    modalImgCount: document.getElementById('dedup-modal-img-count'),
+    modalVariantCount: document.getElementById('dedup-modal-variant-count'),
+    modalColorways: document.getElementById('dedup-modal-colorways'),
+    modalActiveColor: document.getElementById('dedup-modal-active-color'),
+    modalSwatches: document.getElementById('dedup-modal-swatches'),
+    modalDescWrap: document.getElementById('dedup-modal-desc-wrap'),
+    modalDesc: document.getElementById('dedup-modal-desc'),
+    modalSpecsBody: document.getElementById('dedup-modal-specs-body'),
+    modalMergeBtn: document.getElementById('dedup-modal-merge-btn'),
+    modalDeleteBtn: document.getElementById('dedup-modal-delete-btn'),
+    modalMainImg: document.getElementById('dedup-modal-main-img'),
+    modalCounterText: document.getElementById('dedup-counter-text'),
+    modalSlideDots: document.getElementById('dedup-slide-dots'),
+    modalThumbnailsStrip: document.getElementById('dedup-thumbnails-strip'),
+    modalImgPrevBtn: document.getElementById('dedup-img-prev-btn'),
+    modalImgNextBtn: document.getElementById('dedup-img-next-btn'),
+    modalThumbPrevBtn: document.getElementById('dedup-thumb-prev-btn'),
+    modalThumbNextBtn: document.getElementById('dedup-thumb-next-btn'),
+    galleryStage: document.getElementById('dedup-gallery-stage')
   };
 
   async function init() {
@@ -116,6 +153,90 @@
 
     if (DOM.btnApplyPrune) {
       DOM.btnApplyPrune.addEventListener('click', executeBatchActions);
+    }
+
+    // Modal Close Triggers
+    if (DOM.modalBackBtn) DOM.modalBackBtn.addEventListener('click', closeProductDetailModal);
+    if (DOM.modalCloseBtn) DOM.modalCloseBtn.addEventListener('click', closeProductDetailModal);
+    if (DOM.pdpModal) {
+      DOM.pdpModal.addEventListener('click', (e) => {
+        if (e.target === DOM.pdpModal) closeProductDetailModal();
+      });
+    }
+
+    // Modal Gallery Navigation
+    if (DOM.modalImgPrevBtn) {
+      DOM.modalImgPrevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setModalImage(activeDetailImageIndex - 1, 'prev');
+      });
+    }
+    if (DOM.modalImgNextBtn) {
+      DOM.modalImgNextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setModalImage(activeDetailImageIndex + 1, 'next');
+      });
+    }
+    if (DOM.modalThumbPrevBtn && DOM.modalThumbnailsStrip) {
+      DOM.modalThumbPrevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        DOM.modalThumbnailsStrip.scrollBy({ left: -220, behavior: 'smooth' });
+      });
+    }
+    if (DOM.modalThumbNextBtn && DOM.modalThumbnailsStrip) {
+      DOM.modalThumbNextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        DOM.modalThumbnailsStrip.scrollBy({ left: 220, behavior: 'smooth' });
+      });
+    }
+
+    // Modal Decision Buttons
+    if (DOM.modalMergeBtn) {
+      DOM.modalMergeBtn.addEventListener('click', () => {
+        if (!activeDetailProduct) return;
+        const { match, target } = activeDetailProduct;
+        toggleMerge(match, target);
+        updateModalActionButtons();
+      });
+    }
+    if (DOM.modalDeleteBtn) {
+      DOM.modalDeleteBtn.addEventListener('click', () => {
+        if (!activeDetailProduct) return;
+        const { prod } = activeDetailProduct;
+        toggleDeletion(prod);
+        updateModalActionButtons();
+      });
+    }
+
+    // Keyboard Navigation for Gallery and Esc to Close
+    window.addEventListener('keydown', (e) => {
+      if (!DOM.pdpModal || !DOM.pdpModal.classList.contains('active')) return;
+      if (e.key === 'Escape') {
+        closeProductDetailModal();
+      } else if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        setModalImage(activeDetailImageIndex + 1, 'next');
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setModalImage(activeDetailImageIndex - 1, 'prev');
+      }
+    });
+
+    // Touch Swipe Navigation on Mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    if (DOM.galleryStage) {
+      DOM.galleryStage.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+      DOM.galleryStage.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchEndX - touchStartX;
+        if (Math.abs(diff) > 40) {
+          if (diff < 0) setModalImage(activeDetailImageIndex + 1, 'next');
+          else setModalImage(activeDetailImageIndex - 1, 'prev');
+        }
+      }, { passive: true });
     }
   }
 
@@ -240,15 +361,24 @@
           <!-- Product A Column -->
           <div class="dedup-col ${isDelA ? 'marked-delete' : ''} ${isMergeA ? 'marked-master' : ''} ${isMergeB ? 'marked-absorbed' : ''}">
             ${badgeA}
-            <div class="dedup-img-wrap">
+            <div class="dedup-img-wrap" data-view-pdp="A" data-match-id="${m.id}" title="Click to view full photo gallery and specifications">
               <img src="${pA.image}" alt="${pA.name}" loading="lazy" onerror="this.src='assets/plypicker-logo.png'">
+              <div class="img-zoom-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span>View Photos</span>
+              </div>
             </div>
             <div class="dedup-meta">
               <div class="dedup-brand">${pA.brand}</div>
-              <h4 class="dedup-name">${pA.name}</h4>
+              <h4 class="dedup-name" data-view-pdp="A" data-match-id="${m.id}" title="Click to view details">${pA.name}</h4>
               <div class="dedup-file">📁 ${pA.catalogFile} (Item #${pA.itemIndex + 1})</div>
               <div class="dedup-price">${formatPrice(pA.price)}</div>
             </div>
+
+            <!-- View Full Details & Photos Button -->
+            <button class="btn-pdp-view" data-view-pdp="A" data-match-id="${m.id}" title="Open product detail page to see all angles and specifications">
+              👁️ View Gallery &amp; Details
+            </button>
 
             <!-- Merge Button A -->
             <button class="btn-merge-item ${isMergeA ? 'active-merged' : ''}" data-merge-prod="A" data-match-id="${m.id}" title="Keep Product A as master and combine Product B's photos and color swatches into it">
@@ -270,15 +400,24 @@
           <!-- Product B Column -->
           <div class="dedup-col ${isDelB ? 'marked-delete' : ''} ${isMergeB ? 'marked-master' : ''} ${isMergeA ? 'marked-absorbed' : ''}">
             ${badgeB}
-            <div class="dedup-img-wrap">
+            <div class="dedup-img-wrap" data-view-pdp="B" data-match-id="${m.id}" title="Click to view full photo gallery and specifications">
               <img src="${pB.image}" alt="${pB.name}" loading="lazy" onerror="this.src='assets/plypicker-logo.png'">
+              <div class="img-zoom-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span>View Photos</span>
+              </div>
             </div>
             <div class="dedup-meta">
               <div class="dedup-brand">${pB.brand}</div>
-              <h4 class="dedup-name">${pB.name}</h4>
+              <h4 class="dedup-name" data-view-pdp="B" data-match-id="${m.id}" title="Click to view details">${pB.name}</h4>
               <div class="dedup-file">📁 ${pB.catalogFile} (Item #${pB.itemIndex + 1})</div>
               <div class="dedup-price">${formatPrice(pB.price)}</div>
             </div>
+
+            <!-- View Full Details & Photos Button -->
+            <button class="btn-pdp-view" data-view-pdp="B" data-match-id="${m.id}" title="Open product detail page to see all angles and specifications">
+              👁️ View Gallery &amp; Details
+            </button>
 
             <!-- Merge Button B -->
             <button class="btn-merge-item ${isMergeB ? 'active-merged' : ''}" data-merge-prod="B" data-match-id="${m.id}" title="Keep Product B as master and combine Product A's photos and color swatches into it">
@@ -299,7 +438,21 @@
         </div>
       `;
 
-      // Event Listeners for this card
+      // Event Listeners for PDP view triggers
+      card.querySelectorAll('[data-view-pdp="A"]').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openProductDetailModal(pA, m, 'A');
+        });
+      });
+      card.querySelectorAll('[data-view-pdp="B"]').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openProductDetailModal(pB, m, 'B');
+        });
+      });
+
+      // Event Listeners for action buttons
       card.querySelector('[data-merge-prod="A"]').addEventListener('click', () => {
         toggleMerge(m, 'A');
       });
@@ -318,6 +471,372 @@
 
       DOM.cardsContainer.appendChild(card);
     });
+  }
+
+  /* ==========================================================================
+     PRODUCT DETAIL PAGE (PDP) & MULTI-IMAGE GALLERY MODAL ENGINE
+     ========================================================================== */
+
+  function extractAllProductImages(item, fallbackImg) {
+    const list = [];
+    const seen = new Set();
+    const add = (url) => {
+      if (!url || typeof url !== 'string') return;
+      const clean = url.trim();
+      if (!clean || seen.has(clean)) return;
+      seen.add(clean);
+      list.push(clean);
+    };
+
+    if (item) {
+      if (Array.isArray(item.images)) item.images.forEach(add);
+      if (Array.isArray(item.variants)) {
+        item.variants.forEach(v => {
+          if (Array.isArray(v.images)) v.images.forEach(add);
+          else if (v.image) add(v.image);
+        });
+      }
+      if (item.dimension_image) add(item.dimension_image);
+      if (item.image) add(item.image);
+    }
+    if (list.length === 0 && fallbackImg) add(fallbackImg);
+    return list;
+  }
+
+  function formatDimensions(item) {
+    if (!item) return 'Standard Luxury Proportions';
+    if (item.dimensions) {
+      if (typeof item.dimensions === 'string') return item.dimensions;
+      if (typeof item.dimensions === 'object') {
+        const parts = [];
+        if (item.dimensions.Length) parts.push(`L ${item.dimensions.Length}`);
+        if (item.dimensions.Width) parts.push(`W ${item.dimensions.Width}`);
+        if (item.dimensions.Height) parts.push(`H ${item.dimensions.Height}`);
+        if (parts.length > 0) return parts.join(' × ');
+      }
+    }
+    if (item.specifications && item.specifications['Dimensions (In CM)']) {
+      return item.specifications['Dimensions (In CM)'];
+    }
+    return 'Standard Luxury Proportions';
+  }
+
+  function formatMaterials(item) {
+    if (!item) return 'Fine Curated Textile';
+    if (item.specifications && item.specifications.Material) return item.specifications.Material;
+    if (item.material) return item.material;
+    if (Array.isArray(item.materials) && item.materials.length > 0) return item.materials.join(', ');
+    return 'Fine Curated Textile';
+  }
+
+  async function getRawProduct(prod) {
+    if (window.PRELOADED_DATA && window.PRELOADED_DATA[prod.catalogId]) {
+      const items = window.PRELOADED_DATA[prod.catalogId];
+      if (Array.isArray(items)) {
+        if (items[prod.itemIndex] && (items[prod.itemIndex].name === prod.name || items[prod.itemIndex].title === prod.name)) {
+          return items[prod.itemIndex];
+        }
+        const found = items.find(it => (it.name || it.title) === prod.name);
+        if (found) return found;
+        if (items[prod.itemIndex]) return items[prod.itemIndex];
+      }
+    }
+
+    try {
+      const res = await fetch(encodeURI(prod.catalogFile));
+      if (res.ok) {
+        const items = await res.json();
+        if (Array.isArray(items)) {
+          if (items[prod.itemIndex] && (items[prod.itemIndex].name === prod.name || items[prod.itemIndex].title === prod.name)) {
+            return items[prod.itemIndex];
+          }
+          const found = items.find(it => (it.name || it.title) === prod.name);
+          if (found) return found;
+          if (items[prod.itemIndex]) return items[prod.itemIndex];
+        }
+      }
+    } catch (e) {
+      console.warn('Could not fetch catalog file:', prod.catalogFile, e);
+    }
+
+    return null;
+  }
+
+  async function openProductDetailModal(prod, match, target) {
+    activeDetailProduct = { prod, match, target };
+    activeDetailImageIndex = 0;
+
+    if (!DOM.pdpModal) return;
+
+    // Show modal immediately with base metadata
+    DOM.pdpModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    if (DOM.modalBadge) {
+      DOM.modalBadge.textContent = `${(prod.brand || 'Luxury').toUpperCase()} ATELIER · ${(prod.category || 'Furniture').toUpperCase()}`;
+    }
+    if (DOM.modalMiniTitle) DOM.modalMiniTitle.textContent = prod.name;
+    if (DOM.modalMiniPrice) DOM.modalMiniPrice.textContent = formatPrice(prod.price);
+    if (DOM.modalBrand) DOM.modalBrand.textContent = `${prod.brand || 'Luxury'} Atelier`;
+    if (DOM.modalCategory) DOM.modalCategory.textContent = prod.category || 'Luxury Living';
+    if (DOM.modalTitle) DOM.modalTitle.textContent = prod.name;
+    if (DOM.modalPrice) DOM.modalPrice.textContent = formatPrice(prod.price);
+    if (DOM.modalFileText) DOM.modalFileText.textContent = `${prod.catalogFile} (Item #${(prod.itemIndex || 0) + 1})`;
+
+    // Storefront link: opens index.html focused on this product
+    if (DOM.modalStorefrontLink) {
+      const storeId = `${prod.catalogId}-${prod.itemIndex}`;
+      DOM.modalStorefrontLink.href = `index.html#product=${encodeURIComponent(storeId)}`;
+    }
+
+    // Initialize with primary photo
+    activeDetailImages = [prod.image];
+    renderModalGallery();
+
+    // Fetch full catalog product for complete photos, dimensions, specifications
+    const fullItem = await getRawProduct(prod);
+    if (fullItem) {
+      activeDetailImages = extractAllProductImages(fullItem, prod.image);
+      renderModalGallery();
+
+      // Description
+      const desc = fullItem.description || fullItem.overview || '';
+      if (desc && desc.trim().length > 0 && DOM.modalDesc && DOM.modalDescWrap) {
+        DOM.modalDesc.textContent = desc.trim();
+        DOM.modalDescWrap.style.display = 'block';
+      } else if (DOM.modalDescWrap) {
+        DOM.modalDescWrap.style.display = 'none';
+      }
+
+      // Specifications Table
+      renderModalSpecs(fullItem, prod);
+
+      // Finish / Colorway variants
+      renderModalVariants(fullItem);
+    } else {
+      renderModalSpecs(null, prod);
+    }
+
+    // Sync modal action button states (merge/delete)
+    updateModalActionButtons();
+  }
+
+  function closeProductDetailModal() {
+    if (!DOM.pdpModal) return;
+    DOM.pdpModal.classList.remove('active');
+    document.body.style.overflow = '';
+    activeDetailProduct = null;
+  }
+
+  function setModalImage(idx, direction = 'next') {
+    if (!DOM.modalMainImg || activeDetailImages.length === 0) return;
+    const len = activeDetailImages.length;
+    activeDetailImageIndex = ((idx % len) + len) % len;
+
+    DOM.modalMainImg.classList.remove('anim-slide-next', 'anim-slide-prev');
+    void DOM.modalMainImg.offsetWidth;
+    DOM.modalMainImg.src = activeDetailImages[activeDetailImageIndex];
+    DOM.modalMainImg.classList.add(direction === 'next' ? 'anim-slide-next' : 'anim-slide-prev');
+
+    if (DOM.modalCounterText) {
+      DOM.modalCounterText.textContent = `${activeDetailImageIndex + 1} / ${len} Photos`;
+    }
+
+    // Update active slide dot
+    if (DOM.modalSlideDots) {
+      DOM.modalSlideDots.querySelectorAll('.qv-slide-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === activeDetailImageIndex);
+      });
+    }
+
+    // Update active thumbnail
+    if (DOM.modalThumbnailsStrip) {
+      DOM.modalThumbnailsStrip.querySelectorAll('.qv-thumb').forEach((t, i) => {
+        if (i === activeDetailImageIndex) {
+          t.classList.add('active');
+          DOM.modalThumbnailsStrip.scrollTo({
+            left: t.offsetLeft - (DOM.modalThumbnailsStrip.clientWidth / 2) + (t.clientWidth / 2),
+            behavior: 'smooth'
+          });
+        } else {
+          t.classList.remove('active');
+        }
+      });
+    }
+  }
+
+  function renderModalGallery() {
+    if (!DOM.modalMainImg || activeDetailImages.length === 0) return;
+
+    // Slide indicator dots
+    if (DOM.modalSlideDots) {
+      DOM.modalSlideDots.innerHTML = '';
+      activeDetailImages.forEach((_, i) => {
+        const dot = document.createElement('span');
+        dot.className = `qv-slide-dot ${i === activeDetailImageIndex ? 'active' : ''}`;
+        dot.title = `Slide to photo ${i + 1}`;
+        dot.addEventListener('click', () => setModalImage(i, i >= activeDetailImageIndex ? 'next' : 'prev'));
+        DOM.modalSlideDots.appendChild(dot);
+      });
+    }
+
+    // Thumbnails row
+    if (DOM.modalThumbnailsStrip) {
+      DOM.modalThumbnailsStrip.innerHTML = '';
+      activeDetailImages.forEach((imgUrl, i) => {
+        const thumb = document.createElement('img');
+        thumb.className = `qv-thumb ${i === activeDetailImageIndex ? 'active' : ''}`;
+        thumb.src = imgUrl;
+        thumb.alt = `Angle preview ${i + 1}`;
+        thumb.loading = 'lazy';
+        thumb.onerror = () => { thumb.src = 'assets/plypicker-logo.png'; };
+        thumb.addEventListener('click', () => setModalImage(i, i >= activeDetailImageIndex ? 'next' : 'prev'));
+        DOM.modalThumbnailsStrip.appendChild(thumb);
+      });
+    }
+
+    setModalImage(activeDetailImageIndex, 'next');
+  }
+
+  function renderModalSpecs(item, prod) {
+    if (!DOM.modalSpecsBody) return;
+    DOM.modalSpecsBody.innerHTML = '';
+
+    const specs = [
+      { label: 'Category & Brand', value: `${prod.brand} · ${prod.category}` },
+      { label: 'Catalog File', value: `<code style="font-size:0.78rem;">${prod.catalogFile}</code>` },
+      { label: 'Item Position', value: `Position #${(prod.itemIndex || 0) + 1} in JSON` },
+      { label: 'Dimensions', value: formatDimensions(item) },
+      { label: 'Materials & Finish', value: formatMaterials(item) },
+      { label: 'Media Count', value: `<strong>${activeDetailImages.length} High-Res Photos Loaded</strong>` }
+    ];
+
+    if (item && item.dimension_image) {
+      specs.push({
+        label: 'Blueprint Schematic',
+        value: `<a href="${item.dimension_image}" target="_blank" rel="noopener noreferrer" style="color:var(--accent-gold); font-weight:700; text-decoration:underline;">📐 View Blueprint Schematic ↗</a>`
+      });
+    }
+
+    if (item && item.url) {
+      specs.push({
+        label: 'Brand Website',
+        value: `<a href="${item.url}" target="_blank" rel="noopener noreferrer" style="color:var(--accent-gold); font-weight:600; text-decoration:underline;">Visit Original Brand Page ↗</a>`
+      });
+    }
+
+    if (item && Array.isArray(item.key_features) && item.key_features.length > 0) {
+      specs.push({
+        label: 'Key Features',
+        value: `<ul style="margin:0; padding-left:1.2rem; line-height:1.4;">${item.key_features.map(f => `<li>${f}</li>`).join('')}</ul>`
+      });
+    }
+
+    specs.forEach(s => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<th>${s.label}</th><td>${s.value}</td>`;
+      DOM.modalSpecsBody.appendChild(tr);
+    });
+
+    if (DOM.modalImgCount) {
+      DOM.modalImgCount.innerHTML = `<strong>${activeDetailImages.length}</strong> Photo${activeDetailImages.length === 1 ? '' : 's'} Available`;
+    }
+  }
+
+  function renderModalVariants(item) {
+    if (!DOM.modalColorways || !DOM.modalSwatches) return;
+
+    const variants = (item && Array.isArray(item.variants)) ? item.variants : [];
+    if (variants.length > 1) {
+      if (DOM.modalVariantCount) {
+        DOM.modalVariantCount.style.display = 'inline-flex';
+        DOM.modalVariantCount.innerHTML = `<strong>${variants.length}</strong> Finish Variants`;
+      }
+      DOM.modalColorways.style.display = 'block';
+      DOM.modalSwatches.innerHTML = '';
+
+      variants.forEach((v, idx) => {
+        const title = v.color || v.title || `Variant ${idx + 1}`;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `pdp-color-swatch-btn ${idx === 0 ? 'active' : ''}`;
+
+        let colorHex = '#C5A880';
+        const hexMap = {
+          'white': '#FAF9F6', 'beige': '#E5DAC8', 'camel': '#9E693D',
+          'grey': '#707070', 'black': '#1C1B1A', 'green': '#3B533E',
+          'brown': '#4A3728', 'blue': '#1E2D4A'
+        };
+        for (const [k, hex] of Object.entries(hexMap)) {
+          if (title.toLowerCase().includes(k)) { colorHex = hex; break; }
+        }
+
+        btn.innerHTML = `
+          <span class="pdp-color-circle" style="background:${colorHex};"></span>
+          <span>${title}</span>
+        `;
+
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          DOM.modalSwatches.querySelectorAll('.pdp-color-swatch-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          if (DOM.modalActiveColor) DOM.modalActiveColor.textContent = title;
+
+          if (Array.isArray(v.images) && v.images.length > 0) {
+            const firstImg = v.images[0];
+            const targetIdx = activeDetailImages.indexOf(firstImg);
+            if (targetIdx !== -1) {
+              setModalImage(targetIdx, 'next');
+            }
+          }
+        });
+
+        DOM.modalSwatches.appendChild(btn);
+      });
+
+      if (DOM.modalActiveColor) {
+        DOM.modalActiveColor.textContent = variants[0].color || variants[0].title || 'Curated Finish';
+      }
+    } else {
+      DOM.modalColorways.style.display = 'none';
+      if (DOM.modalVariantCount) DOM.modalVariantCount.style.display = 'none';
+    }
+  }
+
+  function updateModalActionButtons() {
+    if (!activeDetailProduct) return;
+    const { prod, match, target } = activeDetailProduct;
+
+    // Merge status
+    const merge = markedMerges.get(match.id);
+    const isMaster = merge && merge.target === target;
+    const otherTarget = target === 'A' ? 'B' : 'A';
+    const isAbsorbed = merge && merge.target === otherTarget;
+
+    if (DOM.modalMergeBtn) {
+      if (isMaster) {
+        DOM.modalMergeBtn.className = 'btn-merge-item active-merged';
+        DOM.modalMergeBtn.textContent = '✓ Marked as Master (Will Absorb Duplicate)';
+      } else if (isAbsorbed) {
+        DOM.modalMergeBtn.className = 'btn-merge-item';
+        DOM.modalMergeBtn.textContent = '🔄 Switch to Master (Absorb other piece)';
+      } else {
+        DOM.modalMergeBtn.className = 'btn-merge-item';
+        DOM.modalMergeBtn.textContent = `🔄 Keep as Master Piece (Absorb ${target === 'A' ? 'Product B' : 'Product A'})`;
+      }
+    }
+
+    // Delete status
+    const isDel = markedDeletions.has(prod.id);
+    if (DOM.modalDeleteBtn) {
+      if (isDel) {
+        DOM.modalDeleteBtn.className = 'btn-delete-item active-deleted';
+        DOM.modalDeleteBtn.textContent = '✓ Marked for Removal';
+      } else {
+        DOM.modalDeleteBtn.className = 'btn-delete-item';
+        DOM.modalDeleteBtn.textContent = '🗑️ Mark for Removal';
+      }
+    }
   }
 
   function toggleMerge(match, target) {
