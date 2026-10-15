@@ -21,3 +21,5 @@ desktop.ini
 .agents/
 .gemini/
 .cache_dedup/
+__pycache__/
+*.pyc
