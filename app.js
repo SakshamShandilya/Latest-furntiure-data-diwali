@@ -66,7 +66,7 @@
       badge: 'Bespoke Modernism',
       monogram: 'UB',
       accentColor: '#9B7B45',
-      banner: 'Manually uploaded furniture/Designer sofa/01 01.jpg'
+      banner: 'Manually uploaded furniture/sofa/01 01.jpg'
     },
     'Modani': {
       name: 'Modani',
@@ -177,6 +177,94 @@
       monogram: 'IN',
       accentColor: '#365342',
       banner: 'https://cdn.shopify.com/s/files/1/0738/7041/0001/files/2311AE8E-B1A6-44D5-9904-C5BA093178E9.webp'
+    },
+    'Fendi Casa': {
+      name: 'Fendi Casa',
+      subtitle: 'Fendi Casa Atelier · Rome & Milan',
+      tagline: 'Italian Haute Couture Living & Sculptural Seating',
+      description: 'Masterpieces of Roman craftsmanship blending fashion heritage with architectural modernism, tactile leather, and sculptural seating.',
+      origin: 'Rome, Italy',
+      badge: 'Italian Haute Couture',
+      monogram: 'FC',
+      accentColor: '#BFA15F',
+      banner: 'https://cdn.shopify.com/s/files/1/0999/9758/1576/files/FENDICasaLaterarmchairCerianiSzostak.jpg?v=1768408154'
+    },
+    'Acanva': {
+      name: 'Acanva',
+      subtitle: 'Acanva Home · Cloud Comfort & Modernism',
+      tagline: 'Curved Organic Silhouettes & Cloud-Like Lounging',
+      description: 'Architectural low-profile cloud beds, curved organic bouclé accent chairs, and plush minimalist seating crafted for serene modern sanctuaries.',
+      origin: 'Modern Atelier',
+      badge: 'Cloud Comfort & Bouclé',
+      monogram: 'AC',
+      accentColor: '#7D8B78',
+      banner: 'https://cdn.shopify.com/s/files/1/0514/4258/1685/files/ALC151-background2.jpg?v=1751873565'
+    },
+    'West Elm': {
+      name: 'West Elm',
+      subtitle: 'West Elm · Modern Living Design',
+      tagline: 'Contemporary Architectural Seating & Clean Lines',
+      description: 'Modern organic silhouettes, tactile textured fabrics, flare-back statement chairs, and timeless craftsmanship designed for inspired living.',
+      origin: 'Brooklyn, New York',
+      badge: 'Modern Architectural',
+      monogram: 'WE',
+      accentColor: '#A57C52',
+      banner: 'https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/products/pictures/item/free/original/vapgCqJua-pierce-ward-flare-back-chair-xl.jpg'
+    },
+    'Sepia Homes': {
+      name: 'Sepia Homes',
+      subtitle: 'Sepia Homes Studio · Minimalist Accents',
+      tagline: 'Minimal Luxe Ottomans & Statement Seating',
+      description: 'Curated Scandinavian-inspired ottomans, sculpted round poufs, and statement accent chairs tailored in tactile bouclé and rich velvets.',
+      origin: 'Artisan Studio',
+      badge: 'Minimal Luxe Accents',
+      monogram: 'SH',
+      accentColor: '#C49A6C',
+      banner: 'https://cdn.shopify.com/s/files/1/0890/2698/6284/files/6_0600837e-58f9-422b-958b-eb14c9dbab8f.jpg?v=1791104384'
+    },
+    'Furniture Boutiq': {
+      name: 'Furniture Boutiq',
+      subtitle: 'Furniture Boutiq Atelier · Bespoke Leather',
+      tagline: 'Full-Grain Genuine Leather Daybeds & Sofas',
+      description: 'Artisan-crafted full-grain leather daybeds, deep-profile statement lounges, and architectural contemporary living centerpieces.',
+      origin: 'Bespoke Studio',
+      badge: 'Full-Grain Leather',
+      monogram: 'FB',
+      accentColor: '#8B5A2B',
+      banner: 'https://cdn.shopify.com/s/files/1/0642/8367/2745/files/1_43cd2a36-7fee-4290-a368-2d41d942c0c3.jpg?v=1736592783'
+    },
+    'The Flamingo Life': {
+      name: 'The Flamingo Life',
+      subtitle: 'The Flamingo Life · Japandi & Scandinavian',
+      tagline: 'Modular Sectionals & Suede Fabric Lounges',
+      description: 'Japanese Japandi minimalism meets Scandinavian warmth: modular block sectionals, plush suede fabrics, and versatile low-profile lounging.',
+      origin: 'Japandi Design',
+      badge: 'Modular Japandi',
+      monogram: 'FL',
+      accentColor: '#4A6B82',
+      banner: 'https://cdn.shopify.com/s/files/1/0741/7426/7702/files/Nagare2.png?v=1778689313'
+    },
+    'Uber Decor': {
+      name: 'Uber Decor',
+      subtitle: 'Uber Decor · Contemporary Living Studio',
+      tagline: 'Deep-Seating Japandi L-Shaped Sectionals',
+      description: 'Extensive collections of contemporary deep-seating chaise sectionals, architectural modular couches, and minimalist statement sofas.',
+      origin: 'Contemporary Studio',
+      badge: 'Deep-Seating Sectionals',
+      monogram: 'UD',
+      accentColor: '#9A6F45',
+      banner: 'https://cdn.shopify.com/s/files/1/0611/3768/2492/files/e629979f-c91d-4dc1-8905-e234877ff5a3.png?v=1789217011'
+    },
+    'Wooden It Be Nice': {
+      name: 'Wooden It Be Nice',
+      subtitle: 'Wooden It Be Nice · Artisan Woodworks',
+      tagline: 'Solid Teak & Handcrafted Scandinavian Seating',
+      description: 'Timeless mid-century and Scandinavian-inspired wooden-frame sofas, artisan joinery, and durable natural upholstery built for lifetime luxury.',
+      origin: 'Heritage Woodworks',
+      badge: 'Solid Teak Joinery',
+      monogram: 'WN',
+      accentColor: '#5E3E26',
+      banner: 'https://wooden-it-be-nice.in/wp-content/uploads/2026/05/9.jpg'
     }
   };
 
@@ -747,6 +835,14 @@
     else if (/living\s*shapes/i.test(bNorm)) bNorm = 'Living Shapes';
     else if (/duraster/i.test(bNorm)) bNorm = 'Duraster';
     else if (/modani/i.test(bNorm)) bNorm = 'Modani';
+    else if (/fendi/i.test(bNorm)) bNorm = 'Fendi Casa';
+    else if (/acanva/i.test(bNorm)) bNorm = 'Acanva';
+    else if (/west\s*elm/i.test(bNorm) || /westelm/i.test(bNorm)) bNorm = 'West Elm';
+    else if (/sepia/i.test(bNorm)) bNorm = 'Sepia Homes';
+    else if (/furniture\s*boutiq/i.test(bNorm)) bNorm = 'Furniture Boutiq';
+    else if (/flamingo/i.test(bNorm)) bNorm = 'The Flamingo Life';
+    else if (/uber\s*decor/i.test(bNorm)) bNorm = 'Uber Decor';
+    else if (/wooden\s*it\s*be\s*nice/i.test(bNorm)) bNorm = 'Wooden It Be Nice';
     const brandName = bNorm;
 
     // Badges
@@ -1467,7 +1563,15 @@
         'Bay Window',
         'iFur',
         'Gharaana',
-        'Indian Nest'
+        'Indian Nest',
+        'Fendi Casa',
+        'Acanva',
+        'West Elm',
+        'Sepia Homes',
+        'Furniture Boutiq',
+        'The Flamingo Life',
+        'Uber Decor',
+        'Wooden It Be Nice'
       ];
       const dbBrands = [...new Set(state.catalogDatabase.map(p => p.brand).filter(Boolean))];
       const allBrands = [...new Set([...defaultBrands, ...dbBrands])];

@@ -12,7 +12,7 @@ function getFiles(dir) {
   }
 }
 
-// Group files in Designer sofa
+// Group files in sofa
 function groupSofaFiles(files) {
   const groups = {};
   for (const f of files) {
@@ -25,7 +25,7 @@ function groupSofaFiles(files) {
       key = 'misc';
     }
     if (!groups[key]) groups[key] = [];
-    groups[key].push(`Manually uploaded furniture/Designer sofa/${f}`);
+    groups[key].push(`Manually uploaded furniture/sofa/${f}`);
   }
   return groups;
 }
@@ -54,7 +54,7 @@ function groupChairFiles(files) {
 }
 
 function run() {
-  const sofaDir = path.join(MANUAL_DIR, 'Designer sofa');
+  const sofaDir = path.join(MANUAL_DIR, 'sofa');
   const chairDir = path.join(MANUAL_DIR, 'accent chair');
 
   const sofaFiles = getFiles(sofaDir);

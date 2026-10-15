@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-15T07:45:29.657Z",
+  "updatedAt": "2026-10-15T08:28:30.542Z",
   "totalCatalogs": 44,
   "catalogs": [
     {
@@ -47,9 +47,9 @@
     {
       "id": "accent-chair-fendi-casa",
       "category": "Accent Chair",
-      "brand": "Fendi casa",
+      "brand": "Fendi Casa",
       "rawBrand": "Fendi casa",
-      "displayName": "Fendi casa · Accent Chair",
+      "displayName": "Fendi Casa · Accent Chair",
       "fileName": "fendi_casa_armchairs.json",
       "relativePath": "Accent Chair/Fendi casa/fendi_casa_armchairs.json",
       "itemCount": 17,
@@ -131,9 +131,9 @@
     {
       "id": "accent-chair-westelm",
       "category": "Accent Chair",
-      "brand": "Westelm",
+      "brand": "West Elm",
       "rawBrand": "Westelm",
-      "displayName": "Westelm · Accent Chair",
+      "displayName": "West Elm · Accent Chair",
       "fileName": "westelm_chairs.json",
       "relativePath": "Accent Chair/Westelm/westelm_chairs.json",
       "itemCount": 12,
@@ -453,9 +453,9 @@
     {
       "id": "sofa-flamingo",
       "category": "Sofa",
-      "brand": "Flamingo",
+      "brand": "The Flamingo Life",
       "rawBrand": "Flamingo",
-      "displayName": "Flamingo · Sofa",
+      "displayName": "The Flamingo Life · Sofa",
       "fileName": "theflamingolife_sofas.json",
       "relativePath": "Sofa/Flamingo/theflamingolife_sofas.json",
       "itemCount": 41,
@@ -565,9 +565,9 @@
     {
       "id": "sofa-wooden-it-be-nice",
       "category": "Sofa",
-      "brand": "Wooden it be nice",
+      "brand": "Wooden It Be Nice",
       "rawBrand": "Wooden it be nice",
-      "displayName": "Wooden it be nice · Sofa",
+      "displayName": "Wooden It Be Nice · Sofa",
       "fileName": "wooden_it_be_nice_sofas.json",
       "relativePath": "Sofa/Wooden it be nice/wooden_it_be_nice_sofas.json",
       "itemCount": 49,
