@@ -510,6 +510,100 @@
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
+
+    /* Auto-Save Status Pill & Live Sync Feedback */
+    .auto-save-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #10B981;
+      transition: all 0.3s ease;
+    }
+    .auto-save-status-pill.saving {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: rgba(212, 175, 55, 0.45);
+      color: #D4AF37;
+    }
+    .auto-save-status-pill.offline {
+      background: rgba(100, 116, 139, 0.15);
+      border-color: rgba(100, 116, 139, 0.35);
+      color: #94A3B8;
+    }
+    .auto-save-pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      animation: pulseGreen 2s infinite;
+    }
+    .auto-save-status-pill.saving .auto-save-pulse-dot {
+      background: #D4AF37;
+      animation: pulseYellow 1s infinite;
+    }
+    .auto-save-status-pill.offline .auto-save-pulse-dot {
+      background: #94A3B8;
+      animation: none;
+    }
+    @keyframes pulseYellow {
+      0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+      70% { box-shadow: 0 0 0 7px rgba(212, 175, 55, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+    }
+
+    .dedup-card.card-resolving {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: scale(0.98);
+      border-color: #10B981;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);
+    }
+    .dedup-card.card-resolved-hidden {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+      margin-bottom: 0;
+      max-height: 0;
+      padding: 0;
+      overflow: hidden;
+      border: none;
+      transition: all 0.5s ease;
+    }
+    .card-auto-saved-banner {
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.14) 0%, rgba(16, 185, 129, 0.04) 100%);
+      border-bottom: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 0.65rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #0E7044;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+    [data-theme="dark"] .card-auto-saved-banner {
+      color: #34D399;
+      background: rgba(16, 185, 129, 0.1);
+    }
+    .toast-undo-btn {
+      background: #FFF;
+      color: #1C1B19;
+      border: none;
+      padding: 0.2rem 0.65rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-left: 0.75rem;
+      transition: var(--transition-fast);
+    }
+    .toast-undo-btn:hover {
+      background: #D4AF37;
+      color: #FFF;
+    }
   </style>
 </head>
 <body>
@@ -524,6 +618,12 @@
       <span>Plypicker Luxury Living AI Vision Studio</span>
     </div>
     <div class="top-bar-right">
+      <!-- Live Auto-Save Indicator -->
+      <div class="auto-save-status-pill" id="auto-save-pill" title="Every action is automatically saved to catalog JSON and remembered across reloads">
+        <span class="auto-save-pulse-dot"></span>
+        <span id="auto-save-status-text">Auto-Save Active (Direct JSON Sync)</span>
+      </div>
+
       <button class="top-bar-btn" id="btn-theme-toggle" title="Toggle Theme">
         <span>Dark Mode</span>
       </button>
@@ -600,21 +700,22 @@
     </div>
   </main>
 
-  <!-- Sticky Bottom Deletions Tray -->
+  <!-- Sticky Bottom Auto-Save Live Activity & Undo Tray -->
   <div class="dedup-bottom-tray" id="dedup-bottom-tray">
     <div style="display:flex; align-items:center; gap:1rem;">
-      <span style="font-size:1.5rem;">🗑️</span>
+      <span style="font-size:1.5rem;" id="tray-icon">⚡</span>
       <div>
-        <div style="font-weight:700; font-size:1.05rem;" id="tray-count-text">0 Pieces Marked for Removal</div>
-        <div style="font-size:0.8rem; color:#AFA89F;">Will be pruned from their respective catalog JSON files</div>
+        <div style="font-weight:700; font-size:1.05rem;" id="tray-count-text">0 Actions Auto-Saved Directly to JSON</div>
+        <div style="font-size:0.8rem; color:#AFA89F;" id="tray-sub-text">Every change is immediately written to disk and persisted across reloads</div>
       </div>
     </div>
     <div style="display:flex; align-items:center; gap:0.75rem;">
-      <button class="btn-pill" id="btn-tray-clear" style="background:transparent; border:1px solid rgba(255,255,255,0.3); color:#FFF; cursor:pointer;">
-        Reset Selections
+      <button class="btn-pill" id="btn-tray-undo" style="background:rgba(212,175,55,0.15); border:1px solid #D4AF37; color:#D4AF37; cursor:pointer; font-weight:600; display:inline-flex; align-items:center; gap:0.4rem;" title="Revert last modification">
+        <span>↩</span>
+        <span id="btn-tray-undo-text">Undo Last Change</span>
       </button>
-      <button class="btn-apply-prune" id="btn-apply-prune">
-        💾 Apply Deletions & Update Catalogs
+      <button class="btn-pill" id="btn-tray-clear" style="background:transparent; border:1px solid rgba(255,255,255,0.3); color:#FFF; cursor:pointer;">
+        Clear History
       </button>
     </div>
   </div>

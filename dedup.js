@@ -13,9 +13,9 @@
   let currentCategory = 'all';
   let searchQuery = '';
 
-  const markedDeletions = new Map(); // id -> { catalogFile, name, id }
-  const markedMerges = new Map();    // matchId -> { masterProd, dupProd, target: 'A'|'B' }
-  const reviewedPairs = new Set();   // matchId
+  const STORAGE_KEY_ACTIONS = 'moderna_dedup_completed_v3';
+  const STORAGE_KEY_QUEUE = 'moderna_dedup_offline_queue_v3';
+  let recentActions = []; // stack of actions for Undo support
 
   let activeDetailProduct = null;
   let activeDetailImages = [];
@@ -33,9 +33,13 @@
     cardsContainer: document.getElementById('dedup-cards-container'),
     bottomTray: document.getElementById('dedup-bottom-tray'),
     trayCountText: document.getElementById('tray-count-text'),
+    traySubText: document.getElementById('tray-sub-text'),
+    btnTrayUndo: document.getElementById('btn-tray-undo'),
+    btnTrayUndoText: document.getElementById('btn-tray-undo-text'),
     btnTrayClear: document.getElementById('btn-tray-clear'),
-    btnApplyPrune: document.getElementById('btn-apply-prune'),
     btnThemeToggle: document.getElementById('btn-theme-toggle'),
+    autoSavePill: document.getElementById('auto-save-pill'),
+    autoSaveStatusText: document.getElementById('auto-save-status-text'),
     toastContainer: document.getElementById('toast-container'),
 
     // PDP Modal Elements
@@ -80,7 +84,17 @@
       const res = await fetch('duplicates-report.json');
       if (!res.ok) throw new Error('Could not load duplicates-report.json');
       const data = await res.json();
-      allMatches = data.matches || [];
+      const rawMatches = data.matches || [];
+
+      // Load all auto-saved actions from localStorage
+      const savedCompleted = getSavedActions();
+      const completedIds = new Set(Object.keys(savedCompleted));
+
+      // Filter out already processed matches so user never loses work or repeats decisions
+      allMatches = rawMatches.filter(m => !completedIds.has(m.id));
+
+      // Reconstruct recent actions stack for Undo drawer
+      recentActions = Object.values(savedCompleted).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
 
       // Update Header Stats
       if (DOM.statScanned) DOM.statScanned.textContent = (data.totalProductsScanned || 1826).toLocaleString();
@@ -90,8 +104,13 @@
       if (DOM.statTotal) DOM.statTotal.textContent = allMatches.length.toLocaleString();
       if (DOM.scannerTimestamp) DOM.scannerTimestamp.textContent = `Scanned ${data.generatedAt || 'Just now'}`;
 
+      setAutoSaveStatus('saved', `✓ Auto-Save Active (${recentActions.length} Actions Saved)`);
+      updateBottomTray();
       buildCategoryPills();
       applyFilters();
+
+      // Flush offline queue if any queued while disconnected
+      flushOfflineQueue();
     } catch (err) {
       DOM.cardsContainer.innerHTML = `
         <div style="text-align:center; padding:5rem 2rem; color:var(--text-secondary);">
@@ -140,20 +159,30 @@
       });
     }
 
-    // Bottom tray actions
-    if (DOM.btnTrayClear) {
-      DOM.btnTrayClear.addEventListener('click', () => {
-        markedDeletions.clear();
-        markedMerges.clear();
-        updateBottomTray();
-        renderCards();
-        showToast('Reset all marked actions');
+    // Auto-Save Bottom Drawer Actions
+    if (DOM.btnTrayUndo) {
+      DOM.btnTrayUndo.addEventListener('click', () => {
+        undoLastAction();
       });
     }
 
-    if (DOM.btnApplyPrune) {
-      DOM.btnApplyPrune.addEventListener('click', executeBatchActions);
+    if (DOM.btnTrayClear) {
+      DOM.btnTrayClear.addEventListener('click', () => {
+        if (confirm('Clear completed deduplication history and reload all pairs?')) {
+          localStorage.removeItem(STORAGE_KEY_ACTIONS);
+          localStorage.removeItem(STORAGE_KEY_QUEUE);
+          recentActions = [];
+          showToast('History cleared, re-loading pairs...', '✨');
+          setTimeout(() => location.reload(), 400);
+        }
+      });
     }
+
+    // Listen for online recovery to sync offline queue
+    window.addEventListener('online', () => {
+      setAutoSaveStatus('saving', '⚡ Network restored, syncing queued actions...');
+      flushOfflineQueue();
+    });
 
     // Modal Close Triggers
     if (DOM.modalBackBtn) DOM.modalBackBtn.addEventListener('click', closeProductDetailModal);
@@ -190,21 +219,19 @@
       });
     }
 
-    // Modal Decision Buttons
+    // Modal Instant Decision Buttons (Direct Auto-Save)
     if (DOM.modalMergeBtn) {
       DOM.modalMergeBtn.addEventListener('click', () => {
         if (!activeDetailProduct) return;
         const { match, target } = activeDetailProduct;
-        toggleMerge(match, target);
-        updateModalActionButtons();
+        autoApplyMerge(match, target);
       });
     }
     if (DOM.modalDeleteBtn) {
       DOM.modalDeleteBtn.addEventListener('click', () => {
         if (!activeDetailProduct) return;
-        const { prod } = activeDetailProduct;
-        toggleDeletion(prod);
-        updateModalActionButtons();
+        const { prod, match, target } = activeDetailProduct;
+        autoApplyDelete(prod, match, target);
       });
     }
 
@@ -308,20 +335,10 @@
       const card = document.createElement('article');
       card.className = 'dedup-card';
       card.id = `card-${m.id}`;
+      card.setAttribute('data-match-id', m.id);
 
       const pA = m.productA;
       const pB = m.productB;
-
-      const isDelA = markedDeletions.has(pA.id);
-      const isDelB = markedDeletions.has(pB.id);
-      const merge = markedMerges.get(m.id);
-      const isMergeA = merge && merge.target === 'A';
-      const isMergeB = merge && merge.target === 'B';
-      const isReviewed = reviewedPairs.has(m.id);
-
-      if (isDelA) card.classList.add('action-deleted-a');
-      if (isDelB) card.classList.add('action-deleted-b');
-      if (isReviewed) card.classList.add('action-reviewed');
 
       let matchClass = 'match-lookalike';
       if (m.similarity >= 97) matchClass = 'match-exact';
@@ -330,17 +347,6 @@
       const crossBrandBadge = m.isSameBrand
         ? `<span style="font-size:0.75rem; color:var(--text-tertiary); background:var(--bg-muted); padding:0.2rem 0.5rem; border-radius:4px;">Same Brand (${pA.brand})</span>`
         : `<span style="font-size:0.75rem; color:#9B7B45; background:rgba(155,123,69,0.1); padding:0.2rem 0.5rem; border-radius:4px; font-weight:600;">Cross-Brand: ${pA.brand} vs ${pB.brand}</span>`;
-
-      // Status badges for columns
-      let badgeA = '';
-      let badgeB = '';
-      if (isMergeA) {
-        badgeA = `<div class="master-badge">👑 Master Piece (Will Absorb B's Photos & Variants)</div>`;
-        badgeB = `<div class="absorbed-badge">✨ Photos Will Merge into A · Standalone Removed</div>`;
-      } else if (isMergeB) {
-        badgeB = `<div class="master-badge">👑 Master Piece (Will Absorb A's Photos & Variants)</div>`;
-        badgeA = `<div class="absorbed-badge">✨ Photos Will Merge into B · Standalone Removed</div>`;
-      }
 
       card.innerHTML = `
         <div class="dedup-card-header">
@@ -359,8 +365,7 @@
 
         <div class="dedup-card-body">
           <!-- Product A Column -->
-          <div class="dedup-col ${isDelA ? 'marked-delete' : ''} ${isMergeA ? 'marked-master' : ''} ${isMergeB ? 'marked-absorbed' : ''}">
-            ${badgeA}
+          <div class="dedup-col">
             <div class="dedup-img-wrap" data-view-pdp="A" data-match-id="${m.id}" title="Click to view full photo gallery and specifications">
               <img src="${pA.image}" alt="${pA.name}" loading="lazy" onerror="this.src='assets/plypicker-logo.png'">
               <div class="img-zoom-badge">
@@ -381,13 +386,13 @@
             </button>
 
             <!-- Merge Button A -->
-            <button class="btn-merge-item ${isMergeA ? 'active-merged' : ''}" data-merge-prod="A" data-match-id="${m.id}" title="Keep Product A as master and combine Product B's photos and color swatches into it">
-              ${isMergeA ? '✓ Marked as Master (Absorbing B)' : '🔄 Merge into Product A (Combine Photos)'}
+            <button class="btn-merge-item" data-merge-prod="A" data-match-id="${m.id}" title="Keep Product A as master and combine Product B's photos and color swatches into it">
+              🔄 Merge into Product A (Combine Photos)
             </button>
 
             <!-- Delete Button A -->
-            <button class="btn-delete-item ${isDelA ? 'active-deleted' : ''}" data-delete-prod="A" data-match-id="${m.id}">
-              ${isDelA ? '✓ Marked for Removal' : '🗑️ Delete Product A'}
+            <button class="btn-delete-item" data-delete-prod="A" data-match-id="${m.id}" title="Delete Product A directly from catalog JSON">
+              🗑️ Delete Product A (Duplicate)
             </button>
           </div>
 
@@ -398,8 +403,7 @@
           </div>
 
           <!-- Product B Column -->
-          <div class="dedup-col ${isDelB ? 'marked-delete' : ''} ${isMergeB ? 'marked-master' : ''} ${isMergeA ? 'marked-absorbed' : ''}">
-            ${badgeB}
+          <div class="dedup-col">
             <div class="dedup-img-wrap" data-view-pdp="B" data-match-id="${m.id}" title="Click to view full photo gallery and specifications">
               <img src="${pB.image}" alt="${pB.name}" loading="lazy" onerror="this.src='assets/plypicker-logo.png'">
               <div class="img-zoom-badge">
@@ -420,20 +424,20 @@
             </button>
 
             <!-- Merge Button B -->
-            <button class="btn-merge-item ${isMergeB ? 'active-merged' : ''}" data-merge-prod="B" data-match-id="${m.id}" title="Keep Product B as master and combine Product A's photos and color swatches into it">
-              ${isMergeB ? '✓ Marked as Master (Absorbing A)' : '🔄 Merge into Product B (Combine Photos)'}
+            <button class="btn-merge-item" data-merge-prod="B" data-match-id="${m.id}" title="Keep Product B as master and combine Product A's photos and color swatches into it">
+              🔄 Merge into Product B (Combine Photos)
             </button>
 
             <!-- Delete Button B -->
-            <button class="btn-delete-item ${isDelB ? 'active-deleted' : ''}" data-delete-prod="B" data-match-id="${m.id}">
-              ${isDelB ? '✓ Marked for Removal' : '🗑️ Delete Product B (Duplicate)'}
+            <button class="btn-delete-item" data-delete-prod="B" data-match-id="${m.id}" title="Delete Product B directly from catalog JSON">
+              🗑️ Delete Product B (Duplicate)
             </button>
           </div>
         </div>
 
         <div class="dedup-card-actions">
           <button class="filter-pill-btn" data-action="dismiss" data-match-id="${m.id}" title="Mark this pair as distinct pieces">
-            ${isReviewed ? '↩ Unmark' : '✕ Keep Both as Separate Pieces'}
+            ✕ Keep Both as Separate Pieces
           </button>
         </div>
       `;
@@ -452,21 +456,26 @@
         });
       });
 
-      // Event Listeners for action buttons
-      card.querySelector('[data-merge-prod="A"]').addEventListener('click', () => {
-        toggleMerge(m, 'A');
+      // Event Listeners for action buttons (Instant Auto-Save & Disk Write)
+      card.querySelector('[data-merge-prod="A"]').addEventListener('click', (e) => {
+        e.stopPropagation();
+        autoApplyMerge(m, 'A');
       });
-      card.querySelector('[data-merge-prod="B"]').addEventListener('click', () => {
-        toggleMerge(m, 'B');
+      card.querySelector('[data-merge-prod="B"]').addEventListener('click', (e) => {
+        e.stopPropagation();
+        autoApplyMerge(m, 'B');
       });
-      card.querySelector('[data-delete-prod="A"]').addEventListener('click', () => {
-        toggleDeletion(pA);
+      card.querySelector('[data-delete-prod="A"]').addEventListener('click', (e) => {
+        e.stopPropagation();
+        autoApplyDelete(pA, m, 'A');
       });
-      card.querySelector('[data-delete-prod="B"]').addEventListener('click', () => {
-        toggleDeletion(pB);
+      card.querySelector('[data-delete-prod="B"]').addEventListener('click', (e) => {
+        e.stopPropagation();
+        autoApplyDelete(pB, m, 'B');
       });
-      card.querySelector('[data-action="dismiss"]').addEventListener('click', () => {
-        toggleDismiss(m.id);
+      card.querySelector('[data-action="dismiss"]').addEventListener('click', (e) => {
+        e.stopPropagation();
+        autoApplyDismiss(m);
       });
 
       DOM.cardsContainer.appendChild(card);
@@ -807,195 +816,370 @@
     if (!activeDetailProduct) return;
     const { prod, match, target } = activeDetailProduct;
 
-    // Merge status
-    const merge = markedMerges.get(match.id);
-    const isMaster = merge && merge.target === target;
-    const otherTarget = target === 'A' ? 'B' : 'A';
-    const isAbsorbed = merge && merge.target === otherTarget;
-
     if (DOM.modalMergeBtn) {
-      if (isMaster) {
-        DOM.modalMergeBtn.className = 'btn-merge-item active-merged';
-        DOM.modalMergeBtn.textContent = '✓ Marked as Master (Will Absorb Duplicate)';
-      } else if (isAbsorbed) {
-        DOM.modalMergeBtn.className = 'btn-merge-item';
-        DOM.modalMergeBtn.textContent = '🔄 Switch to Master (Absorb other piece)';
-      } else {
-        DOM.modalMergeBtn.className = 'btn-merge-item';
-        DOM.modalMergeBtn.textContent = `🔄 Keep as Master Piece (Absorb ${target === 'A' ? 'Product B' : 'Product A'})`;
-      }
+      DOM.modalMergeBtn.className = 'btn-merge-item';
+      DOM.modalMergeBtn.textContent = `⚡ Auto-Merge Photos into this Piece (Absorb ${target === 'A' ? 'Product B' : 'Product A'})`;
     }
 
-    // Delete status
-    const isDel = markedDeletions.has(prod.id);
     if (DOM.modalDeleteBtn) {
-      if (isDel) {
-        DOM.modalDeleteBtn.className = 'btn-delete-item active-deleted';
-        DOM.modalDeleteBtn.textContent = '✓ Marked for Removal';
-      } else {
-        DOM.modalDeleteBtn.className = 'btn-delete-item';
-        DOM.modalDeleteBtn.textContent = '🗑️ Mark for Removal';
-      }
+      DOM.modalDeleteBtn.className = 'btn-delete-item';
+      DOM.modalDeleteBtn.textContent = '🗑️ Auto-Delete this Piece from JSON';
     }
   }
 
-  function toggleMerge(match, target) {
+  /* ==========================================================================
+     INSTANT AUTO-SAVE & DIRECT JSON MODIFICATION ENGINE
+     ========================================================================== */
+
+  function getSavedActions() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY_ACTIONS) || '{}');
+    } catch {
+      return {};
+    }
+  }
+
+  function saveActionLocally(record) {
+    try {
+      const actions = getSavedActions();
+      actions[record.matchId] = record;
+      localStorage.setItem(STORAGE_KEY_ACTIONS, JSON.stringify(actions));
+      recentActions.push(record);
+      updateBottomTray();
+    } catch (e) {
+      console.warn('LocalStorage save failed:', e);
+    }
+  }
+
+  function removeActionLocally(matchId) {
+    try {
+      const actions = getSavedActions();
+      delete actions[matchId];
+      localStorage.setItem(STORAGE_KEY_ACTIONS, JSON.stringify(actions));
+      recentActions = recentActions.filter(a => a.matchId !== matchId);
+      updateBottomTray();
+    } catch (e) {
+      console.warn('LocalStorage remove failed:', e);
+    }
+  }
+
+  function enqueueOffline(req) {
+    try {
+      const q = JSON.parse(localStorage.getItem(STORAGE_KEY_QUEUE) || '[]');
+      q.push(req);
+      localStorage.setItem(STORAGE_KEY_QUEUE, JSON.stringify(q));
+    } catch (e) {
+      console.warn('Failed to enqueue offline request:', e);
+    }
+  }
+
+  async function flushOfflineQueue() {
+    try {
+      const q = JSON.parse(localStorage.getItem(STORAGE_KEY_QUEUE) || '[]');
+      if (!q.length) return;
+      setAutoSaveStatus('saving', `⚡ Syncing ${q.length} queued offline action${q.length === 1 ? '' : 's'} to disk...`);
+      const remaining = [];
+      for (const item of q) {
+        try {
+          const res = await fetch(item.url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(item.body)
+          });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+        } catch {
+          remaining.push(item);
+        }
+      }
+      localStorage.setItem(STORAGE_KEY_QUEUE, JSON.stringify(remaining));
+      if (!remaining.length) {
+        setAutoSaveStatus('saved', '✓ All changes synced directly to JSON files');
+      } else {
+        setAutoSaveStatus('offline', `⚠️ ${remaining.length} changes queued in browser`);
+      }
+    } catch (e) {
+      console.warn('Error flushing offline queue:', e);
+    }
+  }
+
+  function setAutoSaveStatus(state, msg) {
+    if (!DOM.autoSavePill || !DOM.autoSaveStatusText) return;
+    DOM.autoSavePill.className = `auto-save-status-pill status-${state}`;
+    DOM.autoSaveStatusText.textContent = msg;
+  }
+
+  async function autoApplyMerge(match, target) {
+    const master = target === 'A' ? match.productA : match.productB;
+    const dup = target === 'A' ? match.productB : match.productA;
     const matchId = match.id;
-    const existing = markedMerges.get(matchId);
 
-    // If already marked for this target, toggle off
-    if (existing && existing.target === target) {
-      markedMerges.delete(matchId);
-      showToast('Unmarked merge');
-    } else {
-      // Clear any pending deletion on these products to avoid conflict
-      markedDeletions.delete(match.productA.id);
-      markedDeletions.delete(match.productB.id);
+    // Visual feedback on card
+    const card = document.querySelector(`.dedup-card[data-match-id="${matchId}"]`);
+    if (card) {
+      card.classList.add('card-resolving');
+      const banner = document.createElement('div');
+      banner.className = 'card-auto-saved-banner';
+      banner.innerHTML = `✓ Photos Merged into <strong>${master.name}</strong> · Auto-Saved Directly to JSON`;
+      card.prepend(banner);
+    }
 
-      const master = target === 'A' ? match.productA : match.productB;
-      const dup = target === 'A' ? match.productB : match.productA;
+    if (DOM.pdpModal && DOM.pdpModal.classList.contains('active')) {
+      showToast(`Merged photos into ${master.name}! Auto-saved to JSON.`, '⚡');
+      setTimeout(closeProductDetailModal, 450);
+    }
 
-      markedMerges.set(matchId, {
+    setAutoSaveStatus('saving', `⚡ Auto-saving merge: ${dup.name} → ${master.name}...`);
+
+    const actionRecord = {
+      type: 'merge',
+      matchId: matchId,
+      match: match,
+      master: { catalogFile: master.catalogFile, name: master.name, id: master.id },
+      dup: { catalogFile: dup.catalogFile, name: dup.name, id: dup.id },
+      timestamp: Date.now()
+    };
+
+    // 1. Bulletproof local persistence
+    saveActionLocally(actionRecord);
+
+    // 2. Dispatch to backend server to modify disk JSON directly
+    const payload = {
+      merges: [{
         masterCatalogFile: master.catalogFile,
         masterName: master.name,
         dupCatalogFile: dup.catalogFile,
-        dupName: dup.name,
-        target: target,
-        masterProd: master,
-        dupProd: dup
+        dupName: dup.name
+      }],
+      matchId: matchId
+    };
+
+    try {
+      const res = await fetch('/api/merge-products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
-      showToast(`Will merge photos into ${master.name}`, '🔄');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      setAutoSaveStatus('saved', `✓ Auto-Saved: ${master.catalogFile} & duplicates-report.json updated`);
+      showToastWithUndo(`Merged photos into "${master.name}"`, actionRecord);
+    } catch (err) {
+      console.warn('Server offline, queued merge in localStorage:', err);
+      enqueueOffline({ url: '/api/merge-products', body: payload });
+      setAutoSaveStatus('offline', '☁️ Saved to localStorage (will sync to disk when server is online)');
+      showToastWithUndo(`Merged (Saved in browser)`, actionRecord);
     }
 
-    updateBottomTray();
-    renderCards();
+    // Smoothly remove card from view after brief confirmation
+    setTimeout(() => {
+      allMatches = allMatches.filter(m => m.id !== matchId);
+      applyFilters();
+    }, 1100);
   }
 
-  function toggleDeletion(prod) {
-    if (markedDeletions.has(prod.id)) {
-      markedDeletions.delete(prod.id);
-      showToast(`Unmarked ${prod.name}`);
-    } else {
-      markedDeletions.set(prod.id, {
-        id: prod.id,
-        name: prod.name,
+  async function autoApplyDelete(prod, match, target) {
+    const matchId = match.id;
+    const otherProd = target === 'A' ? match.productB : match.productA;
+
+    const card = document.querySelector(`.dedup-card[data-match-id="${matchId}"]`);
+    if (card) {
+      card.classList.add('card-resolving');
+      const banner = document.createElement('div');
+      banner.className = 'card-auto-saved-banner';
+      banner.innerHTML = `🗑️ <strong>${prod.name}</strong> Deleted · Auto-Saved Directly to JSON`;
+      card.prepend(banner);
+    }
+
+    if (DOM.pdpModal && DOM.pdpModal.classList.contains('active')) {
+      showToast(`Deleted ${prod.name}! Auto-saved to JSON.`, '🗑️');
+      setTimeout(closeProductDetailModal, 450);
+    }
+
+    setAutoSaveStatus('saving', `⚡ Auto-saving removal of ${prod.name}...`);
+
+    const actionRecord = {
+      type: 'delete',
+      matchId: matchId,
+      match: match,
+      deletedProduct: { catalogFile: prod.catalogFile, name: prod.name, id: prod.id, itemIndex: prod.itemIndex },
+      keptProduct: { catalogFile: otherProd.catalogFile, name: otherProd.name, id: otherProd.id },
+      timestamp: Date.now()
+    };
+
+    saveActionLocally(actionRecord);
+
+    const payload = {
+      itemsToDelete: [{
         catalogFile: prod.catalogFile,
+        name: prod.name,
         itemIndex: prod.itemIndex
+      }],
+      matchId: matchId
+    };
+
+    try {
+      const res = await fetch('/api/delete-products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
-      showToast(`Marked ${prod.name} for deletion`, '🗑️');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      setAutoSaveStatus('saved', `✓ Auto-Saved: ${prod.catalogFile} & duplicates-report.json updated`);
+      showToastWithUndo(`Deleted "${prod.name}" from catalog`, actionRecord);
+    } catch (err) {
+      console.warn('Server offline, queued deletion in localStorage:', err);
+      enqueueOffline({ url: '/api/delete-products', body: payload });
+      setAutoSaveStatus('offline', '☁️ Saved to localStorage (will sync to disk when server is online)');
+      showToastWithUndo(`Deleted (Saved in browser)`, actionRecord);
     }
-    updateBottomTray();
-    renderCards();
+
+    setTimeout(() => {
+      allMatches = allMatches.filter(m => m.id !== matchId);
+      applyFilters();
+    }, 1100);
   }
 
-  function toggleDismiss(matchId) {
-    if (reviewedPairs.has(matchId)) {
-      reviewedPairs.delete(matchId);
-    } else {
-      reviewedPairs.add(matchId);
-      showToast('Pair marked as reviewed / kept');
+  async function autoApplyDismiss(match) {
+    const matchId = match.id;
+
+    const card = document.querySelector(`.dedup-card[data-match-id="${matchId}"]`);
+    if (card) {
+      card.classList.add('card-resolving');
+      const banner = document.createElement('div');
+      banner.className = 'card-auto-saved-banner';
+      banner.innerHTML = `✓ Kept both pieces as distinct · Auto-Saved to Report`;
+      card.prepend(banner);
     }
-    renderCards();
+
+    setAutoSaveStatus('saving', '⚡ Marking pair as distinct pieces...');
+
+    const actionRecord = {
+      type: 'dismiss',
+      matchId: matchId,
+      match: match,
+      timestamp: Date.now()
+    };
+
+    saveActionLocally(actionRecord);
+
+    const payload = { matchId: matchId };
+
+    try {
+      const res = await fetch('/api/dismiss-match', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      setAutoSaveStatus('saved', `✓ Saved: Kept as distinct pieces`);
+      showToastWithUndo(`Kept both pieces as distinct`, actionRecord);
+    } catch (err) {
+      console.warn('Server offline, queued dismiss in localStorage:', err);
+      enqueueOffline({ url: '/api/dismiss-match', body: payload });
+      setAutoSaveStatus('offline', '☁️ Saved to localStorage (offline)');
+      showToastWithUndo(`Marked as kept (Saved in browser)`, actionRecord);
+    }
+
+    setTimeout(() => {
+      allMatches = allMatches.filter(m => m.id !== matchId);
+      applyFilters();
+    }, 900);
+  }
+
+  async function undoLastAction(targetAction = null) {
+    const action = targetAction || recentActions[recentActions.length - 1];
+    if (!action) {
+      showToast('No actions to undo', 'ℹ️');
+      return;
+    }
+
+    setAutoSaveStatus('saving', '⚡ Reverting last modification on disk...');
+
+    try {
+      const res = await fetch('/api/undo-action', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ matchId: action.matchId })
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      setAutoSaveStatus('saved', '✓ Action successfully reverted on disk & in manifests');
+    } catch (err) {
+      console.warn('Could not undo on disk (maybe offline):', err);
+      setAutoSaveStatus('saved', '✓ Action reverted in session');
+    }
+
+    // Remove from local storage
+    removeActionLocally(action.matchId);
+
+    // Restore match into allMatches if not already there
+    if (action.match && !allMatches.some(m => m.id === action.matchId)) {
+      allMatches.unshift(action.match);
+      applyFilters();
+    }
+
+    showToast(`Reverted: ${action.type.toUpperCase()} on "${action.match?.productA?.name || 'Item'}"`, '↩️');
+    updateBottomTray();
+  }
+
+  function showToastWithUndo(msg, actionRecord) {
+    if (!DOM.toastContainer) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `
+      <div style="display:flex; align-items:center; gap:0.5rem; flex:1;">
+        <span style="font-size:1.1rem;">⚡</span>
+        <span>${msg}</span>
+      </div>
+      <button class="toast-undo-btn" title="Undo this action and restore original JSON">↩️ Undo</button>
+    `;
+
+    const undoBtn = toast.querySelector('.toast-undo-btn');
+    if (undoBtn) {
+      undoBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        undoLastAction(actionRecord);
+        toast.remove();
+      });
+    }
+
+    DOM.toastContainer.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(10px)';
+      setTimeout(() => toast.remove(), 300);
+    }, 5000);
   }
 
   function updateBottomTray() {
-    const delCount = markedDeletions.size;
-    const mergeCount = markedMerges.size;
-    const totalCount = delCount + mergeCount;
-
+    const count = recentActions.length;
     if (DOM.trayCountText) {
-      const parts = [];
-      if (mergeCount > 0) parts.push(`${mergeCount} Pair${mergeCount === 1 ? '' : 's'} to Merge Photos`);
-      if (delCount > 0) parts.push(`${delCount} Piece${delCount === 1 ? '' : 's'} to Delete`);
-      DOM.trayCountText.textContent = parts.join(' · ') || '0 Actions Selected';
+      DOM.trayCountText.textContent = `${count} Action${count === 1 ? '' : 's'} Auto-Saved`;
+    }
+
+    const last = recentActions[recentActions.length - 1];
+    if (DOM.traySubText) {
+      if (last) {
+        const desc = last.type === 'merge'
+          ? `Merged into ${last.master.name}`
+          : (last.type === 'delete' ? `Deleted ${last.deletedProduct.name}` : 'Marked as kept');
+        DOM.traySubText.textContent = `Latest: ${desc}`;
+      } else {
+        DOM.traySubText.textContent = 'All modifications are written directly to JSON files';
+      }
+    }
+
+    if (DOM.btnTrayUndo) {
+      DOM.btnTrayUndo.disabled = count === 0;
+      if (DOM.btnTrayUndoText) {
+        DOM.btnTrayUndoText.textContent = count > 0 ? `↩️ Undo Last (${last?.type || ''})` : '↩️ Undo';
+      }
     }
 
     if (DOM.bottomTray) {
-      if (totalCount > 0) {
+      if (count > 0) {
         DOM.bottomTray.classList.add('visible');
       } else {
         DOM.bottomTray.classList.remove('visible');
       }
-    }
-  }
-
-  async function executeBatchActions() {
-    const delCount = markedDeletions.size;
-    const mergeCount = markedMerges.size;
-    if (delCount === 0 && mergeCount === 0) return;
-
-    DOM.btnApplyPrune.disabled = true;
-    DOM.btnApplyPrune.textContent = '⏳ Applying Updates...';
-
-    let successMsg = [];
-
-    try {
-      // 1. Execute Merges
-      if (mergeCount > 0) {
-        const merges = Array.from(markedMerges.values()).map(m => ({
-          masterCatalogFile: m.masterCatalogFile,
-          masterName: m.masterName,
-          dupCatalogFile: m.dupCatalogFile,
-          dupName: m.dupName
-        }));
-
-        const resMerge = await fetch('/api/merge-products', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ merges })
-        });
-
-        if (!resMerge.ok) throw new Error(`Merge API Error: HTTP ${resMerge.status}`);
-        const resMergeData = await resMerge.json();
-        successMsg.push(`Merged ${resMergeData.mergedCount || mergeCount} product photo galleries`);
-      }
-
-      // 2. Execute Deletions
-      if (delCount > 0) {
-        const itemsToDelete = Array.from(markedDeletions.values());
-        const resDel = await fetch('/api/delete-products', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ itemsToDelete })
-        });
-
-        if (!resDel.ok) throw new Error(`Delete API Error: HTTP ${resDel.status}`);
-        const resDelData = await resDel.json();
-        successMsg.push(`Pruned ${resDelData.removedCount || delCount} duplicate entries`);
-      }
-
-      showToast(successMsg.join(' & ') + '!', '✨');
-
-      // Clear processed matches from view
-      const mergedMatchIds = new Set(markedMerges.keys());
-      const deletedIds = new Set(markedDeletions.keys());
-
-      allMatches = allMatches.filter(m => {
-        if (mergedMatchIds.has(m.id)) return false;
-        if (deletedIds.has(m.productA.id) || deletedIds.has(m.productB.id)) return false;
-        return true;
-      });
-
-      markedMerges.clear();
-      markedDeletions.clear();
-      updateBottomTray();
-      applyFilters();
-
-    } catch (err) {
-      console.warn('Backend endpoint unavailable, providing JSON export fallback:', err);
-      showToast('Exporting change batch...', '📁');
-      const batchData = {
-        merges: Array.from(markedMerges.values()),
-        deletions: Array.from(markedDeletions.values())
-      };
-      const blob = new Blob([JSON.stringify(batchData, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `furniture-dedup-batch-${Date.now()}.json`;
-      a.click();
-    } finally {
-      DOM.btnApplyPrune.disabled = false;
-      DOM.btnApplyPrune.textContent = '💾 Apply Deletions & Merges';
     }
   }
 
