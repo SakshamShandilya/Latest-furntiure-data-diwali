@@ -3124,6 +3124,25 @@
     // Theme Switcher
     DOM.btnThemeToggle.addEventListener('click', toggleTheme);
 
+    // Currency Switcher
+    const CURRENCIES = [
+      { code: 'USD', symbol: '$', label: 'USD ($)' },
+      { code: 'EUR', symbol: '€', label: 'EUR (€)' },
+      { code: 'GBP', symbol: '£', label: 'GBP (£)' },
+      { code: 'INR', symbol: '₹', label: 'INR (₹)' }
+    ];
+    let currentCurrencyIdx = 0;
+    const btnCurrency = document.getElementById('btn-currency');
+    if (btnCurrency) {
+      btnCurrency.addEventListener('click', () => {
+        currentCurrencyIdx = (currentCurrencyIdx + 1) % CURRENCIES.length;
+        const curr = CURRENCIES[currentCurrencyIdx];
+        const textSpan = document.getElementById('top-currency-text') || btnCurrency;
+        textSpan.textContent = curr.label;
+        showToast(`Currency set to ${curr.label}`, '💱');
+      });
+    }
+
     // Layout Buttons
     DOM.layoutBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -3204,32 +3223,69 @@
       applyFiltersAndSort();
     });
 
-    // Tablet & Mobile Filter Drawer Toggle & Interactions
-    const toggleFilterDrawer = (open) => {
-      state.sidebarOpenMobile = typeof open === 'boolean' ? open : !state.sidebarOpenMobile;
-      DOM.filterSidebar.classList.toggle('mobile-open', state.sidebarOpenMobile);
-      if (DOM.filterDrawerBackdrop) {
-        DOM.filterDrawerBackdrop.classList.toggle('active', state.sidebarOpenMobile);
+    // Tablet & Mobile Filter Drawer Toggle & Desktop Collapsible Sidebar
+    const isDrawerMode = () => window.innerWidth <= 1200 || (window.innerWidth <= 1366 && window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+
+    const toggleFilterDrawer = (forceState) => {
+      if (isDrawerMode()) {
+        const willOpen = typeof forceState === 'boolean' ? forceState : !DOM.filterSidebar.classList.contains('mobile-open');
+        state.sidebarOpenMobile = willOpen;
+        DOM.filterSidebar.classList.toggle('mobile-open', willOpen);
+        if (DOM.filterDrawerBackdrop) {
+          DOM.filterDrawerBackdrop.classList.toggle('active', willOpen);
+        }
+        document.body.classList.toggle('drawer-open-lock', willOpen);
+        DOM.btnToggleFilters.classList.toggle('active', willOpen);
+      } else {
+        // Desktop collapsible in-flow sidebar (17-inch screen & large monitors)
+        const willCollapse = typeof forceState === 'boolean' ? !forceState : !DOM.contentContainer.classList.contains('sidebar-collapsed');
+        DOM.contentContainer.classList.toggle('sidebar-collapsed', willCollapse);
+        DOM.btnToggleFilters.classList.toggle('sidebar-collapsed', willCollapse);
+        state.sidebarCollapsedDesktop = willCollapse;
       }
-      document.body.classList.toggle('drawer-open-lock', state.sidebarOpenMobile && window.innerWidth <= 1100);
     };
 
-    DOM.btnToggleFilters.addEventListener('click', () => toggleFilterDrawer());
+    DOM.btnToggleFilters.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleFilterDrawer();
+    });
+
     if (DOM.btnCloseFilterSidebar) {
-      DOM.btnCloseFilterSidebar.addEventListener('click', () => toggleFilterDrawer(false));
+      DOM.btnCloseFilterSidebar.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleFilterDrawer(false);
+      });
     }
+
     if (DOM.filterDrawerBackdrop) {
-      DOM.filterDrawerBackdrop.addEventListener('click', () => toggleFilterDrawer(false));
+      DOM.filterDrawerBackdrop.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleFilterDrawer(false);
+      });
     }
+
     if (DOM.btnApplyFiltersDrawer) {
-      DOM.btnApplyFiltersDrawer.addEventListener('click', () => toggleFilterDrawer(false));
+      DOM.btnApplyFiltersDrawer.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleFilterDrawer(false);
+      });
     }
+
     if (DOM.btnSidebarResetMobile) {
-      DOM.btnSidebarResetMobile.addEventListener('click', () => {
+      DOM.btnSidebarResetMobile.addEventListener('click', (e) => {
+        e.preventDefault();
         resetFilters(true);
         toggleFilterDrawer(false);
       });
     }
+
+    // Window resize safeguard: clean up drawer state when resizing to desktop
+    window.addEventListener('resize', () => {
+      if (!isDrawerMode() && state.sidebarOpenMobile) {
+        toggleFilterDrawer(false);
+      }
+    });
 
     // Filter Group Accordion Collapsing
     document.querySelectorAll('.filter-group-header').forEach(header => {

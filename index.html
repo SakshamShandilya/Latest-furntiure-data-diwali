@@ -26,22 +26,24 @@
         <svg id="theme-icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         <span id="theme-text">Dark Mode</span>
       </button>
-      <span style="opacity:0.3">|</span>
-      <button class="top-bar-btn" id="btn-currency">USD ($)</button>
-      <span style="opacity:0.3">|</span>
+      <span class="top-bar-divider" style="opacity:0.3">|</span>
+      <button class="top-bar-btn" id="btn-currency" title="Click to Switch Currency">
+        <span id="top-currency-text">USD ($)</span>
+      </button>
+      <span class="top-bar-divider" style="opacity:0.3">|</span>
       <button class="top-bar-btn" id="btn-open-media-panel-top" style="color:var(--accent-gold); font-weight:600;" title="Inspect total image counts and video status for all products">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        <span id="top-media-count-text">Media: 570 Img · 0 Vid</span>
+        <span id="top-media-count-text">Media</span>
       </button>
-      <span style="opacity:0.3">|</span>
+      <span class="top-bar-divider" style="opacity:0.3">|</span>
       <button class="top-bar-btn" id="btn-open-ubbaco-hub" style="color:var(--accent-gold); font-weight:600;" title="Open Ubbaco Manual Dimension Editor">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-        <span>Ubbaco Dimensions (Manual)</span>
+        <span class="top-btn-label">Dimensions</span>
       </button>
-      <span style="opacity:0.3">|</span>
-      <button class="top-bar-btn" id="btn-open-catalog-hub-top" style="color:var(--accent-gold); font-weight:600;">
+      <span class="top-bar-divider" style="opacity:0.3">|</span>
+      <button class="top-bar-btn" id="btn-open-catalog-hub-top" style="color:var(--accent-gold); font-weight:600;" title="Data Hub / Catalog Manager">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-        <span>Data Hub / Add JSON</span>
+        <span class="top-btn-label">Data Hub</span>
       </button>
     </div>
   </div>
@@ -76,27 +78,27 @@
         <!-- Media Audit Panel Button -->
         <button class="action-btn" id="btn-open-media-panel" title="Inspect total image counts and video status for each product">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          <span>Media Audit</span>
+          <span class="btn-label">Media Audit</span>
           <span class="badge-pill" id="media-badge">570</span>
         </button>
 
         <!-- Add JSON Button -->
         <button class="action-btn" id="btn-open-catalog-hub" title="Import or manage JSON datasets">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-          <span>Add JSON</span>
+          <span class="btn-label">Add JSON</span>
         </button>
 
         <!-- Wishlist Button -->
         <button class="action-btn" id="btn-open-wishlist" title="View Saved Pieces">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-          <span>Wishlist</span>
+          <span class="btn-label">Wishlist</span>
           <span class="badge-pill" id="wishlist-badge">0</span>
         </button>
 
         <!-- Cart / Bag Button -->
         <button class="action-btn primary" id="btn-open-cart" title="View Shopping Bag">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-          <span>Bag</span>
+          <span class="btn-label">Bag</span>
           <span class="badge-pill" id="cart-badge">0</span>
         </button>
       </div>

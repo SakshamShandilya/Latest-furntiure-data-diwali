@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-10-12T12:37:29.460Z",
-  "totalCatalogs": 34,
+  "updatedAt": "2026-10-15T07:45:29.657Z",
+  "totalCatalogs": 44,
   "catalogs": [
     {
       "id": "sofa-modani-latest",
@@ -17,6 +17,20 @@
       "default": true
     },
     {
+      "id": "accent-chair-acanva",
+      "category": "Accent Chair",
+      "brand": "Acanva",
+      "rawBrand": "Acanva",
+      "displayName": "Acanva · Accent Chair",
+      "fileName": "acanva_accent_chairs.json",
+      "relativePath": "Accent Chair/Acanva/acanva_accent_chairs.json",
+      "itemCount": 11,
+      "totalImages": 364,
+      "totalVideos": 0,
+      "isLatest": false,
+      "default": false
+    },
+    {
       "id": "accent-chair-danetti",
       "category": "Accent Chair",
       "brand": "Danetti",
@@ -26,6 +40,20 @@
       "relativePath": "Accent Chair/Danetti/danetti_accent_chairs.json",
       "itemCount": 50,
       "totalImages": 1043,
+      "totalVideos": 0,
+      "isLatest": false,
+      "default": false
+    },
+    {
+      "id": "accent-chair-fendi-casa",
+      "category": "Accent Chair",
+      "brand": "Fendi casa",
+      "rawBrand": "Fendi casa",
+      "displayName": "Fendi casa · Accent Chair",
+      "fileName": "fendi_casa_armchairs.json",
+      "relativePath": "Accent Chair/Fendi casa/fendi_casa_armchairs.json",
+      "itemCount": 17,
+      "totalImages": 80,
       "totalVideos": 0,
       "isLatest": false,
       "default": false
@@ -73,6 +101,20 @@
       "default": false
     },
     {
+      "id": "accent-chair-sepia-homes",
+      "category": "Accent Chair",
+      "brand": "Sepia Homes",
+      "rawBrand": "Sepia Homes",
+      "displayName": "Sepia Homes · Accent Chair",
+      "fileName": "sepiahomes_accent_chairs.json",
+      "relativePath": "Accent Chair/Sepia Homes/sepiahomes_accent_chairs.json",
+      "itemCount": 19,
+      "totalImages": 495,
+      "totalVideos": 0,
+      "isLatest": false,
+      "default": false
+    },
+    {
       "id": "accent-chair-ubbaco",
       "category": "Accent Chair",
       "brand": "Ubbaco",
@@ -82,6 +124,34 @@
       "relativePath": "Accent Chair/Ubbaco/ubbaco_accent_chairs.json",
       "itemCount": 30,
       "totalImages": 163,
+      "totalVideos": 0,
+      "isLatest": false,
+      "default": false
+    },
+    {
+      "id": "accent-chair-westelm",
+      "category": "Accent Chair",
+      "brand": "Westelm",
+      "rawBrand": "Westelm",
+      "displayName": "Westelm · Accent Chair",
+      "fileName": "westelm_chairs.json",
+      "relativePath": "Accent Chair/Westelm/westelm_chairs.json",
+      "itemCount": 12,
+      "totalImages": 72,
+      "totalVideos": 0,
+      "isLatest": false,
+      "default": false
+    },
+    {
+      "id": "beds-acanva",
+      "category": "Beds",
+      "brand": "Acanva",
+      "rawBrand": "Acanva",
+      "displayName": "Acanva · Beds",
+      "fileName": "acanva_beds.json",
+      "relativePath": "Beds/Acanva/acanva_beds.json",
+      "itemCount": 4,
+      "totalImages": 73,
       "totalVideos": 0,
       "isLatest": false,
       "default": false
@@ -255,6 +325,20 @@
       "default": false
     },
     {
+      "id": "benches-sepia-homes",
+      "category": "Benches",
+      "brand": "Sepia Homes",
+      "rawBrand": "Sepia Homes",
+      "displayName": "Sepia Homes · Benches",
+      "fileName": "sepiahomes_ottomans.json",
+      "relativePath": "Benches/Sepia Homes/sepiahomes_ottomans.json",
+      "itemCount": 23,
+      "totalImages": 548,
+      "totalVideos": 0,
+      "isLatest": false,
+      "default": false
+    },
+    {
       "id": "console-table-danetti",
       "category": "Console Table",
       "brand": "Danetti",
@@ -367,6 +451,34 @@
       "default": false
     },
     {
+      "id": "sofa-flamingo",
+      "category": "Sofa",
+      "brand": "Flamingo",
+      "rawBrand": "Flamingo",
+      "displayName": "Flamingo · Sofa",
+      "fileName": "theflamingolife_sofas.json",
+      "relativePath": "Sofa/Flamingo/theflamingolife_sofas.json",
+      "itemCount": 41,
+      "totalImages": 192,
+      "totalVideos": 0,
+      "isLatest": false,
+      "default": false
+    },
+    {
+      "id": "sofa-furniture-boutiq",
+      "category": "Sofa",
+      "brand": "Furniture Boutiq",
+      "rawBrand": "Furniture Boutiq",
+      "displayName": "Furniture Boutiq · Sofa",
+      "fileName": "furnitureboutiq_sofas.json",
+      "relativePath": "Sofa/Furniture Boutiq/furnitureboutiq_sofas.json",
+      "itemCount": 18,
+      "totalImages": 258,
+      "totalVideos": 0,
+      "isLatest": false,
+      "default": false
+    },
+    {
       "id": "sofa-gharana",
       "category": "Sofa",
       "brand": "Gharana",
@@ -432,6 +544,34 @@
       "relativePath": "Sofa/Ubbaco/ubbaco_sofas.json",
       "itemCount": 37,
       "totalImages": 231,
+      "totalVideos": 0,
+      "isLatest": false,
+      "default": false
+    },
+    {
+      "id": "sofa-uber-decor",
+      "category": "Sofa",
+      "brand": "Uber Decor",
+      "rawBrand": "Uber Decor",
+      "displayName": "Uber Decor · Sofa",
+      "fileName": "uberdecor_sofas.json",
+      "relativePath": "Sofa/Uber Decor/uberdecor_sofas.json",
+      "itemCount": 225,
+      "totalImages": 2322,
+      "totalVideos": 0,
+      "isLatest": false,
+      "default": false
+    },
+    {
+      "id": "sofa-wooden-it-be-nice",
+      "category": "Sofa",
+      "brand": "Wooden it be nice",
+      "rawBrand": "Wooden it be nice",
+      "displayName": "Wooden it be nice · Sofa",
+      "fileName": "wooden_it_be_nice_sofas.json",
+      "relativePath": "Sofa/Wooden it be nice/wooden_it_be_nice_sofas.json",
+      "itemCount": 49,
+      "totalImages": 907,
       "totalVideos": 0,
       "isLatest": false,
       "default": false
