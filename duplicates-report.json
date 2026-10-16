@@ -1,429 +1,13 @@
 {
   "generatedAt": "2026-10-16 02:17:53",
   "totalProductsScanned": 1734,
-  "totalDuplicatesFound": 126,
+  "totalDuplicatesFound": 113,
   "breakdown": {
     "exactDuplicates": 10,
     "nearIdentical": 0,
     "visualLookalikes": 116
   },
   "matches": [
-    {
-      "id": "dup_31",
-      "similarity": 100.0,
-      "matchType": "Exact Duplicate",
-      "pDist": 0,
-      "dDist": 0,
-      "colorSim": 1.0,
-      "isSameBrand": true,
-      "category": "Sofa",
-      "productA": {
-        "id": "sofa-baywindow_item_24",
-        "name": "Caprice 3 Seater",
-        "brand": "Baywindow",
-        "category": "Sofa",
-        "catalogId": "sofa-baywindow",
-        "catalogFile": "Sofa/Baywindow/sofas.json",
-        "itemIndex": 24,
-        "price": "\u20b9145,100",
-        "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Caprice.jpg"
-      },
-      "productB": {
-        "id": "sofa-baywindow_item_25",
-        "name": "Caprice 2 Seater",
-        "brand": "Baywindow",
-        "category": "Sofa",
-        "catalogId": "sofa-baywindow",
-        "catalogFile": "Sofa/Baywindow/sofas.json",
-        "itemIndex": 25,
-        "price": "\u20b9116,950",
-        "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Caprice.jpg"
-      }
-    },
-    {
-      "id": "dup_100",
-      "similarity": 100.0,
-      "matchType": "Exact Duplicate",
-      "pDist": 0,
-      "dDist": 0,
-      "colorSim": 1.0,
-      "isSameBrand": true,
-      "category": "Sofa",
-      "productA": {
-        "id": "sofa-baywindow_item_204",
-        "name": "Alban 3 Seater Static",
-        "brand": "Baywindow",
-        "category": "Sofa",
-        "catalogId": "sofa-baywindow",
-        "catalogFile": "Sofa/Baywindow/sofas.json",
-        "itemIndex": 204,
-        "price": "\u20b9122,850",
-        "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Alban-Oyester_beige-_SF13136_1.jpg"
-      },
-      "productB": {
-        "id": "sofa-baywindow_item_205",
-        "name": "Alban 2 Seater Static",
-        "brand": "Baywindow",
-        "category": "Sofa",
-        "catalogId": "sofa-baywindow",
-        "catalogFile": "Sofa/Baywindow/sofas.json",
-        "itemIndex": 205,
-        "price": "\u20b9113,400",
-        "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Alban-Oyester_beige-_SF13136_1.jpg"
-      }
-    },
-    {
-      "id": "dup_103",
-      "similarity": 100.0,
-      "matchType": "Exact Duplicate",
-      "pDist": 0,
-      "dDist": 0,
-      "colorSim": 1.0,
-      "isSameBrand": true,
-      "category": "Sofa",
-      "productA": {
-        "id": "sofa-duraster_item_2",
-        "name": "Duraster Chesterfield Traditional Two Seater Sofas #5",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 2,
-        "price": "\u20b972,990",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/21_94e3eace-3598-4af0-9ebb-2b3982f9274d.jpg?v=1655029080"
-      },
-      "productB": {
-        "id": "sofa-duraster_item_89",
-        "name": "Duraster Chesterfield Traditional Three Seater Sofas #7",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 89,
-        "price": "\u20b986,890",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/21_4566066a-b266-4a68-90cd-e4a7e4deb1f6.jpg?v=1655030509"
-      }
-    },
-    {
-      "id": "dup_104",
-      "similarity": 100.0,
-      "matchType": "Exact Duplicate",
-      "pDist": 0,
-      "dDist": 0,
-      "colorSim": 1.0,
-      "isSameBrand": true,
-      "category": "Sofa",
-      "productA": {
-        "id": "sofa-duraster_item_4",
-        "name": "Duraster Daisy Two Seater Sofa Light Grey #1",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 4,
-        "price": "\u20b957,690",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/Daisy-Two-Seater-Sofa-Light-Grey-_10-07.jpg?v=1669721660"
-      },
-      "productB": {
-        "id": "sofa-duraster_item_91",
-        "name": "Duraster Daisy 3 Seater Fabric Sofa (Light Grey) #1",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 91,
-        "price": "\u20b966,890",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/Daisy-Three-Seater-Sofa-Light-Grey-_1-01.jpg?v=1669362051"
-      }
-    },
-    {
-      "id": "dup_105",
-      "similarity": 100.0,
-      "matchType": "Exact Duplicate",
-      "pDist": 0,
-      "dDist": 0,
-      "colorSim": 1.0,
-      "isSameBrand": true,
-      "category": "Sofa",
-      "productA": {
-        "id": "sofa-duraster_item_24",
-        "name": "Duraster Chesterfield Traditional Two Seater Sofas #6",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 24,
-        "price": "\u20b972,990",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/01_e66fa6a0-5bdb-44ef-8148-1825fdc02073.jpg?v=1655029828"
-      },
-      "productB": {
-        "id": "sofa-duraster_item_88",
-        "name": "Duraster Chesterfield Traditional Three Seater Sofas #8",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 88,
-        "price": "\u20b986,890",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/01_475dba60-d200-4d77-83ff-6d8fac3268f3.jpg?v=1655030555"
-      }
-    },
-    {
-      "id": "dup_106",
-      "similarity": 100.0,
-      "matchType": "Exact Duplicate",
-      "pDist": 0,
-      "dDist": 0,
-      "colorSim": 1.0,
-      "isSameBrand": true,
-      "category": "Sofa",
-      "productA": {
-        "id": "sofa-duraster_item_26",
-        "name": "Duraster Daisy Two Seater Sofa Beige #3",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 26,
-        "price": "\u20b954,190",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/daisy-sofa-125_417a757a-72b8-4946-812f-4f79e9ad83ba.jpg?v=1662269760"
-      },
-      "productB": {
-        "id": "sofa-duraster_item_48",
-        "name": "Duraster Daisy Three Seater Sofa Beige #3",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 48,
-        "price": "\u20b966,890",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/daisy-sofa-125.jpg?v=1645417693"
-      }
-    },
-    {
-      "id": "dup_109",
-      "similarity": 100.0,
-      "matchType": "Exact Duplicate",
-      "pDist": 0,
-      "dDist": 0,
-      "colorSim": 1.0,
-      "isSameBrand": true,
-      "category": "Sofa",
-      "productA": {
-        "id": "sofa-duraster_item_31",
-        "name": "Duraster Daisy Two Seater Grey #6",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 31,
-        "price": "\u20b983,190",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/Daisy-Three-Seater-Grey-_6-07_96a1e230-ccc1-4b36-8823-7189e5778ca6.jpg?v=1669364608"
-      },
-      "productB": {
-        "id": "sofa-duraster_item_96",
-        "name": "Duraster Daisy Three Seater Grey #6",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 96,
-        "price": "\u20b995,790",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/Daisy-Three-Seater-Grey-_6-07.jpg?v=1669363025"
-      }
-    },
-    {
-      "id": "dup_110",
-      "similarity": 100.0,
-      "matchType": "Exact Duplicate",
-      "pDist": 0,
-      "dDist": 0,
-      "colorSim": 1.0,
-      "isSameBrand": true,
-      "category": "Sofa",
-      "productA": {
-        "id": "sofa-duraster_item_33",
-        "name": "Duraster Daisy Two Seater Dark Blue #5",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 33,
-        "price": "\u20b982,890",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/Daisy-Three-Seater-Dark-Blue-_5-08_1e2bf53a-00ca-47b4-80ab-629ab74695af.jpg?v=1669364546"
-      },
-      "productB": {
-        "id": "sofa-duraster_item_98",
-        "name": "Duraster Daisy Three Seater Dark Blue #5",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 98,
-        "price": "\u20b995,490",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/Daisy-Three-Seater-Dark-Blue-_5-08.jpg?v=1669364446"
-      }
-    },
-    {
-      "id": "dup_112",
-      "similarity": 100.0,
-      "matchType": "Exact Duplicate",
-      "pDist": 0,
-      "dDist": 0,
-      "colorSim": 1.0,
-      "isSameBrand": true,
-      "category": "Sofa",
-      "productA": {
-        "id": "sofa-duraster_item_37",
-        "name": "Duraster Daisy Modern Two Seater Sofa#1",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 37,
-        "price": "\u20b943,990",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/Daisy-3-Seater-Sofa2_0fbca0a8-b411-46b2-8cc0-c5e82a9addc0.jpg?v=1662196658"
-      },
-      "productB": {
-        "id": "sofa-duraster_item_103",
-        "name": "Duraster Daisy Modern Three Seater Sofa#1",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 103,
-        "price": "\u20b956,590",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/Daisy-3-Seater-Sofa2.jpg?v=1645417711"
-      }
-    },
-    {
-      "id": "dup_108",
-      "similarity": 99.17,
-      "matchType": "Exact Duplicate",
-      "pDist": 0,
-      "dDist": 1,
-      "colorSim": 0.998,
-      "isSameBrand": true,
-      "category": "Sofa",
-      "productA": {
-        "id": "sofa-duraster_item_30",
-        "name": "Duraster Daisy Two Seater Grey #8",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 30,
-        "price": "\u20b954,690",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/Daisy-Two-Seater-Grey-_8-04.jpg?v=1670827038"
-      },
-      "productB": {
-        "id": "sofa-duraster_item_95",
-        "name": "Duraster Daisy Three Seater Grey #8",
-        "brand": "Duraster",
-        "category": "Sofa",
-        "catalogId": "sofa-duraster",
-        "catalogFile": "Sofa/Duraster/duraster_sofa.json",
-        "itemIndex": 95,
-        "price": "\u20b967,190",
-        "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/Daisy-Three-Seater-Grey-_8-03.jpg?v=1670834195"
-      }
-    },
-    {
-      "id": "dup_45",
-      "similarity": 88.34,
-      "matchType": "Visual Lookalike",
-      "pDist": 6,
-      "dDist": 5,
-      "colorSim": 0.936,
-      "isSameBrand": true,
-      "category": "Sofa",
-      "productA": {
-        "id": "sofa-baywindow_item_56",
-        "name": "Mog 3+2 Seater Sofa",
-        "brand": "Baywindow",
-        "category": "Sofa",
-        "catalogId": "sofa-baywindow",
-        "catalogFile": "Sofa/Baywindow/sofas.json",
-        "itemIndex": 56,
-        "price": "\u20b997,990",
-        "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/01.04.004.jpg"
-      },
-      "productB": {
-        "id": "sofa-baywindow_item_77",
-        "name": "Mog 3 Seater Sofa",
-        "brand": "Baywindow",
-        "category": "Sofa",
-        "catalogId": "sofa-baywindow",
-        "catalogFile": "Sofa/Baywindow/sofas.json",
-        "itemIndex": 77,
-        "price": "\u20b954,990",
-        "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF10766_1_e66f193e-6004-4f25-ae56-0ab3305724af.jpg"
-      }
-    },
-    {
-      "id": "dup_113",
-      "similarity": 87.91,
-      "matchType": "Visual Lookalike",
-      "pDist": 2,
-      "dDist": 5,
-      "colorSim": 0.82,
-      "isSameBrand": true,
-      "category": "Sofa",
-      "productA": {
-        "id": "sofa-furniture-boutiq_item_5",
-        "name": "Orlando Genuine Leather Square Arm Chesterfield Sofa",
-        "brand": "Furniture Boutiq",
-        "category": "Sofa",
-        "catalogId": "sofa-furniture-boutiq",
-        "catalogFile": "Sofa/Furniture Boutiq/furnitureboutiq_sofas.json",
-        "itemIndex": 5,
-        "price": "\u20b975,999",
-        "image": "https://cdn.shopify.com/s/files/1/0642/8367/2745/files/1_a94157cf-1d79-4cf5-8c40-12ef77b2ae22.jpg?v=1736594413"
-      },
-      "productB": {
-        "id": "sofa-furniture-boutiq_item_7",
-        "name": "Leonard Genuine Leather Sofa",
-        "brand": "Furniture Boutiq",
-        "category": "Sofa",
-        "catalogId": "sofa-furniture-boutiq",
-        "catalogFile": "Sofa/Furniture Boutiq/furnitureboutiq_sofas.json",
-        "itemIndex": 7,
-        "price": "\u20b998,999",
-        "image": "https://cdn.shopify.com/s/files/1/0642/8367/2745/files/Brimley_99.25_Genuine_Leather_Sofa.jpg?v=1710063049"
-      }
-    },
-    {
-      "id": "dup_36",
-      "similarity": 87.52,
-      "matchType": "Visual Lookalike",
-      "pDist": 6,
-      "dDist": 2,
-      "colorSim": 0.978,
-      "isSameBrand": true,
-      "category": "Sofa",
-      "productA": {
-        "id": "sofa-baywindow_item_33",
-        "name": "Ferran 3 Seater Static",
-        "brand": "Baywindow",
-        "category": "Sofa",
-        "catalogId": "sofa-baywindow",
-        "catalogFile": "Sofa/Baywindow/sofas.json",
-        "itemIndex": 33,
-        "price": "\u20b9117,430",
-        "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13147-1_e90ace33-6db7-4d60-a791-c10c2e13aa9a.jpg"
-      },
-      "productB": {
-        "id": "sofa-baywindow_item_164",
-        "name": "Cerise 3 Seater",
-        "brand": "Baywindow",
-        "category": "Sofa",
-        "catalogId": "sofa-baywindow",
-        "catalogFile": "Sofa/Baywindow/sofas.json",
-        "itemIndex": 164,
-        "price": "\u20b935,990",
-        "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13171_3.jpg"
-      }
-    },
     {
       "id": "dup_66",
       "similarity": 86.76,
@@ -441,7 +25,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 77,
-        "price": "\u20b954,990",
+        "price": "₹54,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF10766_1_e66f193e-6004-4f25-ae56-0ab3305724af.jpg"
       },
       "productB": {
@@ -452,7 +36,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 196,
-        "price": "\u20b932,810",
+        "price": "₹32,810",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Nancy_-_01.04.006.jpg"
       }
     },
@@ -505,7 +89,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 1,
-        "price": "\u20b9254,440",
+        "price": "₹254,440",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13394_Louisiana_Green_Ricliner_3_1.jpg"
       },
       "productB": {
@@ -516,7 +100,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 5,
-        "price": "\u20b9249,680",
+        "price": "₹249,680",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13398-3strrecliner_huskbrown_1.jpg"
       }
     },
@@ -537,7 +121,7 @@
         "catalogId": "sofa-furniture-boutiq",
         "catalogFile": "Sofa/Furniture Boutiq/furnitureboutiq_sofas.json",
         "itemIndex": 13,
-        "price": "\u20b989,999",
+        "price": "₹89,999",
         "image": "https://cdn.shopify.com/s/files/1/0642/8367/2745/files/Banks-Genuine-Leather-Sofa-Furniture-BoutiQ-5650.jpg?v=1708015553"
       },
       "productB": {
@@ -548,7 +132,7 @@
         "catalogId": "sofa-furniture-boutiq",
         "catalogFile": "Sofa/Furniture Boutiq/furnitureboutiq_sofas.json",
         "itemIndex": 17,
-        "price": "\u20b969,999",
+        "price": "₹69,999",
         "image": "https://cdn.shopify.com/s/files/1/0642/8367/2745/files/Asa-82-Velvet-Sofa-Furniture-BoutiQ-1038.jpg?v=1708015203"
       }
     },
@@ -569,7 +153,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 80,
-        "price": "\u20b936,950",
+        "price": "₹36,950",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13847-1_abeac86a-2963-4b7a-bad5-5abde01af301.jpg"
       },
       "productB": {
@@ -580,7 +164,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 181,
-        "price": "\u20b931,760",
+        "price": "₹31,760",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12326-1.jpg"
       }
     },
@@ -601,7 +185,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 111,
-        "price": "\u20b965,990",
+        "price": "₹65,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12168-2_str_oyester_beige_-_1_6152529c-bedc-4897-9efe-a005a45bcd07.jpg"
       },
       "productB": {
@@ -612,7 +196,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 259,
-        "price": "\u20b9182,340",
+        "price": "₹182,340",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Manhattan3seater_1.jpg"
       }
     },
@@ -622,7 +206,7 @@
       "matchType": "Visual Lookalike",
       "pDist": 6,
       "dDist": 4,
-      "colorSim": 1.0,
+      "colorSim": 1,
       "isSameBrand": true,
       "category": "Sofa",
       "productA": {
@@ -633,7 +217,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 2,
-        "price": "\u20b9140,370",
+        "price": "₹140,370",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13441_Louisiana_Grey_2_1.jpg"
       },
       "productB": {
@@ -644,7 +228,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 162,
-        "price": "\u20b934,170",
+        "price": "₹34,170",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/19.001.001_1a29697d-62c0-4821-bfd4-0e0c7c7b81dc.jpg"
       }
     },
@@ -697,7 +281,7 @@
         "catalogId": "accent-chair-sepia-homes",
         "catalogFile": "Accent Chair/Sepia Homes/sepiahomes_accent_chairs.json",
         "itemIndex": 0,
-        "price": "\u20b915,999",
+        "price": "₹15,999",
         "image": "https://cdn.shopify.com/s/files/1/0890/2698/6284/files/6_0600837e-58f9-422b-958b-eb14c9dbab8f.jpg?v=1791104384"
       },
       "productB": {
@@ -708,7 +292,7 @@
         "catalogId": "accent-chair-sepia-homes",
         "catalogFile": "Accent Chair/Sepia Homes/sepiahomes_accent_chairs.json",
         "itemIndex": 3,
-        "price": "\u20b915,999",
+        "price": "₹15,999",
         "image": "https://cdn.shopify.com/s/files/1/0890/2698/6284/files/7_5deea6c1-87d3-48cb-b648-a23aea9bc422.jpg?v=1791104379"
       }
     },
@@ -761,7 +345,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 66,
-        "price": "\u20b983,420",
+        "price": "₹83,420",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12171-4.jpg"
       },
       "productB": {
@@ -772,7 +356,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 194,
-        "price": "\u20b929,740",
+        "price": "₹29,740",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/sf12366beige3str.jpg"
       }
     },
@@ -793,7 +377,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 68,
-        "price": "\u20b949,990",
+        "price": "₹49,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12320.jpg"
       },
       "productB": {
@@ -804,7 +388,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 194,
-        "price": "\u20b929,740",
+        "price": "₹29,740",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/sf12366beige3str.jpg"
       }
     },
@@ -836,7 +420,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 202,
-        "price": "\u20b9137,620",
+        "price": "₹137,620",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Elara_-Husk_Brown-SF13130_1.jpg"
       }
     },
@@ -857,7 +441,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 33,
-        "price": "\u20b9117,430",
+        "price": "₹117,430",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13147-1_e90ace33-6db7-4d60-a791-c10c2e13aa9a.jpg"
       },
       "productB": {
@@ -868,7 +452,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 185,
-        "price": "\u20b925,730",
+        "price": "₹25,730",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12902-1_1ba9c79f-d9b3-44ec-bf49-bd3e03b496a9.jpg"
       }
     },
@@ -889,7 +473,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 24,
-        "price": "\u20b9145,100",
+        "price": "₹145,100",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Caprice.jpg"
       },
       "productB": {
@@ -900,7 +484,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 259,
-        "price": "\u20b9182,340",
+        "price": "₹182,340",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Manhattan3seater_1.jpg"
       }
     },
@@ -921,7 +505,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 25,
-        "price": "\u20b9116,950",
+        "price": "₹116,950",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Caprice.jpg"
       },
       "productB": {
@@ -932,7 +516,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 259,
-        "price": "\u20b9182,340",
+        "price": "₹182,340",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Manhattan3seater_1.jpg"
       }
     },
@@ -953,7 +537,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 56,
-        "price": "\u20b997,990",
+        "price": "₹97,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/01.04.004.jpg"
       },
       "productB": {
@@ -964,7 +548,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 196,
-        "price": "\u20b932,810",
+        "price": "₹32,810",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Nancy_-_01.04.006.jpg"
       }
     },
@@ -985,7 +569,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 128,
-        "price": "\u20b988,950",
+        "price": "₹88,950",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/01.007.001.jpg"
       },
       "productB": {
@@ -996,7 +580,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 262,
-        "price": "\u20b961,980",
+        "price": "₹61,980",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Kahlo_-_19.001.001.jpg"
       }
     },
@@ -1017,7 +601,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 5,
-        "price": "\u20b9249,680",
+        "price": "₹249,680",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13398-3strrecliner_huskbrown_1.jpg"
       },
       "productB": {
@@ -1028,7 +612,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 6,
-        "price": "\u20b9134,630",
+        "price": "₹134,630",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13400-2strstatic_Huskbrown_1.jpg"
       }
     },
@@ -1081,7 +665,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 144,
-        "price": "\u20b942,990",
+        "price": "₹42,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13162_1.jpg"
       },
       "productB": {
@@ -1092,7 +676,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 258,
-        "price": "\u20b9192,297",
+        "price": "₹192,297",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Layer3seater_1.jpg"
       }
     },
@@ -1113,7 +697,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 68,
-        "price": "\u20b949,990",
+        "price": "₹49,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12320.jpg"
       },
       "productB": {
@@ -1124,7 +708,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 174,
-        "price": "\u20b935,380",
+        "price": "₹35,380",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/01.05.003.jpg"
       }
     },
@@ -1145,7 +729,7 @@
         "catalogId": "sofa-furniture-boutiq",
         "catalogFile": "Sofa/Furniture Boutiq/furnitureboutiq_sofas.json",
         "itemIndex": 14,
-        "price": "\u20b968,999",
+        "price": "₹68,999",
         "image": "https://cdn.shopify.com/s/files/1/0642/8367/2745/files/Eden-Sofa-Furniture-BoutiQ-7802.jpg?v=1708017542"
       },
       "productB": {
@@ -1156,7 +740,7 @@
         "catalogId": "sofa-furniture-boutiq",
         "catalogFile": "Sofa/Furniture Boutiq/furnitureboutiq_sofas.json",
         "itemIndex": 17,
-        "price": "\u20b969,999",
+        "price": "₹69,999",
         "image": "https://cdn.shopify.com/s/files/1/0642/8367/2745/files/Asa-82-Velvet-Sofa-Furniture-BoutiQ-1038.jpg?v=1708015203"
       }
     },
@@ -1188,7 +772,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 185,
-        "price": "\u20b925,730",
+        "price": "₹25,730",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12902-1_1ba9c79f-d9b3-44ec-bf49-bd3e03b496a9.jpg"
       }
     },
@@ -1209,7 +793,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 182,
-        "price": "\u20b927,670",
+        "price": "₹27,670",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Nancy_-_01.04.006_f7de7896-6cab-496f-8b06-71eaf8d2eaf5.jpg"
       },
       "productB": {
@@ -1220,7 +804,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 196,
-        "price": "\u20b932,810",
+        "price": "₹32,810",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Nancy_-_01.04.006.jpg"
       }
     },
@@ -1241,7 +825,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 174,
-        "price": "\u20b935,380",
+        "price": "₹35,380",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/01.05.003.jpg"
       },
       "productB": {
@@ -1252,7 +836,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 194,
-        "price": "\u20b929,740",
+        "price": "₹29,740",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/sf12366beige3str.jpg"
       }
     },
@@ -1273,7 +857,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 3,
-        "price": "\u20b9134,630",
+        "price": "₹134,630",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13396_Louisiana_Green_2_3.jpg"
       },
       "productB": {
@@ -1284,7 +868,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 59,
-        "price": "\u20b994,630",
+        "price": "₹94,630",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13153_3str-Brown_-3_02940d81-c630-47e8-8ce5-1b4c5d82e49a.jpg"
       }
     },
@@ -1305,7 +889,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 89,
-        "price": "\u20b9344,620",
+        "price": "₹344,620",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Timeless_0461c576-6fe1-45b5-b274-fc2602d90d5c.jpg"
       },
       "productB": {
@@ -1316,7 +900,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 115,
-        "price": "\u20b979,990",
+        "price": "₹79,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13749_IDA_L_Shape_Sofa_LH.png"
       }
     },
@@ -1337,7 +921,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 2,
-        "price": "\u20b9140,370",
+        "price": "₹140,370",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13441_Louisiana_Grey_2_1.jpg"
       },
       "productB": {
@@ -1348,7 +932,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 6,
-        "price": "\u20b9134,630",
+        "price": "₹134,630",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13400-2strstatic_Huskbrown_1.jpg"
       }
     },
@@ -1369,7 +953,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 128,
-        "price": "\u20b988,950",
+        "price": "₹88,950",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/01.007.001.jpg"
       },
       "productB": {
@@ -1380,7 +964,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 129,
-        "price": "\u20b951,440",
+        "price": "₹51,440",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/01.011.001_e6c871d0-8d5e-469f-bc12-4bd44087411d.jpg"
       }
     },
@@ -1401,7 +985,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 34,
-        "price": "\u20b989,260",
+        "price": "₹89,260",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13148-1_12eb1fe5-8fb3-4254-a634-e88b191c823c.jpg"
       },
       "productB": {
@@ -1412,7 +996,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 188,
-        "price": "\u20b922,880",
+        "price": "₹22,880",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/sf12367beige2str.jpg"
       }
     },
@@ -1476,7 +1060,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 65,
-        "price": "\u20b969,100",
+        "price": "₹69,100",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF10953_4.jpg"
       }
     },
@@ -1497,7 +1081,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 282,
-        "price": "\u20b9203,000",
+        "price": "₹203,000",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/ec55e06f9ce318afbaa77154e95ad5f1.png"
       },
       "productB": {
@@ -1508,7 +1092,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 283,
-        "price": "\u20b9238,000",
+        "price": "₹238,000",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/173f4ff97991c23188900f06b1db09d7.png"
       }
     },
@@ -1540,7 +1124,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 28,
-        "price": "\u20b9131,060",
+        "price": "₹131,060",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13389-_RHS_1.jpg"
       }
     },
@@ -1550,7 +1134,7 @@
       "matchType": "Visual Lookalike",
       "pDist": 10,
       "dDist": 9,
-      "colorSim": 1.0,
+      "colorSim": 1,
       "isSameBrand": true,
       "category": "Sofa",
       "productA": {
@@ -1604,7 +1188,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 202,
-        "price": "\u20b9137,620",
+        "price": "₹137,620",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Elara_-Husk_Brown-SF13130_1.jpg"
       }
     },
@@ -1625,7 +1209,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 162,
-        "price": "\u20b934,170",
+        "price": "₹34,170",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/19.001.001_1a29697d-62c0-4821-bfd4-0e0c7c7b81dc.jpg"
       },
       "productB": {
@@ -1636,7 +1220,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 171,
-        "price": "\u20b930,960",
+        "price": "₹30,960",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/01.05.006_f1af2cd0-62bc-405a-bb5c-9bf22c043de3.jpg"
       }
     },
@@ -1689,7 +1273,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 93,
-        "price": "\u20b9186,990",
+        "price": "₹186,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Ollie2.5EL1USA_1.25COUR.jpg"
       },
       "productB": {
@@ -1700,7 +1284,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 207,
-        "price": "\u20b9225,784",
+        "price": "₹225,784",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12347_1_da57d956-aab1-4ef6-b961-22abff8a5138.jpg"
       }
     },
@@ -1721,7 +1305,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 39,
-        "price": "\u20b986,140",
+        "price": "₹86,140",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12812-1.jpg"
       },
       "productB": {
@@ -1732,7 +1316,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 177,
-        "price": "\u20b933,090",
+        "price": "₹33,090",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/WINDSOR_DeepGreen_1.jpg"
       }
     },
@@ -1753,7 +1337,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 69,
-        "price": "\u20b939,990",
+        "price": "₹39,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12322.jpg"
       },
       "productB": {
@@ -1764,7 +1348,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 169,
-        "price": "\u20b932,780",
+        "price": "₹32,780",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/PrimeGrey_2strF_08570a86-b51a-4bfd-b150-8d9c934d9fcc.jpg"
       }
     },
@@ -1785,7 +1369,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 22,
-        "price": "\u20b984,500",
+        "price": "₹84,500",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/RC14023-2.jpg"
       },
       "productB": {
@@ -1796,7 +1380,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 113,
-        "price": "\u20b9119,990",
+        "price": "₹119,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/NC-313E_10ce1e53-c369-4b59-a839-8d7873334ecf.jpg"
       }
     },
@@ -1817,7 +1401,7 @@
         "catalogId": "sofa-duraster",
         "catalogFile": "Sofa/Duraster/duraster_sofa.json",
         "itemIndex": 28,
-        "price": "\u20b954,090",
+        "price": "₹54,090",
         "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/e545698a29dc4260befe8d3e4bd2fa62_28c16491-1ec6-46fa-abc5-39781dc73de9.jpg?v=1670826992"
       },
       "productB": {
@@ -1828,7 +1412,7 @@
         "catalogId": "sofa-duraster",
         "catalogFile": "Sofa/Duraster/duraster_sofa.json",
         "itemIndex": 93,
-        "price": "\u20b966,790",
+        "price": "₹66,790",
         "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/Daisy-Three-Seater-Navy-Blue-_10-05.jpg?v=1670834063"
       }
     },
@@ -1849,7 +1433,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 188,
-        "price": "\u20b922,880",
+        "price": "₹22,880",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/sf12367beige2str.jpg"
       },
       "productB": {
@@ -1860,7 +1444,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 274,
-        "price": "\u20b958,672",
+        "price": "₹58,672",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/BELLISA_Purple_5_e65f2100-215e-461c-be3a-bd3dea8cbeab.jpg"
       }
     },
@@ -1881,7 +1465,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 79,
-        "price": "\u20b949,660",
+        "price": "₹49,660",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13846-2.jpg"
       },
       "productB": {
@@ -1892,7 +1476,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 272,
-        "price": "\u20b948,120",
+        "price": "₹48,120",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/CANNES_Beige_6_61ad4cae-dc0e-46d1-abc4-e0d3e83574f1.jpg"
       }
     },
@@ -1977,7 +1561,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 51,
-        "price": "\u20b979,120",
+        "price": "₹79,120",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13925-1.jpg"
       },
       "productB": {
@@ -1988,7 +1572,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 150,
-        "price": "\u20b937,030",
+        "price": "₹37,030",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/FAIRFIELD_Mint_5.jpg"
       }
     },
@@ -2009,7 +1593,7 @@
         "catalogId": "sofa-furniture-boutiq",
         "catalogFile": "Sofa/Furniture Boutiq/furnitureboutiq_sofas.json",
         "itemIndex": 13,
-        "price": "\u20b989,999",
+        "price": "₹89,999",
         "image": "https://cdn.shopify.com/s/files/1/0642/8367/2745/files/Banks-Genuine-Leather-Sofa-Furniture-BoutiQ-5650.jpg?v=1708015553"
       },
       "productB": {
@@ -2020,7 +1604,7 @@
         "catalogId": "sofa-furniture-boutiq",
         "catalogFile": "Sofa/Furniture Boutiq/furnitureboutiq_sofas.json",
         "itemIndex": 14,
-        "price": "\u20b968,999",
+        "price": "₹68,999",
         "image": "https://cdn.shopify.com/s/files/1/0642/8367/2745/files/Eden-Sofa-Furniture-BoutiQ-7802.jpg?v=1708017542"
       }
     },
@@ -2052,7 +1636,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 269,
-        "price": "\u20b960,474",
+        "price": "₹60,474",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Wyoming_-_01.010.001.jpg"
       }
     },
@@ -2073,7 +1657,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 117,
-        "price": "\u20b9114,350",
+        "price": "₹114,350",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13033-_1_a64eebe6-8be7-4fdc-ba25-1e1718a38ef5.jpg"
       },
       "productB": {
@@ -2084,7 +1668,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 200,
-        "price": "\u20b9152,250",
+        "price": "₹152,250",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Esmond_-Husk_Brown-SF13145_1.jpg"
       }
     },
@@ -2105,7 +1689,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 134,
-        "price": "\u20b962,990",
+        "price": "₹62,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Oslo_Grey_6_82454096-62dc-458c-91c9-ac16ab5f48d7.jpg"
       },
       "productB": {
@@ -2116,7 +1700,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 194,
-        "price": "\u20b929,740",
+        "price": "₹29,740",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/sf12366beige3str.jpg"
       }
     },
@@ -2137,7 +1721,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 66,
-        "price": "\u20b983,420",
+        "price": "₹83,420",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12171-4.jpg"
       },
       "productB": {
@@ -2148,7 +1732,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 68,
-        "price": "\u20b949,990",
+        "price": "₹49,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12320.jpg"
       }
     },
@@ -2169,7 +1753,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 126,
-        "price": "\u20b969,990",
+        "price": "₹69,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12334_-_NC-313E.jpg"
       },
       "productB": {
@@ -2180,7 +1764,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 127,
-        "price": "\u20b959,990",
+        "price": "₹59,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12335.jpg"
       }
     },
@@ -2190,7 +1774,7 @@
       "matchType": "Visual Lookalike",
       "pDist": 8,
       "dDist": 10,
-      "colorSim": 1.0,
+      "colorSim": 1,
       "isSameBrand": true,
       "category": "Sofa",
       "productA": {
@@ -2201,7 +1785,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 96,
-        "price": "\u20b989,990",
+        "price": "₹89,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Ollie_2.5S2UA.jpg"
       },
       "productB": {
@@ -2212,7 +1796,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 127,
-        "price": "\u20b959,990",
+        "price": "₹59,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12335.jpg"
       }
     },
@@ -2233,7 +1817,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 24,
-        "price": "\u20b9145,100",
+        "price": "₹145,100",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Caprice.jpg"
       },
       "productB": {
@@ -2244,7 +1828,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 166,
-        "price": "\u20b935,060",
+        "price": "₹35,060",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Dominico_-_2_seater_-_01.05.002.jpg"
       }
     },
@@ -2265,7 +1849,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 25,
-        "price": "\u20b9116,950",
+        "price": "₹116,950",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Caprice.jpg"
       },
       "productB": {
@@ -2276,7 +1860,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 166,
-        "price": "\u20b935,060",
+        "price": "₹35,060",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Dominico_-_2_seater_-_01.05.002.jpg"
       }
     },
@@ -2329,7 +1913,7 @@
         "catalogId": "bedside-table-baywindow",
         "catalogFile": "Bedside table/Baywindow/bedside_tables.json",
         "itemIndex": 20,
-        "price": "\u20b915,401",
+        "price": "₹15,401",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/BT10054approved.jpg"
       },
       "productB": {
@@ -2340,7 +1924,7 @@
         "catalogId": "bedside-table-baywindow",
         "catalogFile": "Bedside table/Baywindow/bedside_tables.json",
         "itemIndex": 26,
-        "price": "\u20b910,822",
+        "price": "₹10,822",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/BT10052Approved.jpg"
       }
     },
@@ -2361,7 +1945,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 59,
-        "price": "\u20b994,630",
+        "price": "₹94,630",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13153_3str-Brown_-3_02940d81-c630-47e8-8ce5-1b4c5d82e49a.jpg"
       },
       "productB": {
@@ -2372,7 +1956,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 92,
-        "price": "\u20b9165,990",
+        "price": "₹165,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12127_SF12129.jpg"
       }
     },
@@ -2425,7 +2009,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 1,
-        "price": "\u20b9254,440",
+        "price": "₹254,440",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13394_Louisiana_Green_Ricliner_3_1.jpg"
       },
       "productB": {
@@ -2436,7 +2020,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 165,
-        "price": "\u20b927,500",
+        "price": "₹27,500",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13173-4.jpg"
       }
     },
@@ -2446,7 +2030,7 @@
       "matchType": "Visual Lookalike",
       "pDist": 16,
       "dDist": 4,
-      "colorSim": 1.0,
+      "colorSim": 1,
       "isSameBrand": true,
       "category": "Sofa",
       "productA": {
@@ -2457,7 +2041,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 266,
-        "price": "\u20b9130,964",
+        "price": "₹130,964",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF10057_1__JPG.jpg"
       },
       "productB": {
@@ -2468,7 +2052,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 267,
-        "price": "\u20b9112,392",
+        "price": "₹112,392",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF10056_1__JPG.jpg"
       }
     },
@@ -2489,7 +2073,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 57,
-        "price": "\u20b996,730",
+        "price": "₹96,730",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13368-3str_-husk_brown_1.jpg"
       },
       "productB": {
@@ -2500,7 +2084,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 68,
-        "price": "\u20b949,990",
+        "price": "₹49,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12320.jpg"
       }
     },
@@ -2521,7 +2105,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 5,
-        "price": "\u20b9249,680",
+        "price": "₹249,680",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13398-3strrecliner_huskbrown_1.jpg"
       },
       "productB": {
@@ -2532,7 +2116,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 74,
-        "price": "\u20b969,300",
+        "price": "₹69,300",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13025_Grey_1.jpg"
       }
     },
@@ -2553,7 +2137,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 69,
-        "price": "\u20b939,990",
+        "price": "₹39,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12322.jpg"
       },
       "productB": {
@@ -2564,7 +2148,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 274,
-        "price": "\u20b958,672",
+        "price": "₹58,672",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/BELLISA_Purple_5_e65f2100-215e-461c-be3a-bd3dea8cbeab.jpg"
       }
     },
@@ -2585,7 +2169,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 59,
-        "price": "\u20b994,630",
+        "price": "₹94,630",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13153_3str-Brown_-3_02940d81-c630-47e8-8ce5-1b4c5d82e49a.jpg"
       },
       "productB": {
@@ -2596,7 +2180,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 154,
-        "price": "\u20b934,560",
+        "price": "₹34,560",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/MEMPHI_Beige_6.jpg"
       }
     },
@@ -2617,7 +2201,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 66,
-        "price": "\u20b983,420",
+        "price": "₹83,420",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12171-4.jpg"
       },
       "productB": {
@@ -2628,13 +2212,13 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 202,
-        "price": "\u20b9137,620",
+        "price": "₹137,620",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Elara_-Husk_Brown-SF13130_1.jpg"
       }
     },
     {
       "id": "dup_71",
-      "similarity": 81.0,
+      "similarity": 81,
       "matchType": "Visual Lookalike",
       "pDist": 4,
       "dDist": 6,
@@ -2649,7 +2233,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 87,
-        "price": "\u20b937,720",
+        "price": "₹37,720",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/3_STR_GREY_3.jpg"
       },
       "productB": {
@@ -2660,7 +2244,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 174,
-        "price": "\u20b935,380",
+        "price": "₹35,380",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/01.05.003.jpg"
       }
     },
@@ -2681,7 +2265,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 150,
-        "price": "\u20b937,030",
+        "price": "₹37,030",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/FAIRFIELD_Mint_5.jpg"
       },
       "productB": {
@@ -2692,7 +2276,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 263,
-        "price": "\u20b946,128",
+        "price": "₹46,128",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Kahlo_-_19.001.003_e27e259f-6f6a-43dc-a208-34bd8d05e3d1.jpg"
       }
     },
@@ -2713,7 +2297,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 39,
-        "price": "\u20b986,140",
+        "price": "₹86,140",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12812-1.jpg"
       },
       "productB": {
@@ -2724,7 +2308,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 110,
-        "price": "\u20b9121,990",
+        "price": "₹121,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12168-1.jpg"
       }
     },
@@ -2745,7 +2329,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 66,
-        "price": "\u20b983,420",
+        "price": "₹83,420",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12171-4.jpg"
       },
       "productB": {
@@ -2756,7 +2340,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 109,
-        "price": "\u20b9137,990",
+        "price": "₹137,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12169-1.jpg"
       }
     },
@@ -2777,7 +2361,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 74,
-        "price": "\u20b969,300",
+        "price": "₹69,300",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13025_Grey_1.jpg"
       },
       "productB": {
@@ -2788,7 +2372,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 104,
-        "price": "\u20b9124,990",
+        "price": "₹124,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Lunnette_3str_recliner-SF13123-1_1.jpg"
       }
     },
@@ -2809,7 +2393,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 81,
-        "price": "\u20b944,990",
+        "price": "₹44,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13850-1.jpg"
       },
       "productB": {
@@ -2820,7 +2404,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 263,
-        "price": "\u20b946,128",
+        "price": "₹46,128",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Kahlo_-_19.001.003_e27e259f-6f6a-43dc-a208-34bd8d05e3d1.jpg"
       }
     },
@@ -2852,7 +2436,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 280,
-        "price": "\u20b9164,632",
+        "price": "₹164,632",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Capybara1.5EL1U_1.5ER1U.jpg"
       }
     },
@@ -2884,7 +2468,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 122,
-        "price": "\u20b990,590",
+        "price": "₹90,590",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/sf12314a.jpg"
       }
     },
@@ -2905,7 +2489,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 66,
-        "price": "\u20b983,420",
+        "price": "₹83,420",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12171-4.jpg"
       },
       "productB": {
@@ -2916,7 +2500,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 174,
-        "price": "\u20b935,380",
+        "price": "₹35,380",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/01.05.003.jpg"
       }
     },
@@ -2937,7 +2521,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 77,
-        "price": "\u20b954,990",
+        "price": "₹54,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF10766_1_e66f193e-6004-4f25-ae56-0ab3305724af.jpg"
       },
       "productB": {
@@ -2948,7 +2532,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 78,
-        "price": "\u20b944,990",
+        "price": "₹44,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF10769_1_a3262cff-8afc-4ff5-a828-2857e3ab616b.jpg"
       }
     },
@@ -2969,7 +2553,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 93,
-        "price": "\u20b9186,990",
+        "price": "₹186,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Ollie2.5EL1USA_1.25COUR.jpg"
       },
       "productB": {
@@ -2980,7 +2564,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 164,
-        "price": "\u20b935,990",
+        "price": "₹35,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13171_3.jpg"
       }
     },
@@ -3001,7 +2585,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 66,
-        "price": "\u20b983,420",
+        "price": "₹83,420",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12171-4.jpg"
       },
       "productB": {
@@ -3012,7 +2596,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 122,
-        "price": "\u20b990,590",
+        "price": "₹90,590",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/sf12314a.jpg"
       }
     },
@@ -3022,7 +2606,7 @@
       "matchType": "Visual Lookalike",
       "pDist": 12,
       "dDist": 8,
-      "colorSim": 1.0,
+      "colorSim": 1,
       "isSameBrand": true,
       "category": "Sofa",
       "productA": {
@@ -3033,7 +2617,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 62,
-        "price": "\u20b987,320",
+        "price": "₹87,320",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13029_Brown_1.jpg"
       },
       "productB": {
@@ -3044,7 +2628,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 63,
-        "price": "\u20b963,020",
+        "price": "₹63,020",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13030_Brown_8_614b1b07-b99e-44c5-be6b-73cc56704766.jpg"
       }
     },
@@ -3054,7 +2638,7 @@
       "matchType": "Visual Lookalike",
       "pDist": 8,
       "dDist": 8,
-      "colorSim": 1.0,
+      "colorSim": 1,
       "isSameBrand": true,
       "category": "Sofa",
       "productA": {
@@ -3065,7 +2649,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 183,
-        "price": "\u20b925,790",
+        "price": "₹25,790",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12898-1_6a401016-7801-4185-b44e-f884dbdfa873.jpg"
       },
       "productB": {
@@ -3076,7 +2660,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 194,
-        "price": "\u20b929,740",
+        "price": "₹29,740",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/sf12366beige3str.jpg"
       }
     },
@@ -3097,7 +2681,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 153,
-        "price": "\u20b944,240",
+        "price": "₹44,240",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/MEMPHI_Beige_1_8b53615d-5bfd-4c78-99a4-5a0c8052e508.jpg"
       },
       "productB": {
@@ -3108,7 +2692,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 206,
-        "price": "\u20b940,170",
+        "price": "₹40,170",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12748-1.jpg"
       }
     },
@@ -3161,7 +2745,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 94,
-        "price": "\u20b9106,990",
+        "price": "₹106,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Ollie3seater_6a6a40f2-6307-4b53-bb9f-c33a7c43f442.jpg"
       },
       "productB": {
@@ -3172,7 +2756,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 128,
-        "price": "\u20b988,950",
+        "price": "₹88,950",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/01.007.001.jpg"
       }
     },
@@ -3204,7 +2788,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 206,
-        "price": "\u20b940,170",
+        "price": "₹40,170",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12748-1.jpg"
       }
     },
@@ -3289,7 +2873,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 1,
-        "price": "\u20b9254,440",
+        "price": "₹254,440",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13394_Louisiana_Green_Ricliner_3_1.jpg"
       },
       "productB": {
@@ -3300,7 +2884,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 74,
-        "price": "\u20b969,300",
+        "price": "₹69,300",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13025_Grey_1.jpg"
       }
     },
@@ -3321,7 +2905,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 102,
-        "price": "\u20b9159,900",
+        "price": "₹159,900",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12893_7a9d5b33-6ae7-4735-8b42-f6d89e7d808d.jpg"
       },
       "productB": {
@@ -3332,7 +2916,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 103,
-        "price": "\u20b9144,100",
+        "price": "₹144,100",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12894_-_SF12896.jpg"
       }
     },
@@ -3353,7 +2937,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 117,
-        "price": "\u20b9114,350",
+        "price": "₹114,350",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13033-_1_a64eebe6-8be7-4fdc-ba25-1e1718a38ef5.jpg"
       },
       "productB": {
@@ -3364,7 +2948,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 206,
-        "price": "\u20b940,170",
+        "price": "₹40,170",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12748-1.jpg"
       }
     },
@@ -3385,7 +2969,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 144,
-        "price": "\u20b942,990",
+        "price": "₹42,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13162_1.jpg"
       },
       "productB": {
@@ -3396,7 +2980,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 145,
-        "price": "\u20b928,790",
+        "price": "₹28,790",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13163-1.jpg"
       }
     },
@@ -3417,7 +3001,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 200,
-        "price": "\u20b9152,250",
+        "price": "₹152,250",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Esmond_-Husk_Brown-SF13145_1.jpg"
       },
       "productB": {
@@ -3428,7 +3012,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 269,
-        "price": "\u20b960,474",
+        "price": "₹60,474",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Wyoming_-_01.010.001.jpg"
       }
     },
@@ -3449,7 +3033,7 @@
         "catalogId": "sofa-furniture-boutiq",
         "catalogFile": "Sofa/Furniture Boutiq/furnitureboutiq_sofas.json",
         "itemIndex": 12,
-        "price": "\u20b959,999",
+        "price": "₹59,999",
         "image": "https://cdn.shopify.com/s/files/1/0642/8367/2745/files/Mick_70_7.jpg?v=1709988838"
       },
       "productB": {
@@ -3460,7 +3044,7 @@
         "catalogId": "sofa-furniture-boutiq",
         "catalogFile": "Sofa/Furniture Boutiq/furnitureboutiq_sofas.json",
         "itemIndex": 17,
-        "price": "\u20b969,999",
+        "price": "₹69,999",
         "image": "https://cdn.shopify.com/s/files/1/0642/8367/2745/files/Asa-82-Velvet-Sofa-Furniture-BoutiQ-1038.jpg?v=1708015203"
       }
     },
@@ -3481,7 +3065,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 99,
-        "price": "\u20b989,990",
+        "price": "₹89,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Capybara2seater_1_cd6ec488-d71f-4604-9c9b-d658562fbcdc.jpg"
       },
       "productB": {
@@ -3492,7 +3076,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 258,
-        "price": "\u20b9192,297",
+        "price": "₹192,297",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Layer3seater_1.jpg"
       }
     },
@@ -3524,7 +3108,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 206,
-        "price": "\u20b940,170",
+        "price": "₹40,170",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12748-1.jpg"
       }
     },
@@ -3577,7 +3161,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 99,
-        "price": "\u20b989,990",
+        "price": "₹89,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Capybara2seater_1_cd6ec488-d71f-4604-9c9b-d658562fbcdc.jpg"
       },
       "productB": {
@@ -3588,7 +3172,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 188,
-        "price": "\u20b922,880",
+        "price": "₹22,880",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/sf12367beige2str.jpg"
       }
     },
@@ -3609,7 +3193,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 132,
-        "price": "\u20b954,990",
+        "price": "₹54,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12174-1.jpg"
       },
       "productB": {
@@ -3620,7 +3204,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 151,
-        "price": "\u20b932,540",
+        "price": "₹32,540",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12749-1.jpg"
       }
     },
@@ -3641,7 +3225,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 78,
-        "price": "\u20b944,990",
+        "price": "₹44,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF10769_1_a3262cff-8afc-4ff5-a828-2857e3ab616b.jpg"
       },
       "productB": {
@@ -3652,7 +3236,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 182,
-        "price": "\u20b927,670",
+        "price": "₹27,670",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Nancy_-_01.04.006_f7de7896-6cab-496f-8b06-71eaf8d2eaf5.jpg"
       }
     },
@@ -3673,7 +3257,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 36,
-        "price": "\u20b993,280",
+        "price": "₹93,280",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13115-1_2str.jpg"
       },
       "productB": {
@@ -3684,7 +3268,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 204,
-        "price": "\u20b9122,850",
+        "price": "₹122,850",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Alban-Oyester_beige-_SF13136_1.jpg"
       }
     },
@@ -3705,7 +3289,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 36,
-        "price": "\u20b993,280",
+        "price": "₹93,280",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13115-1_2str.jpg"
       },
       "productB": {
@@ -3716,7 +3300,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 205,
-        "price": "\u20b9113,400",
+        "price": "₹113,400",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Alban-Oyester_beige-_SF13136_1.jpg"
       }
     },
@@ -3737,7 +3321,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 89,
-        "price": "\u20b9344,620",
+        "price": "₹344,620",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Timeless_0461c576-6fe1-45b5-b274-fc2602d90d5c.jpg"
       },
       "productB": {
@@ -3748,7 +3332,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 166,
-        "price": "\u20b935,060",
+        "price": "₹35,060",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Dominico_-_2_seater_-_01.05.002.jpg"
       }
     },
@@ -3769,7 +3353,7 @@
         "catalogId": "sofa-duraster",
         "catalogFile": "Sofa/Duraster/duraster_sofa.json",
         "itemIndex": 35,
-        "price": "\u20b941,090",
+        "price": "₹41,090",
         "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/2f480797c47447939857c01e9d969f23_90d921b7-3e99-47a4-bfa4-fbb18edabbce.jpg?v=1670827122"
       },
       "productB": {
@@ -3780,7 +3364,7 @@
         "catalogId": "sofa-duraster",
         "catalogFile": "Sofa/Duraster/duraster_sofa.json",
         "itemIndex": 101,
-        "price": "\u20b953,690",
+        "price": "₹53,690",
         "image": "https://cdn.shopify.com/s/files/1/0503/8243/8596/products/Daisy-Three-Seater-Anthracite-Grey-_17-05.jpg?v=1670834511"
       }
     },
@@ -3801,7 +3385,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 6,
-        "price": "\u20b9134,630",
+        "price": "₹134,630",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13400-2strstatic_Huskbrown_1.jpg"
       },
       "productB": {
@@ -3812,7 +3396,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 74,
-        "price": "\u20b969,300",
+        "price": "₹69,300",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13025_Grey_1.jpg"
       }
     },
@@ -3833,7 +3417,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 39,
-        "price": "\u20b986,140",
+        "price": "₹86,140",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12812-1.jpg"
       },
       "productB": {
@@ -3844,7 +3428,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 134,
-        "price": "\u20b962,990",
+        "price": "₹62,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Oslo_Grey_6_82454096-62dc-458c-91c9-ac16ab5f48d7.jpg"
       }
     },
@@ -3865,7 +3449,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 57,
-        "price": "\u20b996,730",
+        "price": "₹96,730",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13368-3str_-husk_brown_1.jpg"
       },
       "productB": {
@@ -3876,7 +3460,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 66,
-        "price": "\u20b983,420",
+        "price": "₹83,420",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12171-4.jpg"
       }
     },
@@ -3897,7 +3481,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 99,
-        "price": "\u20b989,990",
+        "price": "₹89,990",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/Capybara2seater_1_cd6ec488-d71f-4604-9c9b-d658562fbcdc.jpg"
       },
       "productB": {
@@ -3908,7 +3492,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 181,
-        "price": "\u20b931,760",
+        "price": "₹31,760",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF12326-1.jpg"
       }
     },
@@ -3946,7 +3530,7 @@
     },
     {
       "id": "dup_28",
-      "similarity": 80.0,
+      "similarity": 80,
       "matchType": "Visual Lookalike",
       "pDist": 12,
       "dDist": 6,
@@ -3961,7 +3545,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 6,
-        "price": "\u20b9134,630",
+        "price": "₹134,630",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13400-2strstatic_Huskbrown_1.jpg"
       },
       "productB": {
@@ -3972,13 +3556,13 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 33,
-        "price": "\u20b9117,430",
+        "price": "₹117,430",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13147-1_e90ace33-6db7-4d60-a791-c10c2e13aa9a.jpg"
       }
     },
     {
       "id": "dup_49",
-      "similarity": 80.0,
+      "similarity": 80,
       "matchType": "Visual Lookalike",
       "pDist": 8,
       "dDist": 8,
@@ -3993,7 +3577,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 57,
-        "price": "\u20b996,730",
+        "price": "₹96,730",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13368-3str_-husk_brown_1.jpg"
       },
       "productB": {
@@ -4004,13 +3588,13 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 87,
-        "price": "\u20b937,720",
+        "price": "₹37,720",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/3_STR_GREY_3.jpg"
       }
     },
     {
       "id": "dup_52",
-      "similarity": 80.0,
+      "similarity": 80,
       "matchType": "Visual Lookalike",
       "pDist": 8,
       "dDist": 6,
@@ -4025,7 +3609,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 60,
-        "price": "\u20b987,280",
+        "price": "₹87,280",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/SF13154_2str-Brown_2_d685b2b0-4bac-4d23-b098-c4098c449270.jpg"
       },
       "productB": {
@@ -4036,7 +3620,7 @@
         "catalogId": "sofa-baywindow",
         "catalogFile": "Sofa/Baywindow/sofas.json",
         "itemIndex": 154,
-        "price": "\u20b934,560",
+        "price": "₹34,560",
         "image": "https://cdn.shopify.com/s/files/1/0759/3040/3111/files/MEMPHI_Beige_6.jpg"
       }
     }

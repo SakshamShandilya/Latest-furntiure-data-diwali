@@ -21,6 +21,7 @@
   let activeDetailImages = [];
   let activeDetailImageIndex = 0;
   let totalSessionPairs = 0;
+  const selectedBulkDeletes = new Map(); // key: matchId -> { target: 'A'|'B', prod, otherProd, match }
 
   const DOM = {
     statScanned: document.getElementById('stat-scanned'),
@@ -55,6 +56,16 @@
     autoSavePill: document.getElementById('auto-save-pill'),
     autoSaveStatusText: document.getElementById('auto-save-status-text'),
     toastContainer: document.getElementById('toast-container'),
+
+    // Bulk Deletion Toolbar Elements
+    bulkToolbar: document.getElementById('dedup-bulk-toolbar'),
+    bulkSelectedCount: document.getElementById('bulk-selected-count'),
+    bulkSelectedSub: document.getElementById('bulk-selected-sub'),
+    btnBulkSelectB: document.getElementById('btn-bulk-select-b'),
+    btnBulkSelectExact: document.getElementById('btn-bulk-select-exact'),
+    btnBulkClear: document.getElementById('btn-bulk-clear'),
+    btnBulkDeleteAction: document.getElementById('btn-bulk-delete-action'),
+    bulkBtnCount: document.getElementById('bulk-btn-count'),
 
     // PDP Modal Elements
     pdpModal: document.getElementById('dedup-pdp-modal'),
@@ -196,6 +207,20 @@
           setTimeout(() => location.reload(), 400);
         }
       });
+    }
+
+    // Bulk Selection & Deletion Actions
+    if (DOM.btnBulkSelectB) {
+      DOM.btnBulkSelectB.addEventListener('click', selectAllBInView);
+    }
+    if (DOM.btnBulkSelectExact) {
+      DOM.btnBulkSelectExact.addEventListener('click', selectExactDuplicates);
+    }
+    if (DOM.btnBulkClear) {
+      DOM.btnBulkClear.addEventListener('click', clearAllBulkSelections);
+    }
+    if (DOM.btnBulkDeleteAction) {
+      DOM.btnBulkDeleteAction.addEventListener('click', executeBulkDelete);
     }
 
     // Listen for online recovery to sync offline queue
@@ -366,6 +391,9 @@
 
     // 9. Update sticky bottom tray
     updateBottomTray();
+
+    // 10. Update bulk selection UI
+    updateBulkUI();
   }
 
   function buildCategoryPills() {
@@ -476,6 +504,9 @@
       const freqA = productFreq.get(nA) || 1;
       const freqB = productFreq.get(nB) || 1;
 
+      const currentSel = selectedBulkDeletes.get(m.id);
+      const selectedTarget = currentSel ? currentSel.target : null;
+
       let matchClass = 'match-lookalike';
       if (m.similarity >= 97) matchClass = 'match-exact';
       else if (m.similarity >= 90) matchClass = 'match-near';
@@ -494,14 +525,28 @@
             <span style="font-size:0.8rem; font-weight:600; color:var(--text-secondary); text-transform:uppercase;">${m.category}</span>
             ${crossBrandBadge}
           </div>
-          <div style="font-size:0.8rem; color:var(--text-tertiary);">
-            Hamming Dist: ${m.pDist} bits · Color Match: ${(m.colorSim * 100).toFixed(0)}%
+          <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+            <div style="font-size:0.8rem; color:var(--text-tertiary);">
+              Hamming Dist: ${m.pDist} bits · Color Match: ${(m.colorSim * 100).toFixed(0)}%
+            </div>
+            <button type="button" class="btn-card-quick-chk ${selectedTarget === 'B' ? 'active' : ''}" data-action="quick-select-b" data-match-id="${m.id}" title="Select Product B for bulk deletion">
+              ${selectedTarget === 'B' ? '✓ Product B Selected' : '☑ Select B to Delete'}
+            </button>
           </div>
         </div>
 
         <div class="dedup-card-body">
           <!-- Product A Column -->
-          <div class="dedup-col">
+          <div class="dedup-col ${selectedTarget === 'A' ? 'marked-bulk-delete' : ''}" data-col-target="A" data-match-id="${m.id}">
+            <!-- Bulk Select Checkbox Bar -->
+            <div class="bulk-col-select-bar">
+              <label class="bulk-chk-label" title="Select Product A for bulk deletion">
+                <input type="checkbox" class="bulk-chk" data-match-id="${m.id}" data-target="A" ${selectedTarget === 'A' ? 'checked' : ''}>
+                <span>Select Product A to Delete</span>
+              </label>
+              <div class="bulk-badge-slot">${selectedTarget === 'A' ? '<span class="bulk-col-badge">🗑️ Marked</span>' : ''}</div>
+            </div>
+
             <div class="dedup-img-wrap" data-view-pdp="A" data-match-id="${m.id}" title="Click to view full photo gallery and specifications">
               <img src="${pA.image}" alt="${pA.name}" loading="lazy" onerror="this.src='assets/plypicker-logo.png'">
               <div class="img-zoom-badge">
@@ -542,7 +587,16 @@
           </div>
 
           <!-- Product B Column -->
-          <div class="dedup-col">
+          <div class="dedup-col ${selectedTarget === 'B' ? 'marked-bulk-delete' : ''}" data-col-target="B" data-match-id="${m.id}">
+            <!-- Bulk Select Checkbox Bar -->
+            <div class="bulk-col-select-bar">
+              <label class="bulk-chk-label" title="Select Product B for bulk deletion">
+                <input type="checkbox" class="bulk-chk" data-match-id="${m.id}" data-target="B" ${selectedTarget === 'B' ? 'checked' : ''}>
+                <span>Select Product B to Delete</span>
+              </label>
+              <div class="bulk-badge-slot">${selectedTarget === 'B' ? '<span class="bulk-col-badge">🗑️ Marked</span>' : ''}</div>
+            </div>
+
             <div class="dedup-img-wrap" data-view-pdp="B" data-match-id="${m.id}" title="Click to view full photo gallery and specifications">
               <img src="${pB.image}" alt="${pB.name}" loading="lazy" onerror="this.src='assets/plypicker-logo.png'">
               <div class="img-zoom-badge">
@@ -619,6 +673,27 @@
         e.stopPropagation();
         autoApplyDismiss(m);
       });
+
+      // Bulk Selection checkboxes
+      card.querySelectorAll('.bulk-chk').forEach(chk => {
+        chk.addEventListener('change', (e) => {
+          e.stopPropagation();
+          const matchId = chk.dataset.matchId;
+          const target = chk.dataset.target;
+          toggleBulkSelect(matchId, target, chk.checked);
+        });
+      });
+
+      // Quick Select B in Card Header
+      const quickBtn = card.querySelector('[data-action="quick-select-b"]');
+      if (quickBtn) {
+        quickBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const matchId = quickBtn.dataset.matchId;
+          const isCurrentlyB = selectedBulkDeletes.get(matchId)?.target === 'B';
+          toggleBulkSelect(matchId, 'B', !isCurrentlyB);
+        });
+      }
 
       DOM.cardsContainer.appendChild(card);
     });
@@ -1136,7 +1211,9 @@
     // Smoothly remove card and any cascaded sibling cards from view
     setTimeout(() => {
       const removedIds = new Set([matchId, ...siblingMatches.map(sm => sm.id)]);
+      removedIds.forEach(id => selectedBulkDeletes.delete(id));
       allMatches = allMatches.filter(m => !removedIds.has(m.id));
+      updateBulkUI();
       updateLiveMetrics();
       applyFilters();
       if (siblingMatches.length > 0) {
@@ -1225,7 +1302,9 @@
 
     setTimeout(() => {
       const removedIds = new Set([matchId, ...siblingMatches.map(sm => sm.id)]);
+      removedIds.forEach(id => selectedBulkDeletes.delete(id));
       allMatches = allMatches.filter(m => !removedIds.has(m.id));
+      updateBulkUI();
       updateLiveMetrics();
       applyFilters();
       if (siblingMatches.length > 0) {
@@ -1276,10 +1355,290 @@
     }
 
     setTimeout(() => {
-      allMatches = allMatches.filter(m => m.id !== matchId);
+      selectedBulkDeletes.delete(matchId);
+      allMatches = allMatches.filter(m => !m || m.id !== matchId);
+      updateBulkUI();
       updateLiveMetrics();
       applyFilters();
     }, 900);
+  }
+
+  /* ==========================================================================
+     BULK SELECTION & BULK DELETION ENGINE
+     ========================================================================== */
+
+  function updateBulkUI() {
+    const count = selectedBulkDeletes.size;
+    if (DOM.bulkSelectedCount) DOM.bulkSelectedCount.textContent = count.toLocaleString();
+    if (DOM.bulkBtnCount) DOM.bulkBtnCount.textContent = count.toLocaleString();
+
+    if (DOM.bulkToolbar) {
+      if (count > 0) {
+        DOM.bulkToolbar.classList.add('has-selection');
+      } else {
+        DOM.bulkToolbar.classList.remove('has-selection');
+      }
+    }
+
+    if (DOM.btnBulkDeleteAction) {
+      DOM.btnBulkDeleteAction.disabled = count === 0;
+    }
+
+    if (DOM.bulkSelectedSub) {
+      if (count === 0) {
+        DOM.bulkSelectedSub.textContent = 'Check duplicate pieces to delete them in bulk, or use quick select options below';
+      } else {
+        const uniqueNames = new Set(Array.from(selectedBulkDeletes.values()).map(v => (v.prod?.name || '').trim().toLowerCase()));
+        DOM.bulkSelectedSub.textContent = `${uniqueNames.size} unique product(s) marked across ${count} duplicate pairs (ready to prune from catalog JSONs)`;
+      }
+    }
+  }
+
+  function toggleBulkSelect(matchId, target, isChecked) {
+    const m = allMatches.find(item => item.id === matchId);
+    if (!m) return;
+
+    if (isChecked) {
+      selectedBulkDeletes.set(matchId, {
+        target: target,
+        prod: target === 'A' ? m.productA : m.productB,
+        otherProd: target === 'A' ? m.productB : m.productA,
+        match: m
+      });
+    } else {
+      const current = selectedBulkDeletes.get(matchId);
+      if (current && current.target === target) {
+        selectedBulkDeletes.delete(matchId);
+      }
+    }
+
+    syncCardBulkUI(matchId);
+    updateBulkUI();
+  }
+
+  function syncCardBulkUI(matchId) {
+    const card = document.getElementById(`card-${matchId}`);
+    if (!card) return;
+
+    const currentSel = selectedBulkDeletes.get(matchId);
+    const selectedTarget = currentSel ? currentSel.target : null;
+
+    const colA = card.querySelector('.dedup-col[data-col-target="A"]');
+    const colB = card.querySelector('.dedup-col[data-col-target="B"]');
+    const chkA = card.querySelector('.bulk-chk[data-target="A"]');
+    const chkB = card.querySelector('.bulk-chk[data-target="B"]');
+    const quickBtn = card.querySelector('[data-action="quick-select-b"]');
+
+    if (colA) {
+      if (selectedTarget === 'A') {
+        colA.classList.add('marked-bulk-delete');
+        if (chkA) chkA.checked = true;
+        setColBadge(colA, true);
+      } else {
+        colA.classList.remove('marked-bulk-delete');
+        if (chkA) chkA.checked = false;
+        setColBadge(colA, false);
+      }
+    }
+
+    if (colB) {
+      if (selectedTarget === 'B') {
+        colB.classList.add('marked-bulk-delete');
+        if (chkB) chkB.checked = true;
+        setColBadge(colB, true);
+      } else {
+        colB.classList.remove('marked-bulk-delete');
+        if (chkB) chkB.checked = false;
+        setColBadge(colB, false);
+      }
+    }
+
+    if (quickBtn) {
+      if (selectedTarget === 'B') {
+        quickBtn.classList.add('active');
+        quickBtn.innerHTML = '✓ Product B Selected';
+      } else {
+        quickBtn.classList.remove('active');
+        quickBtn.innerHTML = '☑ Select B to Delete';
+      }
+    }
+  }
+
+  function setColBadge(colEl, isMarked) {
+    const badgeSlot = colEl.querySelector('.bulk-badge-slot');
+    if (!badgeSlot) return;
+    badgeSlot.innerHTML = isMarked ? '<span class="bulk-col-badge">🗑️ Marked</span>' : '';
+  }
+
+  function selectAllBInView() {
+    if (filteredMatches.length === 0) {
+      showToast('No duplicate pairs visible under current filter', 'ℹ️');
+      return;
+    }
+    filteredMatches.forEach(m => {
+      selectedBulkDeletes.set(m.id, {
+        target: 'B',
+        prod: m.productB,
+        otherProd: m.productA,
+        match: m
+      });
+      syncCardBulkUI(m.id);
+    });
+    updateBulkUI();
+    showToast(`Selected Product B on ${filteredMatches.length} visible pairs!`, '☑️');
+  }
+
+  function selectExactDuplicates() {
+    let count = 0;
+    allMatches.forEach(m => {
+      if (m.similarity >= 97) {
+        selectedBulkDeletes.set(m.id, {
+          target: 'B',
+          prod: m.productB,
+          otherProd: m.productA,
+          match: m
+        });
+        syncCardBulkUI(m.id);
+        count++;
+      }
+    });
+    updateBulkUI();
+    if (count > 0) {
+      showToast(`Selected Product B on ${count} exact duplicate pairs!`, '🎯');
+    } else {
+      showToast('No exact duplicates pending in catalog', '✓');
+    }
+  }
+
+  function clearAllBulkSelections() {
+    const count = selectedBulkDeletes.size;
+    selectedBulkDeletes.clear();
+    filteredMatches.forEach(m => syncCardBulkUI(m.id));
+    updateBulkUI();
+    if (count > 0) {
+      showToast(`Deselected all ${count} products`, '✕');
+    }
+  }
+
+  async function executeBulkDelete() {
+    const totalSelected = selectedBulkDeletes.size;
+    if (totalSelected === 0) {
+      showToast('No products selected for deletion', 'ℹ️');
+      return;
+    }
+
+    // Build the unique list of products to delete from disk
+    const itemsToDeleteMap = new Map();
+    const matchIds = [];
+    const affectedMatches = [];
+
+    selectedBulkDeletes.forEach(({ target, prod, otherProd, match }) => {
+      matchIds.push(match.id);
+      affectedMatches.push({ prod, match, target });
+      const key = `${prod.catalogFile}::${(prod.name || '').trim().toLowerCase()}`;
+      if (!itemsToDeleteMap.has(key)) {
+        itemsToDeleteMap.set(key, {
+          catalogFile: prod.catalogFile,
+          name: prod.name,
+          itemIndex: prod.itemIndex
+        });
+      }
+    });
+
+    const itemsToDelete = Array.from(itemsToDeleteMap.values());
+    const uniqueCount = itemsToDelete.length;
+
+    const confirmMsg = `Are you sure you want to permanently delete ${uniqueCount} unique product(s) across ${totalSelected} duplicate pair(s) from catalog JSON files on disk?\n\nThis will automatically modify your catalog files and prune the duplicate report.`;
+    if (!confirm(confirmMsg)) return;
+
+    // Visual feedback: animate all affected cards
+    matchIds.forEach(id => {
+      const card = document.querySelector(`.dedup-card[data-match-id="${id}"]`);
+      if (card) {
+        card.classList.add('card-resolving');
+        const banner = document.createElement('div');
+        banner.className = 'card-auto-saved-banner';
+        banner.innerHTML = `🗑️ Bulk Deleting... · Auto-Saving directly to JSON`;
+        card.prepend(banner);
+      }
+    });
+
+    setAutoSaveStatus('saving', `⚡ Auto-saving bulk deletion of ${uniqueCount} products...`);
+
+    const payload = {
+      itemsToDelete,
+      matchIds
+    };
+
+    try {
+      const res = await fetch('/api/delete-products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const resData = await res.json();
+
+      setAutoSaveStatus('saved', `✓ Auto-Saved: ${resData.removedCount || uniqueCount} products deleted from catalogs`);
+      showToast(`✓ Successfully deleted ${uniqueCount} products in bulk!`, '🗑️');
+
+      const now = Date.now();
+      affectedMatches.forEach(({ prod, match, target }) => {
+        saveActionLocally({
+          type: 'bulk_delete',
+          matchId: match.id,
+          match: match,
+          deletedProduct: { catalogFile: prod.catalogFile, name: prod.name, id: prod.id },
+          timestamp: now
+        });
+      });
+
+      // Also cascade any sibling matches that referenced any of these deleted products
+      const deletedNameSet = new Set(itemsToDelete.map(it => it.name.trim().toLowerCase()));
+      const siblingMatches = allMatches.filter(m => {
+        if (selectedBulkDeletes.has(m.id)) return false;
+        const nA = (m.productA?.name || '').trim().toLowerCase();
+        const nB = (m.productB?.name || '').trim().toLowerCase();
+        return deletedNameSet.has(nA) || deletedNameSet.has(nB);
+      });
+
+      siblingMatches.forEach(sm => {
+        saveActionLocally({
+          type: 'cascade_resolved',
+          matchId: sm.id,
+          match: sm,
+          reason: 'Auto-resolved via bulk deletion cascade',
+          timestamp: now
+        });
+      });
+
+      // Clear selection
+      selectedBulkDeletes.clear();
+      updateBulkUI();
+
+      // Smoothly remove resolved and cascaded cards
+      setTimeout(() => {
+        const removedMatchIds = new Set([...matchIds, ...siblingMatches.map(sm => sm.id)]);
+        allMatches = allMatches.filter(m => !removedMatchIds.has(m.id));
+        updateLiveMetrics();
+        applyFilters();
+      }, 1000);
+
+    } catch (err) {
+      console.warn('Server offline, queuing bulk delete in localStorage:', err);
+      enqueueOffline({ url: '/api/delete-products', body: payload });
+      setAutoSaveStatus('offline', '☁️ Saved to localStorage (will sync to disk when server is online)');
+      showToast(`Bulk deletion saved to browser queue`, '☁️');
+
+      selectedBulkDeletes.clear();
+      updateBulkUI();
+      setTimeout(() => {
+        const removedMatchIds = new Set(matchIds);
+        allMatches = allMatches.filter(m => !removedMatchIds.has(m.id));
+        updateLiveMetrics();
+        applyFilters();
+      }, 1000);
+    }
   }
 
   async function undoLastAction(targetAction = null) {

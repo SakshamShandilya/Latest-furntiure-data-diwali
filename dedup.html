@@ -228,6 +228,201 @@
       border-color: var(--text-primary);
     }
 
+    /* Bulk Action Toolbar */
+    .dedup-bulk-toolbar {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.85rem 2rem;
+      transition: all 0.3s ease;
+      position: sticky;
+      top: 61px;
+      z-index: 95;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    }
+    .dedup-bulk-toolbar.has-selection {
+      background: linear-gradient(135deg, rgba(192, 57, 43, 0.08) 0%, rgba(212, 175, 55, 0.06) 100%);
+      border-color: rgba(192, 57, 43, 0.35);
+      box-shadow: 0 4px 18px rgba(192, 57, 43, 0.08);
+    }
+    .dedup-bulk-inner {
+      max-width: 1500px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .dedup-bulk-info {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .bulk-select-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-medium);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      transition: all 0.3s ease;
+    }
+    .dedup-bulk-toolbar.has-selection .bulk-select-icon {
+      background: #C0392B;
+      color: #FFF;
+      border-color: #A93226;
+      box-shadow: 0 0 12px rgba(192, 57, 43, 0.35);
+    }
+    .bulk-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .bulk-title strong {
+      color: #C0392B;
+      font-size: 1.15rem;
+    }
+    .bulk-sub {
+      font-size: 0.78rem;
+      color: var(--text-tertiary);
+      margin-top: 0.15rem;
+    }
+    .dedup-bulk-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+    .btn-bulk-helper {
+      padding: 0.45rem 0.95rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface-elevated);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+    .btn-bulk-helper:hover {
+      border-color: var(--accent-gold);
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+    .btn-bulk-delete {
+      padding: 0.55rem 1.4rem;
+      border-radius: 9999px;
+      background: #C0392B;
+      color: #FFFFFF;
+      border: 1px solid #A93226;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 10px rgba(192, 57, 43, 0.25);
+    }
+    .btn-bulk-delete:hover:not(:disabled) {
+      background: #E74C3C;
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 4px 16px rgba(192, 57, 43, 0.4);
+    }
+    .btn-bulk-delete:disabled {
+      opacity: 0.38;
+      cursor: not-allowed;
+      box-shadow: none;
+      filter: grayscale(0.6);
+      background: #7F8C8D;
+      border-color: #7F8C8D;
+    }
+
+    /* Column-level Bulk Selection Styling */
+    .bulk-col-select-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.45rem 0.65rem;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.75rem;
+      transition: all 0.2s ease;
+    }
+    .bulk-col-select-bar:hover {
+      border-color: var(--border-medium);
+      background: var(--bg-surface);
+    }
+    .dedup-col.marked-bulk-delete {
+      border: 2px solid #C0392B !important;
+      background: rgba(192, 57, 43, 0.04) !important;
+      box-shadow: 0 4px 18px rgba(192, 57, 43, 0.1) !important;
+    }
+    .dedup-col.marked-bulk-delete .bulk-col-select-bar {
+      background: rgba(192, 57, 43, 0.12);
+      border-color: rgba(192, 57, 43, 0.3);
+    }
+    .bulk-chk-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+    .bulk-chk-label input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: #C0392B;
+      cursor: pointer;
+    }
+    .bulk-col-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #FFF;
+      background: #C0392B;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+      letter-spacing: 0.02em;
+    }
+    .btn-card-quick-chk {
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s ease;
+    }
+    .btn-card-quick-chk:hover {
+      border-color: #C0392B;
+      color: #C0392B;
+    }
+    .btn-card-quick-chk.active {
+      background: #C0392B;
+      color: #FFF;
+      border-color: #C0392B;
+    }
+
     /* Cards Grid */
     .dedup-main {
       max-width: 1500px;
@@ -820,6 +1015,39 @@
 
       <div class="dedup-filter-group">
         <input type="text" id="dedup-search" placeholder="Filter by product or brand..." style="padding:0.45rem 1rem; border:1px solid var(--border-subtle); border-radius:9999px; font-size:0.85rem; width:220px;">
+      </div>
+    </div>
+  </div>
+
+  <!-- Dedicated Bulk Deletion Toolbar -->
+  <div class="dedup-bulk-toolbar" id="dedup-bulk-toolbar">
+    <div class="dedup-bulk-inner">
+      <div class="dedup-bulk-info">
+        <div class="bulk-select-icon">☑️</div>
+        <div>
+          <div class="bulk-title">
+            <span id="bulk-selected-count">0</span> Products Selected for Bulk Deletion
+          </div>
+          <div class="bulk-sub" id="bulk-selected-sub">
+            Check duplicate pieces to delete them in bulk, or use quick select options below
+          </div>
+        </div>
+      </div>
+
+      <div class="dedup-bulk-actions">
+        <button type="button" class="btn-bulk-helper" id="btn-bulk-select-b" title="Select Product B on all currently visible cards">
+          <span>☑️ Select All B (Right Side)</span>
+        </button>
+        <button type="button" class="btn-bulk-helper" id="btn-bulk-select-exact" title="Select Product B on all exact duplicate cards (≥97%)">
+          <span>🎯 Select Exact Matches</span>
+        </button>
+        <button type="button" class="btn-bulk-helper" id="btn-bulk-clear" title="Clear all selections">
+          <span>✕ Deselect All</span>
+        </button>
+
+        <button type="button" class="btn-bulk-delete" id="btn-bulk-delete-action" disabled title="Permanently delete selected products from catalogs">
+          <span>🗑️ Delete Selected (<span id="bulk-btn-count">0</span>) in Bulk</span>
+        </button>
       </div>
     </div>
   </div>
