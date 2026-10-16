@@ -410,11 +410,11 @@ export default function SofaPricingPanel() {
                 <tr key={sofa.id} className="hover:bg-white/[0.02] transition-colors">
                   {/* Product */}
                   <td className="p-4">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-4 min-w-[320px]">
                       <img
                         src={sofa.image}
                         alt={sofa.name}
-                        className="w-12 h-12 rounded-lg object-cover bg-black/30 border border-white/10"
+                        className="w-28 h-20 rounded-xl object-cover bg-black/40 border border-white/15 shadow-md flex-shrink-0 transition-transform duration-200 hover:scale-150 hover:z-20 hover:border-[#D4AF37] cursor-pointer"
                       />
                       <div>
                         <div className="font-bold text-white text-base">{sofa.name}</div>

@@ -381,33 +381,44 @@
     .sp-prod-cell {
       display: flex;
       align-items: center;
-      gap: 0.85rem;
-      min-width: 260px;
+      gap: 1.15rem;
+      min-width: 330px;
+    }
+    .sp-prod-thumb-wrap {
+      position: relative;
+      flex-shrink: 0;
+      border-radius: 10px;
+      overflow: visible;
     }
     .sp-prod-thumb {
-      width: 52px;
-      height: 52px;
-      border-radius: 8px;
+      width: 110px;
+      height: 82px;
+      border-radius: 10px;
       object-fit: cover;
       background: var(--sp-bg-elevated);
-      border: 1px solid var(--sp-border-subtle);
+      border: 1.5px solid var(--sp-border-subtle);
       flex-shrink: 0;
-      transition: transform 0.2s ease;
+      display: block;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+      cursor: zoom-in;
     }
     .sp-prod-thumb:hover {
-      transform: scale(1.15);
-      z-index: 5;
+      transform: scale(2.2);
+      z-index: 100;
+      border-color: var(--sp-gold);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75);
     }
     .sp-prod-info { min-width: 0; }
     .sp-prod-name {
       font-weight: 700;
       color: var(--sp-text);
-      font-size: 0.92rem;
-      margin-bottom: 0.2rem;
+      font-size: 0.96rem;
+      margin-bottom: 0.25rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 220px;
+      max-width: 240px;
     }
     .sp-prod-meta {
       display: flex;
@@ -1486,7 +1497,7 @@
       <div style="display:grid; grid-template-columns: 280px 1fr; gap:1.75rem; margin-bottom:1.5rem;">
         <!-- Left: Image & Specs Preview -->
         <div>
-          <img id="edit-modal-img" src="assets/plypicker-icon-240.png" alt="Sofa" style="width:100%; height:200px; object-fit:cover; border-radius:10px; border:1px solid var(--sp-border-subtle); margin-bottom:0.85rem; background:var(--sp-bg-elevated);">
+          <img id="edit-modal-img" src="assets/plypicker-icon-240.png" alt="Sofa" style="width:100%; height:260px; object-fit:cover; border-radius:12px; border:1.5px solid var(--sp-border-subtle); margin-bottom:0.85rem; background:var(--sp-bg-elevated); box-shadow:0 8px 24px rgba(0,0,0,0.4); cursor:zoom-in;" onclick="openPhotoLightbox(this.src, document.getElementById('edit-prod-name').value)">
           <div style="background:var(--sp-bg-surface); padding:0.85rem; border-radius:8px; border:1px solid var(--sp-border-subtle);">
             <div style="font-size:0.76rem; color:var(--sp-gold); font-weight:700; text-transform:uppercase;">Catalog Assignment:</div>
             <div style="font-size:0.82rem; color:var(--sp-text); word-break:break-all; font-family:'JetBrains Mono',monospace;" id="edit-modal-catalog-file">Sofa/Modani/sofas.json</div>
@@ -1633,6 +1644,17 @@
         <button class="sp-btn-action" id="btn-modal-copy-json">📋 Copy JSON to Clipboard</button>
         <button class="sp-btn-action primary" id="btn-modal-download-json">💾 Download .json</button>
       </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 4: FULL-SIZE HIGH-RES PHOTO LIGHTBOX
+       ========================================================================= -->
+  <div class="sp-modal-overlay" id="modal-photo-lightbox" onclick="closePhotoLightbox(event)">
+    <div style="position:relative; max-width:92vw; max-height:92vh; text-align:center;">
+      <button class="sp-modal-close" onclick="closePhotoLightbox()" style="position:absolute; top:-40px; right:0; color:#fff; font-size:2.2rem; cursor:pointer;">✕</button>
+      <img id="lightbox-img" src="" alt="Sofa High Resolution" style="max-width:100%; max-height:85vh; border-radius:14px; border:2px solid var(--sp-gold); box-shadow:0 25px 70px rgba(0,0,0,0.9); object-fit:contain; background:#121110;">
+      <div id="lightbox-caption" style="color:var(--sp-gold); font-weight:800; font-size:1.1rem; margin-top:0.85rem; font-family:'Cinzel',serif; letter-spacing:0.02em;"></div>
     </div>
   </div>
 
@@ -2080,7 +2102,9 @@
               <!-- Product Details -->
               <td>
                 <div class="sp-prod-cell">
-                  <img src="${sofa.image || 'assets/plypicker-icon-240.png'}" alt="${sofa.name}" class="sp-prod-thumb" onerror="this.src='assets/plypicker-icon-240.png'">
+                  <div class="sp-prod-thumb-wrap" onclick="openPhotoLightbox('${(sofa.image || 'assets/plypicker-icon-240.png').replace(/'/g, "\\'")}', '${sofa.name.replace(/'/g, "\\'")}')" title="Click to view full-resolution photo">
+                    <img src="${sofa.image || 'assets/plypicker-icon-240.png'}" alt="${sofa.name}" class="sp-prod-thumb" onerror="this.src='assets/plypicker-icon-240.png'" loading="lazy">
+                  </div>
                   <div class="sp-prod-info">
                     <div class="sp-prod-name" title="${sofa.name}">${sofa.name}</div>
                     <div class="sp-prod-meta">
@@ -2262,6 +2286,23 @@
       window.closeEditModal = function() {
         document.getElementById('modal-edit-sofa').classList.remove('open');
         AppState.editingSofa = null;
+      };
+
+      // Photo Lightbox Functions
+      window.openPhotoLightbox = function(src, name) {
+        const modal = document.getElementById('modal-photo-lightbox');
+        if (!modal) return;
+        document.getElementById('lightbox-img').src = src;
+        document.getElementById('lightbox-caption').textContent = name || '';
+        modal.classList.add('open');
+      };
+
+      window.closePhotoLightbox = function(e) {
+        const modal = document.getElementById('modal-photo-lightbox');
+        if (!modal) return;
+        if (!e || e.target.id === 'modal-photo-lightbox' || e.target.classList.contains('sp-modal-close')) {
+          modal.classList.remove('open');
+        }
       };
 
       function updateEditModalPreview() {
