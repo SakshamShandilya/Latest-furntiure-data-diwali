@@ -389,18 +389,28 @@ export default function SofaPricingPanel() {
       </div>
 
       {/* Main Pricing Directory Table */}
-      <div className="max-w-7xl mx-auto bg-[#22201D] border border-white/10 rounded-xl overflow-x-auto shadow-2xl">
-        <table className="w-full text-left text-sm border-collapse">
+      <div className="w-full bg-[#22201D] border border-white/10 rounded-xl overflow-x-auto shadow-2xl">
+        <table className="w-full text-left text-xs border-collapse table-fixed">
+          <colgroup>
+            <col style={{ width: '22%' }} />
+            <col style={{ width: '11%' }} />
+            <col style={{ width: '8%' }} />
+            <col style={{ width: '10%' }} />
+            <col style={{ width: '10%' }} />
+            <col style={{ width: '12%' }} />
+            <col style={{ width: '13%' }} />
+            <col style={{ width: '14%' }} />
+          </colgroup>
           <thead>
-            <tr className="bg-[#1A1917] border-b border-white/10 text-xs font-bold uppercase tracking-wider text-[#AFA89F]">
-              <th className="p-4">Product Details</th>
-              <th className="p-4">Category (Change Here)</th>
-              <th className="p-4">Dimensions</th>
-              <th className="p-4">Base Sofa Cost</th>
-              <th className="p-4">Fabric Cost</th>
-              <th className="p-4">Exclusive Price (No GST)</th>
-              <th className="p-4">Final Price (18% GST)</th>
-              <th className="p-4 text-right">Actions</th>
+            <tr className="bg-[#1A1917] border-b border-white/10 text-[11px] font-bold uppercase tracking-wider text-[#AFA89F]">
+              <th className="p-3">Product</th>
+              <th className="p-3">Category</th>
+              <th className="p-3">Dimensions</th>
+              <th className="p-3">Base Cost</th>
+              <th className="p-3">Fabric Cost</th>
+              <th className="p-3">Excl. GST</th>
+              <th className="p-3">Final (18% GST)</th>
+              <th className="p-3 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
@@ -409,20 +419,20 @@ export default function SofaPricingPanel() {
               return (
                 <tr key={sofa.id} className="hover:bg-white/[0.02] transition-colors">
                   {/* Product */}
-                  <td className="p-4">
-                    <div className="flex items-center gap-4 min-w-[320px]">
+                  <td className="p-3 overflow-hidden">
+                    <div className="flex items-center gap-3 min-w-0">
                       <img
                         src={sofa.image}
                         alt={sofa.name}
-                        className="w-28 h-20 rounded-xl object-cover bg-black/40 border border-white/15 shadow-md flex-shrink-0 transition-transform duration-200 hover:scale-150 hover:z-20 hover:border-[#D4AF37] cursor-pointer"
+                        className="w-16 h-12 rounded-lg object-cover bg-black/40 border border-white/15 shadow-md flex-shrink-0 transition-transform duration-200 hover:scale-150 hover:z-20 hover:border-[#D4AF37] cursor-pointer"
                       />
-                      <div>
-                        <div className="font-bold text-white text-base">{sofa.name}</div>
-                        <div className="flex items-center gap-2 mt-0.5">
-                          <span className="bg-[#D4AF37]/20 text-[#D4AF37] px-2 py-0.5 rounded text-xs font-bold">
+                      <div className="min-w-0 flex-1 overflow-hidden">
+                        <div className="font-bold text-white text-xs truncate" title={sofa.name}>{sofa.name}</div>
+                        <div className="flex items-center gap-1.5 mt-0.5 truncate">
+                          <span className="bg-[#D4AF37]/20 text-[#D4AF37] px-1.5 py-0.5 rounded text-[10px] font-bold">
                             {sofa.brand}
                           </span>
-                          <span className="bg-white/10 text-[#AFA89F] px-2 py-0.5 rounded text-xs">
+                          <span className="bg-white/10 text-[#AFA89F] px-1.5 py-0.5 rounded text-[10px] truncate">
                             {sofa.configuration}
                           </span>
                         </div>
@@ -431,11 +441,11 @@ export default function SofaPricingPanel() {
                   </td>
 
                   {/* Inline Category Dropdown */}
-                  <td className="p-4">
+                  <td className="p-3">
                     <select
                       value={sofa.category}
                       onChange={e => handleCategoryChange(sofa.id, e.target.value)}
-                      className="bg-[#2A2824] border border-[#D4AF37] text-[#D4AF37] font-bold rounded px-2.5 py-1 text-sm focus:outline-none"
+                      className="bg-[#2A2824] border border-[#D4AF37] text-[#D4AF37] font-bold rounded px-2 py-1 text-xs focus:outline-none w-full max-w-[115px] truncate"
                     >
                       {categories.map(c => (
                         <option key={c.code} value={c.code}>
@@ -443,46 +453,46 @@ export default function SofaPricingPanel() {
                         </option>
                       ))}
                     </select>
-                    <div className="text-xs text-[#AFA89F] mt-1">{formatINR(prices.ratePerFt)}/linear ft</div>
+                    <div className="text-[10px] text-[#AFA89F] mt-0.5">{formatINR(prices.ratePerFt)}/ft</div>
                   </td>
 
                   {/* Dimensions */}
-                  <td className="p-4">
-                    <div className="font-mono font-bold text-[#D4AF37]">{prices.totalLen.toFixed(2)} ft</div>
-                    <div className="text-xs text-[#AFA89F]">Depth: {sofa.depth || 30}"</div>
+                  <td className="p-3">
+                    <div className="font-mono font-bold text-[#D4AF37] text-xs">{prices.totalLen.toFixed(1)} ft</div>
+                    <div className="text-[10px] text-[#AFA89F]">{sofa.depth || 30}"D</div>
                   </td>
 
                   {/* 1. Base Sofa Cost */}
-                  <td className="p-4">
-                    <div className="font-mono font-bold text-white">{formatINR(prices.baseCost)}</div>
-                    <div className="text-xs text-[#AFA89F]">{prices.totalLen.toFixed(2)}' × {formatINR(prices.ratePerFt)}</div>
+                  <td className="p-3">
+                    <div className="font-mono font-bold text-white text-xs">{formatINR(prices.baseCost)}</div>
+                    <div className="text-[10px] text-[#AFA89F]">{prices.totalLen.toFixed(1)}' × {formatINR(prices.ratePerFt)}</div>
                   </td>
 
                   {/* 2. Fabric Cost */}
-                  <td className="p-4">
-                    <div className="font-mono font-bold text-white">{formatINR(prices.fabricCost)}</div>
-                    <div className="text-xs text-[#AFA89F]">{prices.consumption}m/ft × {formatINR(prices.fabricDelta)}/m</div>
+                  <td className="p-3">
+                    <div className="font-mono font-bold text-white text-xs">{formatINR(prices.fabricCost)}</div>
+                    <div className="text-[10px] text-[#AFA89F]">{prices.consumption}m/ft × +{formatINR(prices.fabricDelta)}</div>
                   </td>
 
                   {/* 3. Exclusive Price (Without GST) */}
-                  <td className="p-4">
-                    <div className="font-mono font-bold text-[#2ECC71] text-base">{formatINR(prices.subtotal)}</div>
-                    <div className="text-xs text-[#AFA89F]">Base + Fabric + Pillows</div>
+                  <td className="p-3">
+                    <div className="font-mono font-bold text-[#2ECC71] text-xs">{formatINR(prices.subtotal)}</div>
+                    <div className="text-[10px] text-[#AFA89F]">Base + Fabric</div>
                   </td>
 
                   {/* 4. Final Price (With 18% GST) */}
-                  <td className="p-4">
-                    <div className="font-mono font-extrabold text-[#D4AF37] text-lg">{formatINR(prices.grandTotal)}</div>
-                    <div className="text-xs text-[#AFA89F]">Incl. 18% GST (+{formatINR(prices.gst)})</div>
+                  <td className="p-3">
+                    <div className="font-mono font-extrabold text-[#D4AF37] text-sm">{formatINR(prices.grandTotal)}</div>
+                    <div className="text-[10px] text-[#AFA89F]">Incl. 18% GST</div>
                   </td>
 
                   {/* Actions */}
-                  <td className="p-4 text-right">
+                  <td className="p-3 text-right">
                     <button
                       onClick={() => { setEditingSofa(sofa); setIsEditModalOpen(true); }}
-                      className="px-3 py-1.5 bg-[#D4AF37] text-[#121110] font-bold rounded text-xs hover:bg-[#E5C158] transition-all"
+                      className="px-2.5 py-1 bg-[#D4AF37] text-[#121110] font-bold rounded text-xs hover:bg-[#E5C158] transition-all whitespace-nowrap"
                     >
-                      ✏️ Edit Details
+                      ✏️ Edit
                     </button>
                   </td>
                 </tr>

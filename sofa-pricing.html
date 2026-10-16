@@ -91,13 +91,13 @@
       background: linear-gradient(135deg, #F8F5F0 0%, #EFE9DF 100%);
     }
     .sp-hero-inner {
-      max-width: 1540px;
+      max-width: 100%;
       margin: 0 auto;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 1.5rem;
+      gap: 1.25rem;
     }
     .sp-badge {
       display: inline-flex;
@@ -184,9 +184,11 @@
 
     /* Container */
     .sp-container {
-      max-width: 1540px;
-      margin: 1.5rem auto;
-      padding: 0 2rem 5rem;
+      max-width: 100%;
+      width: 100%;
+      margin: 1rem auto;
+      padding: 0 1rem 4rem;
+      box-sizing: border-box;
     }
 
     /* STATS SUMMARY BAR */
@@ -343,31 +345,37 @@
       background: var(--sp-bg-card);
       border: 1px solid var(--sp-border-subtle);
       border-radius: var(--sp-radius);
-      overflow-x: auto;
       box-shadow: var(--sp-shadow);
       margin-bottom: 1.5rem;
+      width: 100%;
+      overflow-x: auto;
+      box-sizing: border-box;
     }
     .sp-table {
       width: 100%;
+      table-layout: fixed; /* enforce strict fit within 100% width with zero overflow */
       border-collapse: collapse;
       text-align: left;
-      font-size: 0.86rem;
+      font-size: 0.79rem;
     }
     .sp-table th {
       background: var(--sp-bg-surface);
-      padding: 0.95rem 1rem;
+      padding: 0.65rem 0.4rem;
       color: var(--sp-text-muted);
       font-weight: 700;
       text-transform: uppercase;
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
+      font-size: 0.66rem;
+      letter-spacing: 0.03em;
       border-bottom: 1px solid var(--sp-border-subtle);
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .sp-table td {
-      padding: 1rem;
+      padding: 0.55rem 0.4rem;
       border-bottom: 1px solid var(--sp-border-subtle);
       vertical-align: middle;
+      overflow: hidden;
     }
     .sp-table tr:last-child td { border-bottom: none; }
     .sp-table tr:hover td {
@@ -381,63 +389,72 @@
     .sp-prod-cell {
       display: flex;
       align-items: center;
-      gap: 1.15rem;
-      min-width: 330px;
+      gap: 0.6rem;
+      width: 100%;
+      min-width: 0;
     }
     .sp-prod-thumb-wrap {
       position: relative;
       flex-shrink: 0;
-      border-radius: 10px;
-      overflow: visible;
+      border-radius: 8px;
     }
     .sp-prod-thumb {
-      width: 110px;
-      height: 82px;
-      border-radius: 10px;
+      width: 76px;
+      height: 56px;
+      border-radius: 8px;
       object-fit: cover;
       background: var(--sp-bg-elevated);
       border: 1.5px solid var(--sp-border-subtle);
       flex-shrink: 0;
       display: block;
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
       cursor: zoom-in;
     }
     .sp-prod-thumb:hover {
-      transform: scale(2.2);
+      transform: scale(2.6);
       z-index: 100;
       border-color: var(--sp-gold);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85);
     }
-    .sp-prod-info { min-width: 0; }
+    .sp-prod-info {
+      min-width: 0;
+      flex: 1;
+      overflow: hidden;
+    }
     .sp-prod-name {
       font-weight: 700;
       color: var(--sp-text);
-      font-size: 0.96rem;
-      margin-bottom: 0.25rem;
+      font-size: 0.82rem;
+      margin-bottom: 0.2rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 240px;
+      width: 100%;
     }
     .sp-prod-meta {
       display: flex;
       align-items: center;
-      gap: 0.4rem;
-      font-size: 0.74rem;
+      gap: 0.3rem;
+      font-size: 0.68rem;
+      flex-wrap: nowrap;
+      overflow: hidden;
+      white-space: nowrap;
     }
     .sp-brand-pill {
       background: rgba(212, 175, 55, 0.15);
       color: var(--sp-gold);
-      padding: 0.15rem 0.5rem;
+      padding: 0.1rem 0.4rem;
       border-radius: 4px;
       font-weight: 700;
+      font-size: 0.67rem;
     }
     .sp-config-badge {
       background: var(--sp-bg-elevated);
       color: var(--sp-text-muted);
-      padding: 0.15rem 0.5rem;
+      padding: 0.1rem 0.4rem;
       border-radius: 4px;
+      font-size: 0.67rem;
     }
 
     /* Inline Category Selector in Table */
@@ -447,11 +464,17 @@
       border-radius: 6px;
       color: var(--sp-gold);
       font-weight: 700;
-      font-size: 0.82rem;
-      padding: 0.4rem 0.65rem;
+      font-size: 0.74rem;
+      padding: 0.25rem 0.35rem;
       cursor: pointer;
       outline: none;
       transition: all 0.2s;
+      width: 100%;
+      max-width: 122px;
+      box-sizing: border-box;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
     .sp-row-cat-select:hover {
       background: rgba(212, 175, 55, 0.15);
@@ -463,33 +486,37 @@
       font-weight: 700;
       color: var(--sp-text);
       white-space: nowrap;
+      font-size: 0.82rem;
     }
     .sp-price-sub {
-      font-size: 0.72rem;
+      font-size: 0.66rem;
       color: var(--sp-text-muted);
-      margin-top: 0.15rem;
+      margin-top: 0.1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .sp-price-gold {
       font-family: 'JetBrains Mono', monospace;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 0.92rem;
       color: var(--sp-gold);
       white-space: nowrap;
     }
 
     /* Action Buttons in Row */
     .sp-btn-action {
-      padding: 0.4rem 0.85rem;
+      padding: 0.28rem 0.5rem;
       border-radius: 6px;
       border: 1px solid var(--sp-border-subtle);
       background: var(--sp-bg-elevated);
       color: var(--sp-text);
-      font-size: 0.8rem;
+      font-size: 0.73rem;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.25rem;
       transition: all 0.2s;
       white-space: nowrap;
     }
@@ -1092,17 +1119,28 @@
       <!-- Pricing Directory Table -->
       <div class="sp-table-wrap">
         <table class="sp-table" id="sofas-pricing-table">
+          <colgroup>
+            <col style="width: 21%;"> <!-- Product -->
+            <col style="width: 11%;"> <!-- Category -->
+            <col style="width: 8%;">  <!-- Dimensions -->
+            <col style="width: 9%;">  <!-- Fabric -->
+            <col style="width: 9%;">  <!-- Base Cost -->
+            <col style="width: 9%;">  <!-- Fabric Cost -->
+            <col style="width: 11%;"> <!-- Excl. GST -->
+            <col style="width: 12%;"> <!-- Final (18% GST) -->
+            <col style="width: 10%;"> <!-- Actions -->
+          </colgroup>
           <thead>
             <tr>
-              <th>Product Details</th>
-              <th>Category (Change Here)</th>
-              <th>Dimensions &amp; Length</th>
-              <th>Fabric Upholstery</th>
-              <th>Base Sofa Cost</th>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Dimensions</th>
+              <th>Fabric</th>
+              <th>Base Cost</th>
               <th>Fabric Cost</th>
-              <th>Exclusive Price (No GST)</th>
-              <th>Final Price (18% GST)</th>
-              <th>Actions</th>
+              <th>Excl. GST</th>
+              <th>Final (18% GST)</th>
+              <th style="text-align:right;">Actions</th>
             </tr>
           </thead>
           <tbody id="sofas-table-body">
@@ -2120,53 +2158,53 @@
                 <select class="sp-row-cat-select" onchange="handleRowCategoryChange('${sofa.id}', this.value)">
                   ${catOptions}
                 </select>
-                <div class="sp-price-sub">${formatINR(prices.ratePerFt)}/linear ft</div>
+                <div class="sp-price-sub">${formatINR(prices.ratePerFt)}/ft</div>
               </td>
 
               <!-- Dimensions & Length -->
               <td>
-                <div class="sp-price-mono" style="font-size:0.92rem; color:var(--sp-gold);">${prices.totalLen.toFixed(2)} ft</div>
+                <div class="sp-price-mono" style="color:var(--sp-gold);">${prices.totalLen.toFixed(2)} ft</div>
                 <div class="sp-price-sub">${dimDetails} · ${sofa.depth || 30}"D</div>
               </td>
 
               <!-- Fabric -->
               <td>
-                <div style="font-weight:700; color:var(--sp-text); font-size:0.86rem;">${prices.fabricKey}</div>
-                <div class="sp-price-sub">+${formatINR(prices.fabricDelta)}/m · ${prices.consumption} m/ft</div>
+                <div style="font-weight:700; color:var(--sp-text); font-size:0.8rem;">${prices.fabricKey}</div>
+                <div class="sp-price-sub">+${formatINR(prices.fabricDelta)}/m · ${prices.consumption}m/ft</div>
               </td>
 
               <!-- 1. Base Sofa Cost -->
               <td>
                 <div class="sp-price-mono">${formatINR(prices.baseCost)}</div>
-                <div class="sp-price-sub">${prices.totalLen.toFixed(2)}' × ${formatINR(prices.ratePerFt)}</div>
+                <div class="sp-price-sub">${prices.totalLen.toFixed(1)}' × ${formatINR(prices.ratePerFt)}</div>
               </td>
 
               <!-- 2. Fabric Cost -->
               <td>
                 <div class="sp-price-mono">${formatINR(prices.fabricCost)}</div>
-                <div class="sp-price-sub">${prices.consumption}m/ft × ${prices.totalLen.toFixed(2)}' × ${formatINR(prices.fabricDelta)}</div>
+                <div class="sp-price-sub">${prices.consumption}m/ft × +${formatINR(prices.fabricDelta)}</div>
               </td>
 
               <!-- 3. Exclusive Price (Without GST) -->
               <td>
-                <div class="sp-price-mono" style="font-size:0.96rem; color:var(--sp-green);">${formatINR(prices.subtotal)}</div>
-                <div class="sp-price-sub">Base + Fabric + Pillows</div>
+                <div class="sp-price-mono" style="color:var(--sp-green);">${formatINR(prices.subtotal)}</div>
+                <div class="sp-price-sub">Base + Fabric</div>
               </td>
 
               <!-- 4. Final Price (With 18% GST) -->
               <td>
                 <div class="sp-price-gold">${formatINR(prices.grandTotal)}</div>
-                <div class="sp-price-sub">Incl. 18% GST (+${formatINR(prices.gst)})</div>
+                <div class="sp-price-sub">Incl. 18% GST</div>
               </td>
 
               <!-- Actions -->
               <td>
-                <div style="display:flex; align-items:center; gap:0.4rem;">
+                <div style="display:flex; align-items:center; gap:0.25rem; justify-content:flex-end;">
                   <button class="sp-btn-action primary" onclick="openEditModal('${sofa.id}')" title="Edit sofa dimensions, category, and options">
                     ✏️ Edit
                   </button>
                   <button class="sp-btn-action" onclick="openJsonModal('${sofa.id}')" title="Export MongoDB JSON document">
-                    📋 JSON
+                    JSON
                   </button>
                 </div>
               </td>
