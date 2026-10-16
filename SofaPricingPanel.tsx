@@ -1,17 +1,52 @@
-import React, { useState, useMemo } from 'react';
+'use client';
+
+import React, { useState, useMemo, useEffect } from 'react';
 
 /**
- * Plypicker Luxury Living - Sofa Product Data Entry & Real-Time Pricing Panel
+ * Plypicker Luxury Living - Sofa Product-Wise Pricing & Customization Panel
  * Built for Next.js / React with Tailwind CSS.
- * Drives precise sofa valuations using linear length, category rate per foot,
- * fabric consumption, and multi-variant upholstery deltas with dual-key MongoDB compatibility.
+ * Provides:
+ *  1. Product-Wise Directory: Inspect all sofas, their categories, Base Sofa Cost, Fabric Cost, Exclusive Price (No GST), and Final Price (18% GST).
+ *  2. Direct Inline Category Switcher: Change categories right on the listing row with live recalculation.
+ *  3. Sofa Detail Editor Modal: Edit sofa dimensions, configuration, fabric consumption, and add-ons.
+ *  4. Global Category Manager: Add unlimited categories and change rate per foot globally with real-time propagation across all products.
+ *  5. Deep Configurator Studio: Deep single-product bespoke builder with compliant MongoDB JSON export.
  */
+
+export interface PricingCategory {
+  code: string;
+  tier: string;
+  rate: number;
+  isDefault?: boolean;
+  description?: string;
+}
 
 export interface FabricPricingConfig {
   key: string;
   name: string;
   delta: number;
   image: string;
+}
+
+export interface SofaProduct {
+  id: string;
+  catalogFile?: string;
+  catalogIndex?: number;
+  brand: string;
+  name: string;
+  image: string;
+  images?: string[];
+  category: string; // e.g. "A", "B", "C", "D"
+  configuration: 'Straight Line' | 'Curved Sofa' | 'L-Shape' | '3+2 Sofa' | 'U-Shape' | '3+2+1' | '3+1+1' | '3+2+2';
+  partALen: number;
+  partBLen: number;
+  partCLen: number;
+  depth: number;
+  consumptionRate: number;
+  fabric: string;
+  extraRound?: number;
+  extraSquare?: number;
+  extraBall?: number;
 }
 
 export const FABRICS: FabricPricingConfig[] = [
@@ -26,823 +61,619 @@ export const FABRICS: FabricPricingConfig[] = [
   { key: 'Genuine Leather', name: 'Genuine Leather', delta: 4500, image: 'https://dlkotil4uzvzh.cloudfront.net/sofa-inline/leather.png' },
 ];
 
-export const CATEGORY_RATES: Record<string, { tier: string; rate: number }> = {
-  A: { tier: 'Standard', rate: 6500 },
-  B: { tier: 'Mid-Tier', rate: 7500 },
-  C: { tier: 'Premium', rate: 8500 },
-  D: { tier: 'Luxury Premium', rate: 12717.65 },
-};
+export const INITIAL_CATEGORIES: PricingCategory[] = [
+  { code: 'A', tier: 'Standard', rate: 6500, isDefault: true, description: 'High-durability everyday luxury frames & standard resilient foam' },
+  { code: 'B', tier: 'Mid-Tier', rate: 7500, isDefault: false, description: 'Solid hardwood reinforcement & high-resilience ergonomic foam' },
+  { code: 'C', tier: 'Premium', rate: 8500, isDefault: false, description: 'Hand-tied pocket springs, premium hardwood & feather layers' },
+  { code: 'D', tier: 'Luxury Premium', rate: 12717.65, isDefault: false, description: 'Italian architectural grade, hand-carved detailing & bespoke ergonomics' },
+];
 
-export const CONFIGURATIONS = [
-  'Straight Line',
-  'Curved Sofa',
-  'L-Shape',
-  '3+2 Sofa',
-  'U-Shape',
-  '3+2+1',
-  '3+1+1',
-  '3+2+2',
-] as const;
+// Sample Initial Products
+export const INITIAL_PRODUCTS: SofaProduct[] = [
+  {
+    id: 'sofa_modani_1',
+    brand: 'Modani',
+    name: 'Nido Sofa White',
+    image: 'https://cdn.shopify.com/s/files/1/0898/9048/8616/files/nido_sofa_wh_front_1500_png.png?v=1745895976',
+    category: 'A',
+    configuration: 'Straight Line',
+    partALen: 7.91,
+    partBLen: 0,
+    partCLen: 0,
+    depth: 30,
+    consumptionRate: 3,
+    fabric: 'Boucle',
+    extraRound: 0, extraSquare: 0, extraBall: 0
+  },
+  {
+    id: 'sofa_baywindow_1',
+    brand: 'Baywindow',
+    name: 'Monterey Static Lounger LH',
+    image: 'https://dlkotil4uzvzh.cloudfront.net/sofa-inline/leather.png',
+    category: 'B',
+    configuration: 'L-Shape',
+    partALen: 6.0,
+    partBLen: 3.5,
+    partCLen: 0,
+    depth: 32,
+    consumptionRate: 3,
+    fabric: 'Genuine Leather',
+    extraRound: 2, extraSquare: 0, extraBall: 0
+  },
+  {
+    id: 'sofa_ubbaco_1',
+    brand: 'Ubbaco',
+    name: 'Ubbaco Designer Sectional #01',
+    image: 'assets/plypicker-icon-240.png',
+    category: 'C',
+    configuration: '3+2 Sofa',
+    partALen: 7.0,
+    partBLen: 5.0,
+    partCLen: 0,
+    depth: 34,
+    consumptionRate: 3,
+    fabric: 'Velvet',
+    extraRound: 0, extraSquare: 2, extraBall: 0
+  },
+  {
+    id: 'sofa_estre_1',
+    brand: 'Estre',
+    name: 'Sterling Curved Architectural Sofa',
+    image: 'https://dlkotil4uzvzh.cloudfront.net/sofa-inline/boucle.png',
+    category: 'D',
+    configuration: 'Curved Sofa',
+    partALen: 8.5,
+    partBLen: 0,
+    partCLen: 0,
+    depth: 36,
+    consumptionRate: 2,
+    fabric: 'Boucle',
+    extraRound: 0, extraSquare: 0, extraBall: 1
+  }
+];
 
-export type SofaConfigType = typeof CONFIGURATIONS[number];
+export function computeTotalLength(
+  config: string,
+  partA: number,
+  partB: number,
+  partC: number
+): number {
+  if (config === 'Straight Line' || config === 'Curved Sofa') {
+    return Math.max(1, partA);
+  } else if (['U-Shape', '3+2+1', '3+1+1', '3+2+2'].includes(config)) {
+    return Math.round((partA + partB + partC) * 100) / 100;
+  } else {
+    return Math.round((partA + partB) * 100) / 100;
+  }
+}
+
+export function formatINR(val: number): string {
+  return '₹' + Math.round(val).toLocaleString('en-IN');
+}
 
 export default function SofaPricingPanel() {
-  // Identity State
-  const [productName, setProductName] = useState('Donald Luxury Sectional Sofa');
-  const [brand, setBrand] = useState('Baywindow');
-  const [city, setCity] = useState<'Pune' | 'Mumbai' | 'Navi Mumbai'>('Pune');
-  const [imagesText, setImagesText] = useState('https://dlkotil4uzvzh.cloudfront.net/sofa-inline/boucle.png');
+  // Global Categories State
+  const [categories, setCategories] = useState<PricingCategory[]>(INITIAL_CATEGORIES);
+  const [sofas, setSofas] = useState<SofaProduct[]>(INITIAL_PRODUCTS);
 
-  // Category & Rate State
-  const [selectedCat, setSelectedCat] = useState<'A' | 'B' | 'C' | 'D' | 'Custom'>('A');
-  const [customRate, setCustomRate] = useState<number>(9500);
+  // Active View ('directory' or 'configurator')
+  const [activeView, setActiveView] = useState<'directory' | 'configurator'>('directory');
 
-  // Configuration & Dimensions State
-  const [configuration, setConfiguration] = useState<SofaConfigType>('L-Shape');
-  const [partAFt, setPartAFt] = useState(6);
-  const [partAIn, setPartAIn] = useState(0);
-  const [partADepth, setPartADepth] = useState(30);
+  // Search & Filters
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterBrand, setFilterBrand] = useState('ALL');
+  const [filterCategory, setFilterCategory] = useState('ALL');
+  const [activeFabricEval, setActiveFabricEval] = useState('Boucle');
+  const [sortBy, setSortBy] = useState<'name' | 'price_asc' | 'price_desc' | 'length'>('name');
 
-  const [partBFt, setPartBFt] = useState(3);
-  const [partBIn, setPartBIn] = useState(0);
-  const [partBDepth, setPartBDepth] = useState(30);
+  // Modals State
+  const [isCatModalOpen, setIsCatModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingSofa, setEditingSofa] = useState<SofaProduct | null>(null);
 
-  const [partCFt, setPartCFt] = useState(0);
-  const [partCIn, setPartCIn] = useState(0);
-  const [partCDepth, setPartCDepth] = useState(30);
+  // New Category Form State
+  const [newCatCode, setNewCatCode] = useState('');
+  const [newCatTier, setNewCatTier] = useState('');
+  const [newCatRate, setNewCatRate] = useState<number>(9500);
+  const [newCatDesc, setNewCatDesc] = useState('');
 
-  const [consumptionRate, setConsumptionRate] = useState(3);
+  // Toast State
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // Active Selected Fabric for Preview
-  const [activeFabricKey, setActiveFabricKey] = useState('Boucle');
+  function triggerToast(msg: string) {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 2500);
+  }
 
-  // Add-ons State
-  const [pillows, setPillows] = useState({ round: 2, square: 0, ball: 0 });
-  const [cushionComfort, setCushionComfort] = useState('Soft');
-  const [legType, setLegType] = useState('Metal');
-  const [sampleKit, setSampleKit] = useState(false);
+  // Helper to get category rate
+  const getCatRate = (code: string) => {
+    const found = categories.find(c => c.code.toUpperCase() === code.toUpperCase());
+    return found ? found.rate : 6500;
+  };
 
-  // Output Tabs
-  const [activeTab, setActiveTab] = useState<'full' | 'single' | 'storefront'>('full');
-  const [copied, setCopied] = useState(false);
+  // Pricing Calculation Helper
+  const calculatePricing = (sofa: SofaProduct, evalFabricKey = activeFabricEval) => {
+    const ratePerFt = getCatRate(sofa.category);
+    const totalLen = computeTotalLength(sofa.configuration, sofa.partALen, sofa.partBLen, sofa.partCLen);
+    const cons = sofa.consumptionRate || (sofa.configuration === 'Curved Sofa' ? 2 : 3);
+    const fabricObj = FABRICS.find(f => f.key === evalFabricKey) || FABRICS[5];
+    const fabricDelta = fabricObj.delta;
 
-  // Computed Values
-  const ratePerFt = useMemo(() => {
-    if (selectedCat === 'Custom') return customRate || 0;
-    return CATEGORY_RATES[selectedCat]?.rate || 6500;
-  }, [selectedCat, customRate]);
+    const baseCost = Math.round(totalLen * ratePerFt);
+    const fabricCost = Math.round(cons * totalLen * fabricDelta);
+    const pillowsCost = ((sofa.extraRound || 0) * 1200) + ((sofa.extraSquare || 0) * 1200) + ((sofa.extraBall || 0) * 2200);
 
-  const partALen = useMemo(() => {
-    return Math.round((partAFt + (partAIn / 12)) * 100) / 100;
-  }, [partAFt, partAIn]);
+    const subtotal = baseCost + fabricCost + pillowsCost;
+    const gst = Math.round(subtotal * 0.18);
+    const grandTotal = subtotal + gst;
 
-  const showPartB = configuration !== 'Straight Line' && configuration !== 'Curved Sofa';
-  const showPartC = ['U-Shape', '3+2+1', '3+1+1', '3+2+2'].includes(configuration);
-
-  const partBLen = useMemo(() => {
-    if (!showPartB) return 0;
-    return Math.round((partBFt + (partBIn / 12)) * 100) / 100;
-  }, [partBFt, partBIn, showPartB]);
-
-  const partCLen = useMemo(() => {
-    if (!showPartC) return 0;
-    return Math.round((partCFt + (partCIn / 12)) * 100) / 100;
-  }, [partCFt, partCIn, showPartC]);
-
-  const totalLength = useMemo(() => {
-    return Math.round((partALen + partBLen + partCLen) * 100) / 100;
-  }, [partALen, partBLen, partCLen]);
-
-  const sizeStr = useMemo(() => {
-    if (partALen) {
-      if (partBLen && partBLen > 0) {
-        return `${partALen}' x ${partBLen}'`;
-      } else if (partADepth && partADepth > 0) {
-        return `${partALen}' x ${Math.round((partADepth / 12) * 10) / 10}'`;
-      } else {
-        return `${partALen}'`;
-      }
-    }
-    return 'Standard';
-  }, [partALen, partBLen, partADepth]);
-
-  const activeFabric = useMemo(() => {
-    return FABRICS.find((f) => f.key === activeFabricKey) || FABRICS[0];
-  }, [activeFabricKey]);
-
-  // Pricing Formulas
-  const baseCost = useMemo(() => Math.round(totalLength * ratePerFt), [totalLength, ratePerFt]);
-  const fabricCost = useMemo(
-    () => Math.round(consumptionRate * totalLength * activeFabric.delta),
-    [consumptionRate, totalLength, activeFabric.delta]
-  );
-  const addonsCost = useMemo(
-    () => pillows.round * 1200 + pillows.square * 1200 + pillows.ball * 2200,
-    [pillows]
-  );
-
-  const subtotal = useMemo(() => baseCost + fabricCost + addonsCost, [baseCost, fabricCost, addonsCost]);
-  const gst = useMemo(() => Math.round(subtotal * 0.18), [subtotal]);
-  const grandTotal = useMemo(() => subtotal + gst, [subtotal, gst]);
-
-  // Dual-Key Notation Desc Object
-  const descObject = useMemo(() => {
     return {
-      'Design Category': selectedCat,
-      design_category: selectedCat,
-      'Part A Length': String(partALen),
-      'Dim.A.Length': String(partALen),
-      'Dim A Length': String(partALen),
-      'Part A Depth': String(partADepth),
-      'Dim.A.Depth': String(partADepth),
-      'Part B Length': showPartB ? String(partBLen) : '',
-      'Dim.B.Length': showPartB ? String(partBLen) : '',
-      'Part B Depth': showPartB ? String(partBDepth) : '',
-      'Dim.B.Depth': showPartB ? String(partBDepth) : '',
-      'Part C Length': showPartC ? String(partCLen) : '',
-      'Dim.C.Length': showPartC ? String(partCLen) : '',
-      Configuration: configuration,
-      Size: sizeStr,
-      'Cushion Comfort': cushionComfort,
-      Legs: legType,
+      ratePerFt,
+      totalLen,
+      consumption: cons,
+      fabricKey: fabricObj.key,
+      fabricDelta,
+      baseCost,
+      fabricCost,
+      pillowsCost,
+      subtotal,
+      gst,
+      grandTotal,
     };
-  }, [selectedCat, partALen, partADepth, showPartB, partBLen, partBDepth, showPartC, partCLen, configuration, sizeStr, cushionComfort, legType]);
+  };
 
-  // All 9 Auto-Generated Variants Array
-  const variantsArray = useMemo(() => {
-    const images = imagesText.split(/[\n,]+/).map((s) => s.trim()).filter(Boolean);
-    return FABRICS.map((f) => {
-      const vPrice = Math.round(totalLength * ratePerFt + consumptionRate * totalLength * f.delta);
-      return {
-        city,
-        product_name: `${productName} in ${f.name}`,
-        price: vPrice,
-        discounted_price: vPrice,
-        discounted_percent: 0,
-        consumption_rate: consumptionRate,
-        laborPerFloor: 150,
-        applicability: 1,
-        is_active: true,
-        attributes: {
-          var: f.name,
-          color: 'Default',
-          finish: f.name,
-          images: images.length ? images : [f.image],
-        },
-      };
-    });
-  }, [imagesText, totalLength, ratePerFt, consumptionRate, city, productName]);
+  // Inline Category Change
+  const handleCategoryChange = (sofaId: string, newCat: string) => {
+    setSofas(prev => prev.map(s => s.id === sofaId ? { ...s, category: newCat } : s));
+    triggerToast(`✓ Sofa category updated to Category ${newCat}!`);
+  };
 
-  // JSON Output based on active tab
-  const jsonExportString = useMemo(() => {
-    const images = imagesText.split(/[\n,]+/).map((s) => s.trim()).filter(Boolean);
+  // Filtered & Sorted Sofas
+  const filteredSofas = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
+    return sofas
+      .filter(s => {
+        if (filterBrand !== 'ALL' && s.brand !== filterBrand) return false;
+        if (filterCategory !== 'ALL' && s.category.toUpperCase() !== filterCategory.toUpperCase()) return false;
+        if (q && !s.name.toLowerCase().includes(q) && !s.brand.toLowerCase().includes(q)) return false;
+        return true;
+      })
+      .sort((a, b) => {
+        const pA = calculatePricing(a);
+        const pB = calculatePricing(b);
+        if (sortBy === 'name') return a.name.localeCompare(b.name);
+        if (sortBy === 'price_asc') return pA.subtotal - pB.subtotal;
+        if (sortBy === 'price_desc') return pB.subtotal - pA.subtotal;
+        if (sortBy === 'length') return pB.totalLen - pA.totalLen;
+        return 0;
+      });
+  }, [sofas, searchQuery, filterBrand, filterCategory, sortBy, categories, activeFabricEval]);
 
-    if (activeTab === 'full') {
-      return JSON.stringify(
-        {
-          product_name: productName,
-          brand,
-          city,
-          furniture_category_id: '650c7d3f9b6be37852216adb',
-          sofa_subcategory_id: '650c83879b6be37852216ae0',
-          category: 'Sofa',
-          subcategory: 'Luxury Sofas',
-          consumption_rate: consumptionRate,
-          desc: descObject,
-          base_price: baseCost,
-          price: variantsArray[0]?.price || baseCost,
-          discounted_price: variantsArray[0]?.discounted_price || baseCost,
-          images,
-          vars: variantsArray,
-        },
-        null,
-        2
-      );
-    } else if (activeTab === 'single') {
-      const activePrice = Math.round(totalLength * ratePerFt + consumptionRate * totalLength * activeFabric.delta);
-      return JSON.stringify(
-        {
-          price: activePrice,
-          discounted_price: activePrice,
-          consumption_rate: consumptionRate,
-          desc: descObject,
-          attributes: {
-            var: activeFabric.name,
-            color: 'Default',
-            finish: activeFabric.name,
-          },
-        },
-        null,
-        2
-      );
+  // Brand Options
+  const brands = useMemo(() => Array.from(new Set(sofas.map(s => s.brand))), [sofas]);
+
+  // Global Category Actions
+  const handleAddCategory = () => {
+    if (!newCatCode.trim()) return;
+    const code = newCatCode.trim().toUpperCase();
+    const existing = categories.find(c => c.code === code);
+    if (existing) {
+      setCategories(prev => prev.map(c => c.code === code ? { ...c, tier: newCatTier, rate: newCatRate, description: newCatDesc } : c));
     } else {
-      return JSON.stringify(
-        {
-          name: `${productName} (${configuration})`,
-          brand,
-          category: 'Sofa',
-          price: grandTotal,
-          image: images[0] || activeFabric.image,
-          images,
-          dimensions: {
-            Length: `${totalLength} ft`,
-            Depth: `${partADepth} in`,
-            Configuration: configuration,
-            Size: sizeStr,
-          },
-          specifications: {
-            'Design Category': `Category ${selectedCat}`,
-            'Total Length (ft)': totalLength,
-            Fabric: activeFabric.name,
-            'Consumption Rate': `${consumptionRate} m/ft`,
-            'Cushion Comfort': cushionComfort,
-            Legs: legType,
-          },
-        },
-        null,
-        2
-      );
+      setCategories(prev => [...prev, {
+        code,
+        tier: newCatTier || 'Custom',
+        rate: Number(newCatRate) || 6500,
+        isDefault: false,
+        description: newCatDesc
+      }]);
     }
-  }, [activeTab, productName, brand, city, consumptionRate, descObject, baseCost, variantsArray, imagesText, totalLength, ratePerFt, activeFabric, grandTotal, partADepth, configuration, sizeStr, selectedCat, cushionComfort, legType]);
+    setNewCatCode('');
+    setNewCatTier('');
+    setNewCatDesc('');
+    triggerToast(`✓ Category ${code} added!`);
+  };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(jsonExportString);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleUpdateCategoryRate = (code: string, newRate: number) => {
+    setCategories(prev => prev.map(c => c.code === code ? { ...c, rate: newRate } : c));
+  };
+
+  const handleDeleteCategory = (code: string) => {
+    setCategories(prev => prev.filter(c => c.code !== code));
+    triggerToast(`Category ${code} removed.`);
   };
 
   return (
     <div className="min-h-screen bg-[#121110] text-[#FAF8F5] p-6 lg:p-10 font-sans">
-      <div className="max-w-7xl mx-auto space-y-8">
-        
-        {/* Header Banner */}
-        <div className="border-b border-[#D4AF37]/30 pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#D4AF37]/15 border border-[#D4AF37]/40 text-[#D4AF37] mb-2">
-              ✨ Official Plypicker Sofa Pricing Engine
-            </div>
-            <h1 className="text-3xl lg:text-4xl font-serif font-bold tracking-tight text-white">
-              Sofa Product Data Entry &amp; Pricing Panel
-            </h1>
-            <p className="text-sm text-[#AFA89F] mt-1">
-              Drive linear foot rates, multi-variant fabric deltas, and dual-key MongoDB export in real time.
-            </p>
-          </div>
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 bg-[#D4AF37] text-[#121110] font-bold px-6 py-3 rounded-full shadow-2xl z-50 animate-bounce">
+          {toastMessage}
+        </div>
+      )}
 
-          <div className="flex items-center gap-3">
-            <button
-              onClick={handleCopy}
-              className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#D4AF37] to-[#B89020] text-[#121110] font-bold text-sm shadow-lg hover:shadow-[#D4AF37]/30 transition-all transform hover:-translate-y-0.5"
-            >
-              {copied ? '✓ Copied!' : '📋 Copy MongoDB JSON'}
-            </button>
+      {/* Header Bar */}
+      <header className="max-w-7xl mx-auto mb-8 border-b border-white/10 pb-6 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#D4AF37]/15 border border-[#D4AF37]/40 rounded-full text-xs font-bold uppercase tracking-wider text-[#D4AF37] mb-2">
+            ✨ Official Pricing & Customization Engine
           </div>
+          <h1 className="text-3xl lg:text-4xl font-serif font-bold tracking-tight text-white">
+            Sofa Product-Wise Pricing Studio
+          </h1>
+          <p className="text-sm text-[#AFA89F] max-w-2xl mt-1">
+            Real-time valuations across all listed sofas. Inspect Base Cost, Fabric Surcharge, Exclusive Price (without GST), and Final Price (with 18% GST).
+          </p>
         </div>
 
-        {/* Two-Column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Left Inputs (7 Cols) */}
-          <div className="lg:col-span-7 space-y-6">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsCatModalOpen(true)}
+            className="px-4 py-2 rounded-full border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#121110] font-bold text-sm transition-all"
+          >
+            ⚙️ Global Category Rates & Add Category
+          </button>
+        </div>
+      </header>
 
-            {/* 1. Identity */}
-            <div className="bg-[#1A1917] border border-white/10 rounded-xl p-6 shadow-xl space-y-4">
-              <h2 className="text-lg font-serif font-bold text-[#D4AF37] flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-[#D4AF37] text-black text-xs font-extrabold flex items-center justify-center">1</span>
-                Product Master Information
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="sm:col-span-2">
-                  <label className="text-xs uppercase font-bold text-[#AFA89F]">Master Product Name</label>
-                  <input
-                    type="text"
-                    value={productName}
-                    onChange={(e) => setProductName(e.target.value)}
-                    className="w-full mt-1 bg-[#22201D] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs uppercase font-bold text-[#AFA89F]">Brand</label>
-                  <input
-                    type="text"
-                    value={brand}
-                    onChange={(e) => setBrand(e.target.value)}
-                    className="w-full mt-1 bg-[#22201D] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs uppercase font-bold text-[#AFA89F]">City (Mandatory Enum)</label>
-                  <select
-                    value={city}
-                    onChange={(e) => setCity(e.target.value as any)}
-                    className="w-full mt-1 bg-[#22201D] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
-                  >
-                    <option value="Pune">Pune</option>
-                    <option value="Mumbai">Mumbai</option>
-                    <option value="Navi Mumbai">Navi Mumbai</option>
-                  </select>
-                </div>
-                <div className="sm:col-span-2">
-                  <label className="text-xs uppercase font-bold text-[#AFA89F]">CDN Image URLs (comma/newline separated)</label>
-                  <input
-                    type="text"
-                    value={imagesText}
-                    onChange={(e) => setImagesText(e.target.value)}
-                    className="w-full mt-1 bg-[#22201D] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
-                  />
-                </div>
-              </div>
-            </div>
+      {/* Active Category Rates Strip */}
+      <div className="max-w-7xl mx-auto mb-6 bg-[#1A1917] border border-white/10 rounded-xl p-3 flex flex-wrap items-center gap-3">
+        <span className="text-xs font-extrabold text-[#D4AF37] uppercase tracking-wider">⚡ Active Rates:</span>
+        {categories.map(cat => (
+          <div key={cat.code} className="inline-flex items-center gap-2 bg-[#22201D] border border-white/10 px-3 py-1 rounded-full text-xs">
+            <span className="font-bold text-[#D4AF37]">Cat {cat.code} ({cat.tier}):</span>
+            <span className="font-mono font-bold text-white">{formatINR(cat.rate)}/ft</span>
+          </div>
+        ))}
+      </div>
 
-            {/* 2. Category */}
-            <div className="bg-[#1A1917] border border-white/10 rounded-xl p-6 shadow-xl space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-serif font-bold text-[#D4AF37] flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full bg-[#D4AF37] text-black text-xs font-extrabold flex items-center justify-center">2</span>
-                  Design Category Rate (₹ / ft)
-                </h2>
-                <span className="text-xs font-mono font-bold text-[#D4AF37] bg-[#D4AF37]/10 px-2.5 py-1 rounded-full border border-[#D4AF37]/30">
-                  ₹{ratePerFt.toLocaleString('en-IN')}/ft
-                </span>
-              </div>
+      {/* Controls & Filter Bar */}
+      <div className="max-w-7xl mx-auto mb-6 bg-[#22201D] border border-white/10 rounded-xl p-4 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-3 flex-1">
+          <input
+            type="text"
+            placeholder="Search sofa by name or brand..."
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            className="bg-[#1A1917] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#D4AF37] min-w-[240px]"
+          />
 
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                {(['A', 'B', 'C', 'D'] as const).map((cat) => (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => setSelectedCat(cat)}
-                    className={`p-3 rounded-lg border text-left transition-all ${
-                      selectedCat === cat
-                        ? 'border-[#D4AF37] bg-[#D4AF37]/15 shadow-md shadow-[#D4AF37]/10'
-                        : 'border-white/10 bg-[#22201D] hover:border-white/30'
-                    }`}
-                  >
-                    <div className="text-[10px] uppercase font-bold text-[#D4AF37]">Category {cat}</div>
-                    <div className="text-xs font-bold text-white">{CATEGORY_RATES[cat].tier}</div>
-                    <div className="text-xs font-mono text-[#D4AF37] mt-1 font-extrabold">
-                      ₹{CATEGORY_RATES[cat].rate.toLocaleString('en-IN')}/ft
-                    </div>
-                  </button>
-                ))}
+          <select
+            value={filterBrand}
+            onChange={e => setFilterBrand(e.target.value)}
+            className="bg-[#1A1917] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
+          >
+            <option value="ALL">All Brands ({brands.length})</option>
+            {brands.map(b => <option key={b} value={b}>{b}</option>)}
+          </select>
 
-                <button
-                  type="button"
-                  onClick={() => setSelectedCat('Custom')}
-                  className={`p-3 rounded-lg border text-left transition-all ${
-                    selectedCat === 'Custom'
-                      ? 'border-[#D4AF37] bg-[#D4AF37]/15'
-                      : 'border-white/10 bg-[#22201D] hover:border-white/30'
-                  }`}
-                >
-                  <div className="text-[10px] uppercase font-bold text-[#D4AF37]">Custom</div>
-                  <div className="text-xs font-bold text-white">Dynamic</div>
-                  <input
-                    type="number"
-                    value={customRate}
-                    onChange={(e) => setCustomRate(parseFloat(e.target.value) || 0)}
-                    className="w-full mt-1 bg-black/40 border border-white/20 rounded px-1.5 py-0.5 text-xs font-mono text-[#D4AF37]"
-                  />
-                </button>
-              </div>
-            </div>
+          <select
+            value={filterCategory}
+            onChange={e => setFilterCategory(e.target.value)}
+            className="bg-[#1A1917] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
+          >
+            <option value="ALL">All Categories</option>
+            {categories.map(c => <option key={c.code} value={c.code}>Category {c.code}</option>)}
+          </select>
 
-            {/* 3. Configuration & Dimensions */}
-            <div className="bg-[#1A1917] border border-white/10 rounded-xl p-6 shadow-xl space-y-5">
-              <h2 className="text-lg font-serif font-bold text-[#D4AF37] flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-[#D4AF37] text-black text-xs font-extrabold flex items-center justify-center">3</span>
-                Configuration &amp; Linear Dimensions
-              </h2>
+          <select
+            value={activeFabricEval}
+            onChange={e => setActiveFabricEval(e.target.value)}
+            className="bg-[#1A1917] border border-white/10 rounded-lg px-3 py-2 text-sm text-[#D4AF37] font-semibold focus:outline-none focus:border-[#D4AF37]"
+          >
+            {FABRICS.map(f => (
+              <option key={f.key} value={f.key}>
+                View with: {f.name} ({f.delta > 0 ? `+${formatINR(f.delta)}/m` : '₹0'})
+              </option>
+            ))}
+          </select>
 
-              {/* Config Buttons */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {CONFIGURATIONS.map((cfg) => (
-                  <button
-                    key={cfg}
-                    type="button"
-                    onClick={() => {
-                      setConfiguration(cfg);
-                      if (cfg === 'Curved Sofa' && consumptionRate === 3) setConsumptionRate(2);
-                    }}
-                    className={`py-2 px-3 rounded-lg text-xs font-semibold border transition-all ${
-                      configuration === cfg
-                        ? 'bg-[#D4AF37] text-[#121110] font-bold border-[#D4AF37]'
-                        : 'bg-[#22201D] text-[#AFA89F] border-white/10 hover:text-white'
-                    }`}
-                  >
-                    {cfg}
-                  </button>
-                ))}
-              </div>
+          <select
+            value={sortBy}
+            onChange={e => setSortBy(e.target.value as any)}
+            className="bg-[#1A1917] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
+          >
+            <option value="name">Sort: Name (A-Z)</option>
+            <option value="price_asc">Sort: Price Ex-GST (Low to High)</option>
+            <option value="price_desc">Sort: Price Ex-GST (High to Low)</option>
+            <option value="length">Sort: Length (Long to Short)</option>
+          </select>
+        </div>
 
-              {/* Part A */}
-              <div className="bg-[#22201D] p-4 rounded-lg border border-white/5 space-y-2">
-                <div className="flex justify-between text-xs font-bold text-[#D4AF37]">
-                  <span>Part A (Main Section)</span>
-                  <span className="font-mono">{partALen.toFixed(2)} ft</span>
-                </div>
-                <div className="grid grid-cols-3 gap-3">
-                  <div>
-                    <label className="text-[10px] uppercase text-[#AFA89F]">Feet</label>
-                    <input
-                      type="number"
-                      value={partAFt}
-                      onChange={(e) => setPartAFt(parseFloat(e.target.value) || 0)}
-                      className="w-full mt-1 bg-[#1A1917] border border-white/10 rounded px-2 py-1 text-sm text-white"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[10px] uppercase text-[#AFA89F]">Inches</label>
-                    <input
-                      type="number"
-                      value={partAIn}
-                      onChange={(e) => setPartAIn(parseFloat(e.target.value) || 0)}
-                      className="w-full mt-1 bg-[#1A1917] border border-white/10 rounded px-2 py-1 text-sm text-white"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[10px] uppercase text-[#AFA89F]">Depth</label>
-                    <select
-                      value={partADepth}
-                      onChange={(e) => setPartADepth(parseFloat(e.target.value))}
-                      className="w-full mt-1 bg-[#1A1917] border border-white/10 rounded px-2 py-1 text-sm text-white"
-                    >
-                      {[26, 28, 30, 32, 34, 36].map((d) => (
-                        <option key={d} value={d}>{d}&quot;</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
+        <button
+          onClick={() => { setSearchQuery(''); setFilterBrand('ALL'); setFilterCategory('ALL'); }}
+          className="text-xs text-[#AFA89F] hover:text-white underline"
+        >
+          Reset Filters
+        </button>
+      </div>
 
-              {/* Part B */}
-              {showPartB && (
-                <div className="bg-[#22201D] p-4 rounded-lg border border-white/5 space-y-2">
-                  <div className="flex justify-between text-xs font-bold text-[#D4AF37]">
-                    <span>Part B (Chaise / 2-Seater)</span>
-                    <span className="font-mono">{partBLen.toFixed(2)} ft</span>
-                  </div>
-                  <div className="grid grid-cols-3 gap-3">
-                    <div>
-                      <label className="text-[10px] uppercase text-[#AFA89F]">Feet</label>
-                      <input
-                        type="number"
-                        value={partBFt}
-                        onChange={(e) => setPartBFt(parseFloat(e.target.value) || 0)}
-                        className="w-full mt-1 bg-[#1A1917] border border-white/10 rounded px-2 py-1 text-sm text-white"
+      {/* Main Pricing Directory Table */}
+      <div className="max-w-7xl mx-auto bg-[#22201D] border border-white/10 rounded-xl overflow-x-auto shadow-2xl">
+        <table className="w-full text-left text-sm border-collapse">
+          <thead>
+            <tr className="bg-[#1A1917] border-b border-white/10 text-xs font-bold uppercase tracking-wider text-[#AFA89F]">
+              <th className="p-4">Product Details</th>
+              <th className="p-4">Category (Change Here)</th>
+              <th className="p-4">Dimensions</th>
+              <th className="p-4">Base Sofa Cost</th>
+              <th className="p-4">Fabric Cost</th>
+              <th className="p-4">Exclusive Price (No GST)</th>
+              <th className="p-4">Final Price (18% GST)</th>
+              <th className="p-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            {filteredSofas.map(sofa => {
+              const prices = calculatePricing(sofa);
+              return (
+                <tr key={sofa.id} className="hover:bg-white/[0.02] transition-colors">
+                  {/* Product */}
+                  <td className="p-4">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={sofa.image}
+                        alt={sofa.name}
+                        className="w-12 h-12 rounded-lg object-cover bg-black/30 border border-white/10"
                       />
-                    </div>
-                    <div>
-                      <label className="text-[10px] uppercase text-[#AFA89F]">Inches</label>
-                      <input
-                        type="number"
-                        value={partBIn}
-                        onChange={(e) => setPartBIn(parseFloat(e.target.value) || 0)}
-                        className="w-full mt-1 bg-[#1A1917] border border-white/10 rounded px-2 py-1 text-sm text-white"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] uppercase text-[#AFA89F]">Depth</label>
-                      <select
-                        value={partBDepth}
-                        onChange={(e) => setPartBDepth(parseFloat(e.target.value))}
-                        className="w-full mt-1 bg-[#1A1917] border border-white/10 rounded px-2 py-1 text-sm text-white"
-                      >
-                        {[26, 28, 30, 32, 34, 36].map((d) => (
-                          <option key={d} value={d}>{d}&quot;</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Part C */}
-              {showPartC && (
-                <div className="bg-[#22201D] p-4 rounded-lg border border-white/5 space-y-2">
-                  <div className="flex justify-between text-xs font-bold text-[#D4AF37]">
-                    <span>Part C (Opposite Return / 1-Seater)</span>
-                    <span className="font-mono">{partCLen.toFixed(2)} ft</span>
-                  </div>
-                  <div className="grid grid-cols-3 gap-3">
-                    <div>
-                      <label className="text-[10px] uppercase text-[#AFA89F]">Feet</label>
-                      <input
-                        type="number"
-                        value={partCFt}
-                        onChange={(e) => setPartCFt(parseFloat(e.target.value) || 0)}
-                        className="w-full mt-1 bg-[#1A1917] border border-white/10 rounded px-2 py-1 text-sm text-white"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] uppercase text-[#AFA89F]">Inches</label>
-                      <input
-                        type="number"
-                        value={partCIn}
-                        onChange={(e) => setPartCIn(parseFloat(e.target.value) || 0)}
-                        className="w-full mt-1 bg-[#1A1917] border border-white/10 rounded px-2 py-1 text-sm text-white"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] uppercase text-[#AFA89F]">Depth</label>
-                      <select
-                        value={partCDepth}
-                        onChange={(e) => setPartCDepth(parseFloat(e.target.value))}
-                        className="w-full mt-1 bg-[#1A1917] border border-white/10 rounded px-2 py-1 text-sm text-white"
-                      >
-                        {[26, 28, 30, 32, 34, 36].map((d) => (
-                          <option key={d} value={d}>{d}&quot;</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Live Banner */}
-              <div className="bg-gradient-to-r from-[#D4AF37]/15 to-emerald-500/10 border border-[#D4AF37]/30 rounded-lg p-4 flex flex-wrap items-center justify-between gap-4">
-                <div>
-                  <div className="text-[11px] uppercase font-bold text-[#AFA89F]">Total Linear Length</div>
-                  <div className="text-2xl font-mono font-extrabold text-[#D4AF37]">{totalLength.toFixed(2)} ft</div>
-                </div>
-                <div>
-                  <div className="text-[11px] uppercase font-bold text-[#AFA89F]">Formatted Size String</div>
-                  <div className="text-lg font-mono font-bold text-white">{sizeStr}</div>
-                </div>
-                <div className="w-full text-xs text-[#AFA89F] border-t border-white/10 pt-2 font-mono">
-                  Base Formula: {totalLength} ft × ₹{ratePerFt.toLocaleString('en-IN')} = ₹{baseCost.toLocaleString('en-IN')}
-                </div>
-              </div>
-            </div>
-
-            {/* 4. Fabrics */}
-            <div className="bg-[#1A1917] border border-white/10 rounded-xl p-6 shadow-xl space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-serif font-bold text-[#D4AF37] flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full bg-[#D4AF37] text-black text-xs font-extrabold flex items-center justify-center">4</span>
-                  Fabric Upholstery Matrix
-                </h2>
-                <div className="flex items-center gap-2 text-xs">
-                  <span className="text-[#AFA89F]">Consumption:</span>
-                  <input
-                    type="number"
-                    value={consumptionRate}
-                    onChange={(e) => setConsumptionRate(parseFloat(e.target.value) || 3)}
-                    className="w-14 bg-[#22201D] border border-white/10 rounded px-2 py-0.5 text-center text-white font-mono"
-                  />
-                  <span className="text-[#AFA89F]">m/ft</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {FABRICS.map((f) => {
-                  const varPrice = Math.round(totalLength * ratePerFt + consumptionRate * totalLength * f.delta);
-                  const isSelected = activeFabricKey === f.key;
-                  return (
-                    <div
-                      key={f.key}
-                      onClick={() => setActiveFabricKey(f.key)}
-                      className={`p-3 rounded-lg border flex items-center gap-3 cursor-pointer transition-all ${
-                        isSelected
-                          ? 'border-[#D4AF37] bg-[#D4AF37]/15 shadow-md shadow-[#D4AF37]/10'
-                          : 'border-white/10 bg-[#22201D] hover:border-white/30'
-                      }`}
-                    >
-                      <img src={f.image} alt={f.name} className="w-10 h-10 rounded object-cover border border-white/10" />
-                      <div className="min-w-0 flex-1">
-                        <div className="text-xs font-bold text-white truncate">{f.name}</div>
-                        <div className="text-[10px] text-[#D4AF37]">{f.delta > 0 ? `+₹${f.delta}/m` : 'Included'}</div>
-                        <div className="text-xs font-mono font-bold text-white mt-0.5">
-                          ₹{varPrice.toLocaleString('en-IN')}
+                      <div>
+                        <div className="font-bold text-white text-base">{sofa.name}</div>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="bg-[#D4AF37]/20 text-[#D4AF37] px-2 py-0.5 rounded text-xs font-bold">
+                            {sofa.brand}
+                          </span>
+                          <span className="bg-white/10 text-[#AFA89F] px-2 py-0.5 rounded text-xs">
+                            {sofa.configuration}
+                          </span>
                         </div>
                       </div>
                     </div>
-                  );
-                })}
+                  </td>
+
+                  {/* Inline Category Dropdown */}
+                  <td className="p-4">
+                    <select
+                      value={sofa.category}
+                      onChange={e => handleCategoryChange(sofa.id, e.target.value)}
+                      className="bg-[#2A2824] border border-[#D4AF37] text-[#D4AF37] font-bold rounded px-2.5 py-1 text-sm focus:outline-none"
+                    >
+                      {categories.map(c => (
+                        <option key={c.code} value={c.code}>
+                          Cat {c.code} ({formatINR(c.rate)}/ft)
+                        </option>
+                      ))}
+                    </select>
+                    <div className="text-xs text-[#AFA89F] mt-1">{formatINR(prices.ratePerFt)}/linear ft</div>
+                  </td>
+
+                  {/* Dimensions */}
+                  <td className="p-4">
+                    <div className="font-mono font-bold text-[#D4AF37]">{prices.totalLen.toFixed(2)} ft</div>
+                    <div className="text-xs text-[#AFA89F]">Depth: {sofa.depth || 30}"</div>
+                  </td>
+
+                  {/* 1. Base Sofa Cost */}
+                  <td className="p-4">
+                    <div className="font-mono font-bold text-white">{formatINR(prices.baseCost)}</div>
+                    <div className="text-xs text-[#AFA89F]">{prices.totalLen.toFixed(2)}' × {formatINR(prices.ratePerFt)}</div>
+                  </td>
+
+                  {/* 2. Fabric Cost */}
+                  <td className="p-4">
+                    <div className="font-mono font-bold text-white">{formatINR(prices.fabricCost)}</div>
+                    <div className="text-xs text-[#AFA89F]">{prices.consumption}m/ft × {formatINR(prices.fabricDelta)}/m</div>
+                  </td>
+
+                  {/* 3. Exclusive Price (Without GST) */}
+                  <td className="p-4">
+                    <div className="font-mono font-bold text-[#2ECC71] text-base">{formatINR(prices.subtotal)}</div>
+                    <div className="text-xs text-[#AFA89F]">Base + Fabric + Pillows</div>
+                  </td>
+
+                  {/* 4. Final Price (With 18% GST) */}
+                  <td className="p-4">
+                    <div className="font-mono font-extrabold text-[#D4AF37] text-lg">{formatINR(prices.grandTotal)}</div>
+                    <div className="text-xs text-[#AFA89F]">Incl. 18% GST (+{formatINR(prices.gst)})</div>
+                  </td>
+
+                  {/* Actions */}
+                  <td className="p-4 text-right">
+                    <button
+                      onClick={() => { setEditingSofa(sofa); setIsEditModalOpen(true); }}
+                      className="px-3 py-1.5 bg-[#D4AF37] text-[#121110] font-bold rounded text-xs hover:bg-[#E5C158] transition-all"
+                    >
+                      ✏️ Edit Details
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Global Category Rates Modal */}
+      {isCatModalOpen && (
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#22201D] border border-[#D4AF37]/50 rounded-2xl max-w-2xl w-full p-6 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+              <h2 className="text-xl font-serif font-bold text-white">⚙️ Global Category Rates & Add Category</h2>
+              <button onClick={() => setIsCatModalOpen(false)} className="text-[#AFA89F] hover:text-white text-xl">✕</button>
+            </div>
+
+            <div className="space-y-3 mb-6 max-h-[40vh] overflow-y-auto">
+              {categories.map(c => (
+                <div key={c.code} className="flex items-center gap-3 bg-[#1A1917] p-3 rounded-lg border border-white/5">
+                  <span className="font-bold text-[#D4AF37] w-12 text-center text-lg">{c.code}</span>
+                  <span className="text-sm font-semibold text-white w-28">{c.tier}</span>
+                  <div className="flex items-center gap-1 flex-1">
+                    <span className="text-xs text-[#AFA89F]">₹</span>
+                    <input
+                      type="number"
+                      value={c.rate}
+                      onChange={e => handleUpdateCategoryRate(c.code, parseFloat(e.target.value) || 0)}
+                      className="bg-[#2A2824] border border-white/10 rounded px-2 py-1 text-sm font-mono font-bold text-white w-28"
+                    />
+                    <span className="text-xs text-[#AFA89F]">/ ft</span>
+                  </div>
+                  {!c.isDefault && (
+                    <button onClick={() => handleDeleteCategory(c.code)} className="text-red-400 hover:text-red-300 text-sm">
+                      ✕
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Add New Category */}
+            <div className="bg-[#1A1917] p-4 rounded-xl border border-white/10 mb-6">
+              <h3 className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider mb-2">➕ Add New Category</h3>
+              <div className="grid grid-cols-4 gap-2">
+                <input
+                  type="text"
+                  placeholder="Code (e.g. E)"
+                  value={newCatCode}
+                  onChange={e => setNewCatCode(e.target.value)}
+                  className="bg-[#22201D] border border-white/10 rounded p-2 text-xs text-white"
+                />
+                <input
+                  type="text"
+                  placeholder="Tier (e.g. Luxury)"
+                  value={newCatTier}
+                  onChange={e => setNewCatTier(e.target.value)}
+                  className="bg-[#22201D] border border-white/10 rounded p-2 text-xs text-white"
+                />
+                <input
+                  type="number"
+                  placeholder="Rate (₹/ft)"
+                  value={newCatRate}
+                  onChange={e => setNewCatRate(parseFloat(e.target.value) || 0)}
+                  className="bg-[#22201D] border border-white/10 rounded p-2 text-xs text-white"
+                />
+                <button
+                  onClick={handleAddCategory}
+                  className="bg-[#D4AF37] text-[#121110] font-bold rounded p-2 text-xs hover:bg-[#E5C158]"
+                >
+                  Add
+                </button>
               </div>
             </div>
 
-            {/* 5. Add-ons */}
-            <div className="bg-[#1A1917] border border-white/10 rounded-xl p-6 shadow-xl space-y-4">
-              <h2 className="text-lg font-serif font-bold text-[#D4AF37] flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-[#D4AF37] text-black text-xs font-extrabold flex items-center justify-center">5</span>
-                Add-on Customizations
-              </h2>
-
-              <div className="divide-y divide-white/5 text-sm">
-                <div className="py-2.5 flex justify-between items-center">
-                  <div>
-                    <div className="font-bold">Base Pillow</div>
-                    <div className="text-xs text-[#AFA89F]">1 Round or Square Pillow</div>
-                  </div>
-                  <span className="text-xs font-bold text-emerald-400">FREE (₹0)</span>
-                </div>
-
-                <div className="py-2.5 flex justify-between items-center">
-                  <div>
-                    <div className="font-bold">Extra Round Pillows (+₹1,200)</div>
-                  </div>
-                  <div className="flex items-center border border-white/10 rounded bg-[#22201D]">
-                    <button
-                      type="button"
-                      onClick={() => setPillows((p) => ({ ...p, round: Math.max(0, p.round - 1) }))}
-                      className="px-2 py-0.5 text-base font-bold text-white hover:bg-white/10"
-                    >
-                      -
-                    </button>
-                    <span className="px-3 text-xs font-mono font-bold">{pillows.round}</span>
-                    <button
-                      type="button"
-                      onClick={() => setPillows((p) => ({ ...p, round: p.round + 1 }))}
-                      className="px-2 py-0.5 text-base font-bold text-white hover:bg-white/10"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-
-                <div className="py-2.5 flex justify-between items-center">
-                  <div>
-                    <div className="font-bold">Extra Square Pillows (+₹1,200)</div>
-                  </div>
-                  <div className="flex items-center border border-white/10 rounded bg-[#22201D]">
-                    <button
-                      type="button"
-                      onClick={() => setPillows((p) => ({ ...p, square: Math.max(0, p.square - 1) }))}
-                      className="px-2 py-0.5 text-base font-bold text-white hover:bg-white/10"
-                    >
-                      -
-                    </button>
-                    <span className="px-3 text-xs font-mono font-bold">{pillows.square}</span>
-                    <button
-                      type="button"
-                      onClick={() => setPillows((p) => ({ ...p, square: p.square + 1 }))}
-                      className="px-2 py-0.5 text-base font-bold text-white hover:bg-white/10"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-
-                <div className="py-2.5 flex justify-between items-center">
-                  <div>
-                    <div className="font-bold">Extra Ball Pillows (+₹2,200)</div>
-                  </div>
-                  <div className="flex items-center border border-white/10 rounded bg-[#22201D]">
-                    <button
-                      type="button"
-                      onClick={() => setPillows((p) => ({ ...p, ball: Math.max(0, p.ball - 1) }))}
-                      className="px-2 py-0.5 text-base font-bold text-white hover:bg-white/10"
-                    >
-                      -
-                    </button>
-                    <span className="px-3 text-xs font-mono font-bold">{pillows.ball}</span>
-                    <button
-                      type="button"
-                      onClick={() => setPillows((p) => ({ ...p, ball: p.ball + 1 }))}
-                      className="px-2 py-0.5 text-base font-bold text-white hover:bg-white/10"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-
-                <div className="py-2.5 flex justify-between items-center">
-                  <div>
-                    <div className="font-bold">Cushion Comfort Level</div>
-                  </div>
-                  <select
-                    value={cushionComfort}
-                    onChange={(e) => setCushionComfort(e.target.value)}
-                    className="bg-[#22201D] border border-white/10 rounded px-2.5 py-1 text-xs text-white"
-                  >
-                    <option value="Super soft">Super Soft</option>
-                    <option value="Soft">Soft</option>
-                    <option value="Normal Hard">Normal Hard</option>
-                    <option value="Hard">Hard</option>
-                  </select>
-                </div>
-
-                <div className="py-2.5 flex justify-between items-center">
-                  <div>
-                    <div className="font-bold">Leg Type</div>
-                  </div>
-                  <select
-                    value={legType}
-                    onChange={(e) => setLegType(e.target.value)}
-                    className="bg-[#22201D] border border-white/10 rounded px-2.5 py-1 text-xs text-white"
-                  >
-                    <option value="Metal">Metal (Gold / Black)</option>
-                    <option value="Wooden">Natural Teak Wood</option>
-                    <option value="PVC">Concealed PVC</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Right Column: Sticky Summary & JSON (5 Cols) */}
-          <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-8">
-            
-            {/* Price Hero */}
-            <div className="bg-gradient-to-br from-[#D4AF37]/20 via-[#1A1917] to-[#141311] border-2 border-[#D4AF37] rounded-xl p-6 shadow-2xl space-y-4">
-              <div className="text-xs uppercase font-extrabold tracking-wider text-[#D4AF37]">
-                Real-Time Valuation (Incl. 18% GST)
-              </div>
-              <div className="text-4xl lg:text-5xl font-serif font-extrabold text-white">
-                ₹{grandTotal.toLocaleString('en-IN')}
-              </div>
-              <div className="text-xs text-[#AFA89F]">
-                Category {selectedCat} (₹{ratePerFt.toLocaleString('en-IN')}/ft) · {totalLength.toFixed(2)} ft {configuration} · {activeFabric.name}
-              </div>
-
-              {/* Breakdown */}
-              <div className="border-t border-white/10 pt-4 space-y-2 text-sm">
-                <div className="flex justify-between text-[#AFA89F]">
-                  <span>Base Cost ({totalLength} ft × ₹{ratePerFt.toLocaleString('en-IN')})</span>
-                  <span className="font-mono text-white font-bold">₹{baseCost.toLocaleString('en-IN')}</span>
-                </div>
-                <div className="flex justify-between text-[#AFA89F]">
-                  <span>Fabric Cost ({consumptionRate} m/ft × ₹{activeFabric.delta}/m)</span>
-                  <span className="font-mono text-white font-bold">₹{fabricCost.toLocaleString('en-IN')}</span>
-                </div>
-                <div className="flex justify-between text-[#AFA89F]">
-                  <span>Add-ons &amp; Pillows</span>
-                  <span className="font-mono text-white font-bold">₹{addonsCost.toLocaleString('en-IN')}</span>
-                </div>
-                <div className="border-t border-dashed border-white/20 pt-2 flex justify-between font-bold text-white">
-                  <span>Subtotal (Excl. GST)</span>
-                  <span className="font-mono">₹{subtotal.toLocaleString('en-IN')}</span>
-                </div>
-                <div className="flex justify-between text-[#AFA89F]">
-                  <span>GST (18%)</span>
-                  <span className="font-mono text-white">₹{gst.toLocaleString('en-IN')}</span>
-                </div>
-                <div className="border-t-2 border-[#D4AF37] pt-2 flex justify-between text-base font-extrabold text-[#D4AF37]">
-                  <span>Grand Total</span>
-                  <span className="font-mono">₹{grandTotal.toLocaleString('en-IN')}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* JSON Output Container */}
-            <div className="bg-[#1A1917] border border-white/10 rounded-xl p-5 shadow-xl space-y-3">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold text-[#D4AF37] uppercase tracking-wide">Production Output</h3>
-                <span className="text-[10px] text-[#AFA89F] font-mono">Dual-Key Spec Compliant</span>
-              </div>
-
-              {/* Tabs */}
-              <div className="flex border-b border-white/10 text-xs">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('full')}
-                  className={`pb-2 px-2.5 font-bold border-b-2 transition-all ${
-                    activeTab === 'full' ? 'border-[#D4AF37] text-[#D4AF37]' : 'border-transparent text-[#AFA89F]'
-                  }`}
-                >
-                  Full Product (9 Vars)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('single')}
-                  className={`pb-2 px-2.5 font-bold border-b-2 transition-all ${
-                    activeTab === 'single' ? 'border-[#D4AF37] text-[#D4AF37]' : 'border-transparent text-[#AFA89F]'
-                  }`}
-                >
-                  Single Variant
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('storefront')}
-                  className={`pb-2 px-2.5 font-bold border-b-2 transition-all ${
-                    activeTab === 'storefront' ? 'border-[#D4AF37] text-[#D4AF37]' : 'border-transparent text-[#AFA89F]'
-                  }`}
-                >
-                  Storefront Item
-                </button>
-              </div>
-
-              {/* Code */}
-              <pre className="bg-[#0E0D0C] border border-white/5 rounded-lg p-3 text-[11px] font-mono text-[#D4D0C8] overflow-x-auto max-h-80 overflow-y-auto leading-relaxed">
-                {jsonExportString}
-              </pre>
-
+            <div className="flex justify-end gap-3">
               <button
-                type="button"
-                onClick={handleCopy}
-                className="w-full py-2.5 rounded-lg bg-[#D4AF37] text-[#121110] font-bold text-xs uppercase tracking-wider hover:bg-[#E5C158] transition-all"
+                onClick={() => { setIsCatModalOpen(false); triggerToast('✨ Category rates updated globally across all sofas!'); }}
+                className="px-5 py-2 rounded-full bg-[#D4AF37] text-[#121110] font-bold text-sm"
               >
-                {copied ? '✓ Copied to Clipboard!' : '📋 Copy JSON Document'}
+                Apply Globally
               </button>
             </div>
-
           </div>
-
         </div>
+      )}
 
-      </div>
+      {/* Edit Sofa Details Modal */}
+      {isEditModalOpen && editingSofa && (
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#22201D] border border-[#D4AF37]/50 rounded-2xl max-w-xl w-full p-6 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+              <h2 className="text-xl font-serif font-bold text-white">✏️ Edit: {editingSofa.name}</h2>
+              <button onClick={() => setIsEditModalOpen(false)} className="text-[#AFA89F] hover:text-white text-xl">✕</button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="text-xs font-bold text-[#AFA89F] uppercase">Product Name</label>
+                <input
+                  type="text"
+                  value={editingSofa.name}
+                  onChange={e => setEditingSofa({ ...editingSofa, name: e.target.value })}
+                  className="w-full bg-[#1A1917] border border-white/10 rounded p-2 text-sm text-white mt-1"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-bold text-[#AFA89F] uppercase">Category</label>
+                  <select
+                    value={editingSofa.category}
+                    onChange={e => setEditingSofa({ ...editingSofa, category: e.target.value })}
+                    className="w-full bg-[#1A1917] border border-white/10 rounded p-2 text-sm text-white mt-1"
+                  >
+                    {categories.map(c => (
+                      <option key={c.code} value={c.code}>Cat {c.code} ({formatINR(c.rate)}/ft)</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-[#AFA89F] uppercase">Configuration</label>
+                  <select
+                    value={editingSofa.configuration}
+                    onChange={e => setEditingSofa({ ...editingSofa, configuration: e.target.value as any })}
+                    className="w-full bg-[#1A1917] border border-white/10 rounded p-2 text-sm text-white mt-1"
+                  >
+                    <option value="Straight Line">Straight Line</option>
+                    <option value="Curved Sofa">Curved Sofa</option>
+                    <option value="L-Shape">L-Shape</option>
+                    <option value="3+2 Sofa">3+2 Sofa</option>
+                    <option value="U-Shape">U-Shape</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <label className="text-xs font-bold text-[#AFA89F] uppercase">Part A (ft)</label>
+                  <input
+                    type="number"
+                    step="0.5"
+                    value={editingSofa.partALen}
+                    onChange={e => setEditingSofa({ ...editingSofa, partALen: parseFloat(e.target.value) || 0 })}
+                    className="w-full bg-[#1A1917] border border-white/10 rounded p-2 text-sm text-white mt-1 font-mono"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-[#AFA89F] uppercase">Part B (ft)</label>
+                  <input
+                    type="number"
+                    step="0.5"
+                    value={editingSofa.partBLen}
+                    onChange={e => setEditingSofa({ ...editingSofa, partBLen: parseFloat(e.target.value) || 0 })}
+                    className="w-full bg-[#1A1917] border border-white/10 rounded p-2 text-sm text-white mt-1 font-mono"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-[#AFA89F] uppercase">Depth (in)</label>
+                  <input
+                    type="number"
+                    value={editingSofa.depth}
+                    onChange={e => setEditingSofa({ ...editingSofa, depth: parseFloat(e.target.value) || 30 })}
+                    className="w-full bg-[#1A1917] border border-white/10 rounded p-2 text-sm text-white mt-1 font-mono"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setIsEditModalOpen(false)}
+                className="px-4 py-2 rounded text-sm text-[#AFA89F] hover:text-white"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setSofas(prev => prev.map(s => s.id === editingSofa.id ? editingSofa : s));
+                  setIsEditModalOpen(false);
+                  triggerToast(`✓ Updated ${editingSofa.name}`);
+                }}
+                className="px-5 py-2 rounded bg-[#D4AF37] text-[#121110] font-bold text-sm hover:bg-[#E5C158]"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

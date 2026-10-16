@@ -1,0 +1,40 @@
+{
+  "updatedAt": "2026-10-16T21:47:24.646Z",
+  "categories": [
+    {
+      "code": "A",
+      "tier": "Standard",
+      "rate": 6500,
+      "isDefault": true,
+      "description": "High-durability everyday luxury frames & standard resilient foam"
+    },
+    {
+      "code": "B",
+      "tier": "Mid-Tier",
+      "rate": 7500,
+      "isDefault": false,
+      "description": "Solid hardwood reinforcement & high-resilience ergonomic foam"
+    },
+    {
+      "code": "C",
+      "tier": "Premium",
+      "rate": 8500,
+      "isDefault": false,
+      "description": "Hand-tied pocket springs, premium kiln-dried hardwood & feather layers"
+    },
+    {
+      "code": "D",
+      "tier": "Luxury Premium",
+      "rate": 12717.65,
+      "isDefault": false,
+      "description": "Italian architectural grade, hand-carved detailing & bespoke ergonomics"
+    },
+    {
+      "code": "E",
+      "tier": "Ultra Bespoke",
+      "rate": 14000,
+      "isDefault": false,
+      "description": "Handmade Italian Teak"
+    }
+  ]
+}

@@ -63,7 +63,12 @@
         ],
         "dimensions": {}
       }
-    ]
+    ],
+    "category_code": "B",
+    "desc": {
+      "Design Category": "B",
+      "design_category": "B"
+    }
   },
   {
     "name": "Aahed Korean Curve Sofa",
