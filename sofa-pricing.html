@@ -1730,7 +1730,8 @@
         { code: 'A', tier: 'Standard', rate: 6500, isDefault: true, description: 'High-durability everyday luxury frames & standard resilient foam' },
         { code: 'B', tier: 'Mid-Tier', rate: 7500, isDefault: false, description: 'Solid hardwood reinforcement & high-resilience ergonomic foam' },
         { code: 'C', tier: 'Premium', rate: 8500, isDefault: false, description: 'Hand-tied pocket springs, premium kiln-dried hardwood & feather layers' },
-        { code: 'D', tier: 'Luxury Premium', rate: 12717.65, isDefault: false, description: 'Italian architectural grade, hand-carved detailing & bespoke ergonomics' }
+        { code: 'D', tier: 'Luxury Premium', rate: 12717.65, isDefault: false, description: 'Italian architectural grade, hand-carved detailing & bespoke ergonomics' },
+        { code: 'E', tier: 'Ultra Bespoke', rate: 14000, isDefault: false, description: 'Handmade Italian Teak & bespoke artisan upholstery' }
       ];
 
       // Application State
@@ -2187,13 +2188,13 @@
               <!-- 2. Fabric Cost -->
               <td>
                 <div class="sp-price-mono">${formatINR(prices.fabricCost)}</div>
-                <div class="sp-price-sub">${prices.consumption}m/ft × +${formatINR(prices.fabricDelta)}</div>
+                <div class="sp-price-sub">${prices.fabricDelta > 0 ? `${(prices.consumption * prices.totalLen).toFixed(1)}m × +${formatINR(prices.fabricDelta)}/m` : 'Standard (₹0)'}</div>
               </td>
 
               <!-- 3. Exclusive Price (Without GST) -->
               <td>
                 <div class="sp-price-mono" style="color:var(--sp-green);">${formatINR(prices.subtotal)}</div>
-                <div class="sp-price-sub">Base + Fabric</div>
+                <div class="sp-price-sub">${prices.pillowsCost > 0 ? 'Base + Fabric + Pillows' : 'Base + Fabric'}</div>
               </td>
 
               <!-- 4. Final Price (With 18% GST) -->
@@ -2682,7 +2683,8 @@
         const totalLen = computeTotalLength(p.configuration, { ft: p.partALen, in: 0 }, { ft: p.partBLen, in: 0 }, { ft: p.partCLen, in: 0 });
         const ratePerFt = getCategoryRate(p.category);
         const baseCost = Math.round(totalLen * ratePerFt);
-        const cons = p.consumptionRate || 3;
+        const cons = p.consumptionRate || (p.configuration === 'Curved Sofa' ? 2 : 3);
+        const pillowsCost = ((p.extraRound || 0) * 1200) + ((p.extraSquare || 0) * 1200) + ((p.extraBall || 0) * 2200);
 
         let sizeStr = "";
         if (p.partALen) {
@@ -2713,7 +2715,11 @@
           "Size": sizeStr,
           "Total Linear Length (ft)": totalLen,
           "Category Rate Per Ft": ratePerFt,
-          "Base Valuation": baseCost
+          "Base Valuation": baseCost,
+          "Fabric Surcharge (Boucle)": Math.round(cons * totalLen * 700),
+          "Pillows Cost": pillowsCost,
+          "Exclusive Price (ex-GST)": baseCost + Math.round(cons * totalLen * 700) + pillowsCost,
+          "Final Price (incl. 18% GST)": Math.round((baseCost + Math.round(cons * totalLen * 700) + pillowsCost) * 1.18)
         };
 
         const imgList = (p.images && p.images.length) ? p.images : (p.image ? [p.image] : []);
@@ -2721,7 +2727,7 @@
         if (mode === 'full') {
           const variants = FABRICS.map(fabric => {
             const fCost = Math.round(cons * totalLen * fabric.delta);
-            const vPrice = baseCost + fCost;
+            const vPrice = baseCost + fCost + pillowsCost;
             return {
               var_id: `var_${fabric.key.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
               city: p.city || "Pune",
@@ -2762,7 +2768,7 @@
           };
         } else {
           const fabricCost = Math.round(cons * totalLen * 700);
-          const singlePrice = baseCost + fabricCost;
+          const singlePrice = baseCost + fabricCost + pillowsCost;
           return {
             product_name: p.name,
             brand: p.brand || "Baywindow",
