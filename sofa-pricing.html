@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Plypicker Sofa Pricing & Customization Studio</title>
+  <meta name="description" content="Production-grade real-time Sofa Pricing Engine and Multi-Variant Data Entry Panel for Plypicker Luxury Living.">
+  <link rel="icon" type="image/png" href="assets/plypicker-icon-240.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+  <style>
+    :root {
+      --sp-gold: #D4AF37;
+      --sp-gold-light: #F3E5AB;
+      --sp-gold-hover: #E5C158;
+      --sp-bg-obsidian: #121110;
+      --sp-bg-surface: #1A1917;
+      --sp-bg-card: #22201D;
+      --sp-bg-elevated: #2A2824;
+      --sp-border: rgba(212, 175, 55, 0.22);
+      --sp-border-subtle: rgba(255, 255, 255, 0.08);
+      --sp-text: #FAF8F5;
+      --sp-text-muted: #AFA89F;
+      --sp-text-dim: #706B63;
+      --sp-radius: 12px;
+      --sp-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    [data-theme="light"] {
+      --sp-bg-obsidian: #FAF8F5;
+      --sp-bg-surface: #F3EFEA;
+      --sp-bg-card: #FFFFFF;
+      --sp-bg-elevated: #EAE4DC;
+      --sp-border: rgba(155, 123, 69, 0.35);
+      --sp-border-subtle: rgba(0, 0, 0, 0.08);
+      --sp-text: #1C1B19;
+      --sp-text-muted: #5C564E;
+      --sp-text-dim: #8C867D;
+      --sp-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--sp-bg-obsidian);
+      color: var(--sp-text);
+      margin: 0;
+      padding: 0;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* Top Utility Bar */
+    .sp-topbar {
+      background: var(--sp-bg-surface);
+      border-bottom: 1px solid var(--sp-border-subtle);
+      padding: 0.65rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .sp-topbar a {
+      color: var(--sp-gold);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .sp-topbar a:hover { text-decoration: underline; }
+
+    /* Studio Header */
+    .sp-hero {
+      background: linear-gradient(135deg, #181715 0%, #24221E 50%, #151412 100%);
+      border-bottom: 1px solid var(--sp-border);
+      padding: 2.75rem 2rem 2.25rem;
+      position: relative;
+    }
+    [data-theme="light"] .sp-hero {
+      background: linear-gradient(135deg, #F8F5F0 0%, #EFE9DF 100%);
+    }
+    .sp-hero-inner {
+      max-width: 1540px;
+      margin: 0 auto;
+    }
+    .sp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.3rem 0.85rem;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 9999px;
+      color: var(--sp-gold);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.85rem;
+    }
+    .sp-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2.35rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+      color: var(--sp-text);
+      letter-spacing: -0.01em;
+    }
+    .sp-subtitle {
+      font-size: 0.98rem;
+      color: var(--sp-text-muted);
+      max-width: 880px;
+      margin: 0;
+    }
+
+    /* Main Grid Layout */
+    .sp-main {
+      max-width: 1540px;
+      margin: 2rem auto;
+      padding: 0 2rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 490px;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 1180px) {
+      .sp-main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cards */
+    .sp-card {
+      background: var(--sp-bg-card);
+      border: 1px solid var(--sp-border-subtle);
+      border-radius: var(--sp-radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--sp-shadow);
+      transition: border-color 0.25s ease;
+    }
+    .sp-card:hover {
+      border-color: rgba(212, 175, 55, 0.35);
+    }
+    .sp-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--sp-border-subtle);
+    }
+    .sp-card-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--sp-text);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin: 0;
+    }
+    .sp-card-title span.num {
+      width: 26px;
+      height: 26px;
+      background: var(--sp-gold);
+      color: #121110;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+    }
+    .sp-card-desc {
+      font-size: 0.82rem;
+      color: var(--sp-text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* Form Fields & Inputs */
+    .sp-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .sp-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .sp-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--sp-text-muted);
+    }
+    .sp-input, .sp-select {
+      background: var(--sp-bg-surface);
+      border: 1px solid var(--sp-border-subtle);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      color: var(--sp-text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    .sp-input:focus, .sp-select:focus {
+      outline: none;
+      border-color: var(--sp-gold);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+    }
+
+    /* Design Category Selection Cards */
+    .sp-cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.85rem;
+      margin-top: 0.5rem;
+    }
+    .sp-cat-card {
+      background: var(--sp-bg-surface);
+      border: 2px solid var(--sp-border-subtle);
+      border-radius: 10px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .sp-cat-card:hover {
+      border-color: rgba(212, 175, 55, 0.5);
+      transform: translateY(-2px);
+    }
+    .sp-cat-card.active {
+      border-color: var(--sp-gold);
+      background: rgba(212, 175, 55, 0.08);
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.18);
+    }
+    .sp-cat-code {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--sp-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .sp-cat-tier {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin: 0.2rem 0 0.4rem;
+      color: var(--sp-text);
+    }
+    .sp-cat-rate {
+      font-size: 1rem;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--sp-gold);
+    }
+
+    /* Configuration Selector */
+    .sp-config-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.65rem;
+      margin-bottom: 1.25rem;
+    }
+    .sp-config-btn {
+      background: var(--sp-bg-surface);
+      border: 1px solid var(--sp-border-subtle);
+      border-radius: 8px;
+      padding: 0.65rem 0.5rem;
+      text-align: center;
+      cursor: pointer;
+      color: var(--sp-text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .sp-config-btn:hover {
+      border-color: var(--sp-gold);
+      color: var(--sp-text);
+    }
+    .sp-config-btn.active {
+      border-color: var(--sp-gold);
+      background: var(--sp-gold);
+      color: #121110;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+    }
+
+    /* Dimension Parts Boxes */
+    .sp-dimension-box {
+      background: var(--sp-bg-surface);
+      border: 1px solid var(--sp-border-subtle);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.85rem;
+    }
+    .sp-dimension-box-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--sp-gold);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sp-dim-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.2fr;
+      gap: 0.75rem;
+    }
+
+    /* Live Length Calculation Banner */
+    .sp-calc-banner {
+      background: linear-gradient(90deg, rgba(212, 175, 55, 0.15) 0%, rgba(16, 185, 129, 0.12) 100%);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .sp-calc-banner .metric {
+      display: flex;
+      flex-direction: column;
+    }
+    .sp-calc-banner .metric-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--sp-gold);
+    }
+    .sp-calc-banner .metric-lbl {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sp-text-muted);
+      font-weight: 600;
+    }
+
+    /* Fabric Swatches Matrix */
+    .sp-fabric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 0.85rem;
+    }
+    .sp-fabric-card {
+      background: var(--sp-bg-surface);
+      border: 2px solid var(--sp-border-subtle);
+      border-radius: 10px;
+      padding: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .sp-fabric-card:hover {
+      border-color: rgba(212, 175, 55, 0.5);
+      transform: translateY(-2px);
+    }
+    .sp-fabric-card.active {
+      border-color: var(--sp-gold);
+      background: rgba(212, 175, 55, 0.1);
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.2);
+    }
+    .sp-fabric-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--sp-border-subtle);
+      flex-shrink: 0;
+      background: #2A2824;
+    }
+    .sp-fabric-meta {
+      flex: 1;
+      min-width: 0;
+    }
+    .sp-fabric-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--sp-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sp-fabric-delta {
+      font-size: 0.75rem;
+      color: var(--sp-gold);
+      font-weight: 600;
+    }
+    .sp-fabric-calc-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--sp-text);
+      margin-top: 0.2rem;
+    }
+
+    /* Add-ons Pill Counters */
+    .sp-addon-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--sp-border-subtle);
+    }
+    .sp-addon-row:last-child { border-bottom: none; }
+    .sp-counter-wrap {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--sp-border-subtle);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--sp-bg-surface);
+    }
+    .sp-counter-btn {
+      background: transparent;
+      border: none;
+      color: var(--sp-text);
+      padding: 0.4rem 0.75rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.15s;
+    }
+    .sp-counter-btn:hover {
+      background: rgba(212, 175, 55, 0.2);
+    }
+    .sp-counter-val {
+      padding: 0 0.65rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    /* Right Sticky Panel (Real-Time Pricing & Output) */
+    .sp-sticky-wrap {
+      position: sticky;
+      top: 5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .sp-price-hero {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.18) 0%, rgba(20, 19, 17, 0.95) 100%);
+      border: 2px solid var(--sp-gold);
+      border-radius: var(--sp-radius);
+      padding: 1.75rem;
+      box-shadow: 0 12px 36px rgba(212, 175, 55, 0.18);
+    }
+    .sp-price-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sp-gold);
+      margin-bottom: 0.25rem;
+    }
+    .sp-grand-total {
+      font-family: 'Cinzel', serif;
+      font-size: 2.75rem;
+      font-weight: 700;
+      color: #FAF8F5;
+      line-height: 1.1;
+      margin: 0.25rem 0 0.5rem;
+    }
+    [data-theme="light"] .sp-grand-total { color: #1C1B19; }
+    .sp-grand-sub {
+      font-size: 0.8rem;
+      color: var(--sp-text-muted);
+    }
+
+    /* Cost Breakdown Table */
+    .sp-breakdown-table {
+      width: 100%;
+      margin: 1.25rem 0 0;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .sp-breakdown-table tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .sp-breakdown-table td {
+      padding: 0.6rem 0;
+    }
+    .sp-breakdown-table td.val {
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: var(--sp-text);
+    }
+
+    /* Output Tabs & Code Block */
+    .sp-tabs {
+      display: flex;
+      gap: 0.4rem;
+      border-bottom: 1px solid var(--sp-border-subtle);
+      margin-bottom: 1rem;
+    }
+    .sp-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--sp-text-muted);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.5rem 0.85rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .sp-tab-btn:hover { color: var(--sp-text); }
+    .sp-tab-btn.active {
+      color: var(--sp-gold);
+      border-bottom-color: var(--sp-gold);
+    }
+
+    .sp-json-box {
+      background: #0D0C0B;
+      border: 1px solid var(--sp-border-subtle);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: #E2D9CC;
+      max-height: 380px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    [data-theme="light"] .sp-json-box {
+      background: #F4EFEB;
+      color: #222;
+    }
+
+    .sp-actions-bar {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .sp-btn-gold {
+      flex: 1;
+      padding: 0.75rem 1.25rem;
+      background: linear-gradient(135deg, #D4AF37 0%, #B89020 100%);
+      color: #121110;
+      border: none;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
+    }
+    .sp-btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.45);
+    }
+    .sp-btn-secondary {
+      padding: 0.75rem 1rem;
+      background: var(--sp-bg-surface);
+      color: var(--sp-text);
+      border: 1px solid var(--sp-border-subtle);
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+    .sp-btn-secondary:hover {
+      border-color: var(--sp-gold);
+      color: var(--sp-gold);
+    }
+
+    /* Toast */
+    #sp-toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #141311;
+      color: #FAF8F5;
+      border: 1px solid var(--sp-gold);
+      padding: 0.85rem 1.5rem;
+      border-radius: 9999px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 9999;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="sp-topbar">
+    <div style="display:flex; align-items:center; gap:0.75rem;">
+      <a href="index.html">← Back to Storefront</a>
+      <span style="opacity:0.3;">|</span>
+      <a href="dedup.html">Visual Dedup Studio ↗</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <span style="color:var(--sp-gold); font-weight:700;">Plypicker Luxury Living</span>
+      <button id="btn-theme" style="background:transparent; border:1px solid var(--sp-border-subtle); color:inherit; padding:0.25rem 0.75rem; border-radius:9999px; cursor:pointer; font-size:0.78rem;">
+        🌓 Toggle Theme
+      </button>
+    </div>
+  </div>
+
+  <!-- Studio Header -->
+  <header class="sp-hero">
+    <div class="sp-hero-inner">
+      <div class="sp-badge">✨ Official Pricing Customization Engine</div>
+      <h1 class="sp-title">Sofa Product Data Entry &amp; Real-Time Pricing Studio</h1>
+      <p class="sp-subtitle">
+        Drive precise sofa valuations using total linear length (ft), category rate per foot, fabric consumption (m/ft), and multi-variant upholstery deltas with dual-key MongoDB compatibility.
+      </p>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="sp-main">
+
+    <!-- LEFT COLUMN: Input & Configuration Cards -->
+    <div class="sp-inputs-col">
+
+      <!-- Card 1: Product Master Information -->
+      <div class="sp-card">
+        <div class="sp-card-header">
+          <div>
+            <h2 class="sp-card-title"><span class="num">1</span> Product Identity &amp; Master Info</h2>
+            <div class="sp-card-desc">Set master nomenclature, brand assignment, and target logistics city</div>
+          </div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-field" style="grid-column: span 2;">
+            <label class="sp-label" for="inp-product-name">Master Product Name</label>
+            <input type="text" id="inp-product-name" class="sp-input" value="Donald Luxury Sectional Sofa" placeholder="e.g. Donald Luxury Modular Sofa">
+          </div>
+          <div class="sp-field">
+            <label class="sp-label" for="inp-brand">Brand / Supplier</label>
+            <select id="inp-brand" class="sp-select">
+              <option value="Baywindow">Baywindow</option>
+              <option value="Modani">Modani</option>
+              <option value="Duraster">Duraster</option>
+              <option value="Danetti">Danetti</option>
+              <option value="Estre">Estre</option>
+              <option value="Flamingo">Flamingo</option>
+              <option value="Gharana">Gharana</option>
+              <option value="Ifur">Ifur</option>
+              <option value="Living Shapes">Living Shapes</option>
+              <option value="Ubbaco">Ubbaco</option>
+              <option value="Uber Decor">Uber Decor</option>
+              <option value="Custom Brand">Custom Brand</option>
+            </select>
+          </div>
+          <div class="sp-field">
+            <label class="sp-label" for="inp-city">Fulfillment City</label>
+            <select id="inp-city" class="sp-select">
+              <option value="Pune" selected>Pune (Primary HQ)</option>
+              <option value="Mumbai">Mumbai</option>
+              <option value="Navi Mumbai">Navi Mumbai</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="sp-row">
+          <div class="sp-field" style="grid-column: span 2;">
+            <label class="sp-label" for="inp-images">High-Res Photos (Comma or newline separated CDN URLs)</label>
+            <input type="text" id="inp-images" class="sp-input" value="https://dlkotil4uzvzh.cloudfront.net/sofa-inline/boucle.png" placeholder="https://cdn.../img1.png, https://cdn.../img2.png">
+          </div>
+          <div class="sp-field">
+            <label class="sp-label" for="inp-consumption-rate">Fabric Consumption (m/ft)</label>
+            <input type="number" id="inp-consumption-rate" class="sp-input" value="3" min="1" max="6" step="0.5">
+            <span style="font-size:0.72rem; color:var(--sp-text-dim);">Default: 3 m/ft (or 2 for compact/curved)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Design Category Rates -->
+      <div class="sp-card">
+        <div class="sp-card-header">
+          <div>
+            <h2 class="sp-card-title"><span class="num">2</span> Design Category Rate (Rate Per Foot)</h2>
+            <div class="sp-card-desc">Resolved via getDesignCategoryRate() with token matching</div>
+          </div>
+          <div id="active-category-pill" style="font-size:0.75rem; font-weight:800; color:var(--sp-gold); background:rgba(212,175,55,0.12); border:1px solid var(--sp-gold); padding:0.25rem 0.75rem; border-radius:9999px;">
+            Active: Cat A (₹6,500/ft)
+          </div>
+        </div>
+
+        <div class="sp-cat-grid">
+          <div class="sp-cat-card active" data-category="A" data-rate="6500">
+            <div class="sp-cat-code">Category A</div>
+            <div class="sp-cat-tier">Standard</div>
+            <div class="sp-cat-rate">₹6,500 / ft</div>
+          </div>
+          <div class="sp-cat-card" data-category="B" data-rate="7500">
+            <div class="sp-cat-code">Category B</div>
+            <div class="sp-cat-tier">Mid-Tier</div>
+            <div class="sp-cat-rate">₹7,500 / ft</div>
+          </div>
+          <div class="sp-cat-card" data-category="C" data-rate="8500">
+            <div class="sp-cat-code">Category C</div>
+            <div class="sp-cat-tier">Premium</div>
+            <div class="sp-cat-rate">₹8,500 / ft</div>
+          </div>
+          <div class="sp-cat-card" data-category="D" data-rate="12717.65">
+            <div class="sp-cat-code">Category D</div>
+            <div class="sp-cat-tier">Luxury Premium</div>
+            <div class="sp-cat-rate">₹12,718 / ft</div>
+          </div>
+          <div class="sp-cat-card" data-category="Custom" data-rate="0">
+            <div class="sp-cat-code">Custom E+</div>
+            <div class="sp-cat-tier">Dynamic Rate</div>
+            <input type="number" id="inp-custom-rate" class="sp-input" placeholder="₹ Rate" style="padding:0.35rem 0.5rem; font-size:0.8rem; margin-top:0.2rem;" value="9500">
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Size & Configuration Breakdown -->
+      <div class="sp-card">
+        <div class="sp-card-header">
+          <div>
+            <h2 class="sp-card-title"><span class="num">3</span> Sofa Configuration &amp; Modular Dimensions</h2>
+            <div class="sp-card-desc">Linear length parts drive the base pricing formula: Total Length = Part A + Part B + Part C</div>
+          </div>
+        </div>
+
+        <label class="sp-label" style="margin-bottom:0.4rem; display:block;">Select Configuration</label>
+        <div class="sp-config-grid" id="config-selector">
+          <button type="button" class="sp-config-btn" data-config="Straight Line">Straight Line</button>
+          <button type="button" class="sp-config-btn" data-config="Curved Sofa">Curved Sofa</button>
+          <button type="button" class="sp-config-btn active" data-config="L-Shape">L-Shape (L/R)</button>
+          <button type="button" class="sp-config-btn" data-config="3+2 Sofa">3+2 Sofa</button>
+          <button type="button" class="sp-config-btn" data-config="U-Shape">U-Shape</button>
+          <button type="button" class="sp-config-btn" data-config="3+2+1">3+2+1 Sofa</button>
+          <button type="button" class="sp-config-btn" data-config="3+1+1">3+1+1 Sofa</button>
+          <button type="button" class="sp-config-btn" data-config="3+2+2">3+2+2 Sofa</button>
+        </div>
+
+        <!-- Part A Dimensions -->
+        <div class="sp-dimension-box" id="box-part-a">
+          <div class="sp-dimension-box-title">
+            <span>Part A (Main Section / 3-Seater)</span>
+            <span id="part-a-computed" style="font-family:'JetBrains Mono';">6.00 ft</span>
+          </div>
+          <div class="sp-dim-inputs">
+            <div class="sp-field">
+              <label class="sp-label">Length (Feet)</label>
+              <input type="number" id="dim-a-ft" class="sp-input" value="6" min="1" max="25" step="1">
+            </div>
+            <div class="sp-field">
+              <label class="sp-label">Length (Inches)</label>
+              <input type="number" id="dim-a-in" class="sp-input" value="0" min="0" max="11" step="1">
+            </div>
+            <div class="sp-field">
+              <label class="sp-label">Depth (Inches)</label>
+              <select id="dim-a-depth" class="sp-select">
+                <option value="26">26" (Slim)</option>
+                <option value="28">28" (Standard Compact)</option>
+                <option value="30" selected>30" (Default Luxury)</option>
+                <option value="32">32" (Deep Lounge)</option>
+                <option value="34">34" (Extra Deep)</option>
+                <option value="36">36" (Grand Depth)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Part B Dimensions -->
+        <div class="sp-dimension-box" id="box-part-b">
+          <div class="sp-dimension-box-title">
+            <span>Part B (Chaise / 2-Seater / Return)</span>
+            <span id="part-b-computed" style="font-family:'JetBrains Mono';">3.00 ft</span>
+          </div>
+          <div class="sp-dim-inputs">
+            <div class="sp-field">
+              <label class="sp-label">Length (Feet)</label>
+              <input type="number" id="dim-b-ft" class="sp-input" value="3" min="0" max="25" step="1">
+            </div>
+            <div class="sp-field">
+              <label class="sp-label">Length (Inches)</label>
+              <input type="number" id="dim-b-in" class="sp-input" value="0" min="0" max="11" step="1">
+            </div>
+            <div class="sp-field">
+              <label class="sp-label">Depth (Inches)</label>
+              <select id="dim-b-depth" class="sp-select">
+                <option value="26">26"</option>
+                <option value="28">28"</option>
+                <option value="30" selected>30"</option>
+                <option value="32">32"</option>
+                <option value="34">34"</option>
+                <option value="36">36"</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Part C Dimensions -->
+        <div class="sp-dimension-box" id="box-part-c" style="display:none;">
+          <div class="sp-dimension-box-title">
+            <span>Part C (Opposite Return / 1-Seater / Additional Chaise)</span>
+            <span id="part-c-computed" style="font-family:'JetBrains Mono';">0.00 ft</span>
+          </div>
+          <div class="sp-dim-inputs">
+            <div class="sp-field">
+              <label class="sp-label">Length (Feet)</label>
+              <input type="number" id="dim-c-ft" class="sp-input" value="0" min="0" max="25" step="1">
+            </div>
+            <div class="sp-field">
+              <label class="sp-label">Length (Inches)</label>
+              <input type="number" id="dim-c-in" class="sp-input" value="0" min="0" max="11" step="1">
+            </div>
+            <div class="sp-field">
+              <label class="sp-label">Depth (Inches)</label>
+              <select id="dim-c-depth" class="sp-select">
+                <option value="26">26"</option>
+                <option value="28">28"</option>
+                <option value="30" selected>30"</option>
+                <option value="32">32"</option>
+                <option value="34">34"</option>
+                <option value="36">36"</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Computed Banner -->
+        <div class="sp-calc-banner">
+          <div class="metric">
+            <span class="metric-lbl">Total Linear Length</span>
+            <span class="metric-val" id="disp-total-length">9.00 ft</span>
+          </div>
+          <div class="metric">
+            <span class="metric-lbl">Formatted Size String</span>
+            <span class="metric-val" id="disp-size-str" style="font-size:1.25rem;">6' x 3'</span>
+          </div>
+          <div class="metric">
+            <span class="metric-lbl">Formula Check</span>
+            <span style="font-size:0.85rem; color:var(--sp-text-muted);" id="disp-formula-check">
+              Round((6 + 0/12) + (3 + 0/12)) = 9.00 ft
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Fabric Upholstery Selector & Live Matrix -->
+      <div class="sp-card">
+        <div class="sp-card-header">
+          <div>
+            <h2 class="sp-card-title"><span class="num">4</span> Fabric Upholstery Matrix (Auto-Generated)</h2>
+            <div class="sp-card-desc">Click any fabric to set as primary preview variant. All 9 variants are auto-computed for export.</div>
+          </div>
+        </div>
+
+        <div class="sp-fabric-grid" id="fabric-grid">
+          <!-- Populated dynamically via JS with CDN images and live prices -->
+        </div>
+      </div>
+
+      <!-- Card 5: Add-ons & Customizations -->
+      <div class="sp-card">
+        <div class="sp-card-header">
+          <div>
+            <h2 class="sp-card-title"><span class="num">5</span> Add-on Customizations (Configurator &amp; Cart)</h2>
+            <div class="sp-card-desc">Customer selectable upgrades and pillow accessories</div>
+          </div>
+        </div>
+
+        <div class="sp-addon-row">
+          <div>
+            <div style="font-weight:700;">Base Pillow</div>
+            <div style="font-size:0.78rem; color:var(--sp-text-muted);">1 Round or Square Pillow (Included)</div>
+          </div>
+          <span style="font-size:0.82rem; font-weight:700; color:#10B981;">FREE (₹0)</span>
+        </div>
+
+        <div class="sp-addon-row">
+          <div>
+            <div style="font-weight:700;">Extra Round Pillows</div>
+            <div style="font-size:0.78rem; color:var(--sp-text-muted);">+₹1,200 per piece</div>
+          </div>
+          <div class="sp-counter-wrap">
+            <button type="button" class="sp-counter-btn" onclick="changeCounter('round', -1)">-</button>
+            <span class="sp-counter-val" id="cnt-round">2</span>
+            <button type="button" class="sp-counter-btn" onclick="changeCounter('round', 1)">+</button>
+          </div>
+        </div>
+
+        <div class="sp-addon-row">
+          <div>
+            <div style="font-weight:700;">Extra Square Pillows</div>
+            <div style="font-size:0.78rem; color:var(--sp-text-muted);">+₹1,200 per piece</div>
+          </div>
+          <div class="sp-counter-wrap">
+            <button type="button" class="sp-counter-btn" onclick="changeCounter('square', -1)">-</button>
+            <span class="sp-counter-val" id="cnt-square">0</span>
+            <button type="button" class="sp-counter-btn" onclick="changeCounter('square', 1)">+</button>
+          </div>
+        </div>
+
+        <div class="sp-addon-row">
+          <div>
+            <div style="font-weight:700;">Extra Ball Pillows</div>
+            <div style="font-size:0.78rem; color:var(--sp-text-muted);">+₹2,200 per piece</div>
+          </div>
+          <div class="sp-counter-wrap">
+            <button type="button" class="sp-counter-btn" onclick="changeCounter('ball', -1)">-</button>
+            <span class="sp-counter-val" id="cnt-ball">0</span>
+            <button type="button" class="sp-counter-btn" onclick="changeCounter('ball', 1)">+</button>
+          </div>
+        </div>
+
+        <div class="sp-addon-row">
+          <div>
+            <div style="font-weight:700;">Cushion Comfort Level</div>
+            <div style="font-size:0.78rem; color:var(--sp-text-muted);">High resilience foam density (Included)</div>
+          </div>
+          <select id="sel-cushion" class="sp-select" style="width:160px; padding:0.35rem 0.65rem;">
+            <option value="Super soft">Super Soft</option>
+            <option value="Soft" selected>Soft</option>
+            <option value="Normal Hard">Normal Hard</option>
+            <option value="Hard">Hard</option>
+          </select>
+        </div>
+
+        <div class="sp-addon-row">
+          <div>
+            <div style="font-weight:700;">Leg Finish Material</div>
+            <div style="font-size:0.78rem; color:var(--sp-text-muted);">Architectural support structure (Included)</div>
+          </div>
+          <select id="sel-legs" class="sp-select" style="width:160px; padding:0.35rem 0.65rem;">
+            <option value="Metal" selected>Metal (Gold / Matte Black)</option>
+            <option value="Wooden">Natural Teak Wood</option>
+            <option value="PVC">Concealed PVC Glides</option>
+          </select>
+        </div>
+
+        <div class="sp-addon-row">
+          <div>
+            <div style="font-weight:700;">Fabric Swatch Sample Kit at Home</div>
+            <div style="font-size:0.78rem; color:var(--sp-text-muted);">₹2,100 adjustable booking deposit (not added to sofa cost)</div>
+          </div>
+          <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+            <input type="checkbox" id="chk-samples" style="width:18px; height:18px; accent-color:var(--sp-gold);">
+            <span style="font-size:0.82rem; font-weight:700;">Order Kit</span>
+          </label>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: Sticky Real-Time Price Summary & Output Panel -->
+    <div class="sp-sticky-wrap">
+
+      <!-- Hero Price Card -->
+      <div class="sp-price-hero">
+        <div class="sp-price-label">Real-Time Final Valuation (Incl. 18% GST)</div>
+        <div class="sp-grand-total" id="summary-grand-total">₹94,164</div>
+        <div class="sp-grand-sub" id="summary-headline">
+          Category A (₹6,500/ft) · 9.00 ft L-Shape · Boucle
+        </div>
+
+        <table class="sp-breakdown-table">
+          <tr>
+            <td>Base Sofa Cost (<span id="txt-base-rate">9 ft × ₹6,500</span>)</td>
+            <td class="val" id="summary-base-cost">₹58,500</td>
+          </tr>
+          <tr>
+            <td>Fabric Cost (<span id="txt-fabric-rate">3 m/ft × 9 ft × ₹700</span>)</td>
+            <td class="val" id="summary-fabric-cost">₹18,900</td>
+          </tr>
+          <tr>
+            <td>Add-ons &amp; Pillows (<span id="txt-pillow-count">2 Round</span>)</td>
+            <td class="val" id="summary-addons-cost">₹2,400</td>
+          </tr>
+          <tr style="border-top:1px dashed rgba(212,175,55,0.4);">
+            <td><strong>Subtotal (Excl. GST)</strong></td>
+            <td class="val" id="summary-subtotal"><strong>₹79,800</strong></td>
+          </tr>
+          <tr>
+            <td>GST (18%)</td>
+            <td class="val" id="summary-gst">₹14,364</td>
+          </tr>
+          <tr style="border-top:2px solid var(--sp-gold);">
+            <td style="font-weight:800; color:var(--sp-gold);">Grand Total (Incl. GST)</td>
+            <td class="val" style="color:var(--sp-gold); font-size:1.1rem;" id="summary-grand-total-table">₹94,164</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- JSON & MongoDB Output Card -->
+      <div class="sp-card" style="margin-bottom:0;">
+        <div class="sp-card-header" style="margin-bottom:0.75rem;">
+          <div>
+            <h3 class="sp-card-title">Production Export</h3>
+            <div class="sp-card-desc">Production MongoDB schema with dual-key notation</div>
+          </div>
+        </div>
+
+        <div class="sp-tabs">
+          <button type="button" class="sp-tab-btn active" data-tab="full-product">Full MongoDB Product (9 Variants)</button>
+          <button type="button" class="sp-tab-btn" data-tab="single-variant">Single Variant (update-dimensions)</button>
+          <button type="button" class="sp-tab-btn" data-tab="storefront">Catalog JSON Item</button>
+        </div>
+
+        <div class="sp-json-box" id="json-output">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <div class="sp-actions-bar">
+          <button type="button" class="sp-btn-gold" id="btn-copy-json">
+            📋 Copy JSON
+          </button>
+          <button type="button" class="sp-btn-secondary" id="btn-download-json" title="Download JSON document to disk">
+            💾 Download .json
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="sp-toast">✓ JSON Copied to Clipboard!</div>
+
+  <!-- Pricing Engine Client Logic -->
+  <script>
+    (function() {
+      'use strict';
+
+      // 1. Core Fabric Pricing Defaults & CDN Swatches
+      const FABRICS = [
+        { key: 'Standard', name: 'Standard / Base Fabric', delta: 0, image: 'https://dlkotil4uzvzh.cloudfront.net/sofa-inline/suede.png' },
+        { key: 'Velvet', name: 'Velvet', delta: 450, image: 'https://dlkotil4uzvzh.cloudfront.net/sofa-inline/velvet.png' },
+        { key: 'Suede', name: 'Suede', delta: 450, image: 'https://dlkotil4uzvzh.cloudfront.net/sofa-inline/suede.png' },
+        { key: 'Rexin', name: 'Rexin', delta: 450, image: 'https://dlkotil4uzvzh.cloudfront.net/sofa-inline/rexin.png' },
+        { key: 'Linen', name: 'Linen', delta: 600, image: 'https://dlkotil4uzvzh.cloudfront.net/sofa-inline/linen.png' },
+        { key: 'Boucle', name: 'Boucle', delta: 700, image: 'https://dlkotil4uzvzh.cloudfront.net/sofa-inline/boucle.png' },
+        { key: 'Leatherite', name: 'Leatherite', delta: 750, image: 'https://dlkotil4uzvzh.cloudfront.net/sofa-inline/leatherite.png' },
+        { key: 'Vegan Leather', name: 'Vegan Leather', delta: 950, image: 'https://dlkotil4uzvzh.cloudfront.net/sofa-inline/vegan_leather.png' },
+        { key: 'Genuine Leather', name: 'Genuine Leather', delta: 4500, image: 'https://dlkotil4uzvzh.cloudfront.net/sofa-inline/leather.png' }
+      ];
+
+      // 2. State
+      const state = {
+        productName: 'Donald Luxury Sectional Sofa',
+        brand: 'Baywindow',
+        city: 'Pune',
+        images: ['https://dlkotil4uzvzh.cloudfront.net/sofa-inline/boucle.png'],
+        category: 'A',
+        ratePerFt: 6500,
+        configuration: 'L-Shape',
+        partA: { ft: 6, in: 0, depth: 30 },
+        partB: { ft: 3, in: 0, depth: 30 },
+        partC: { ft: 0, in: 0, depth: 30 },
+        consumptionRate: 3,
+        activeFabricKey: 'Boucle',
+        pillows: { round: 2, square: 0, ball: 0 },
+        cushionComfort: 'Soft',
+        legType: 'Metal',
+        sampleKit: false,
+        activeTab: 'full-product'
+      };
+
+      // 3. DOM Elements
+      const DOM = {
+        productName: document.getElementById('inp-product-name'),
+        brand: document.getElementById('inp-brand'),
+        city: document.getElementById('inp-city'),
+        images: document.getElementById('inp-images'),
+        consumptionRate: document.getElementById('inp-consumption-rate'),
+        customRate: document.getElementById('inp-custom-rate'),
+        activeCategoryPill: document.getElementById('active-category-pill'),
+        configBtns: document.querySelectorAll('.sp-config-btn'),
+        catCards: document.querySelectorAll('.sp-cat-card'),
+        boxPartA: document.getElementById('box-part-a'),
+        boxPartB: document.getElementById('box-part-b'),
+        boxPartC: document.getElementById('box-part-c'),
+        dimAFt: document.getElementById('dim-a-ft'),
+        dimAIn: document.getElementById('dim-a-in'),
+        dimADepth: document.getElementById('dim-a-depth'),
+        dimBFt: document.getElementById('dim-b-ft'),
+        dimBIn: document.getElementById('dim-b-in'),
+        dimBDepth: document.getElementById('dim-b-depth'),
+        dimCFt: document.getElementById('dim-c-ft'),
+        dimCIn: document.getElementById('dim-c-in'),
+        dimCDepth: document.getElementById('dim-c-depth'),
+        partAComputed: document.getElementById('part-a-computed'),
+        partBComputed: document.getElementById('part-b-computed'),
+        partCComputed: document.getElementById('part-c-computed'),
+        dispTotalLength: document.getElementById('disp-total-length'),
+        dispSizeStr: document.getElementById('disp-size-str'),
+        dispFormulaCheck: document.getElementById('disp-formula-check'),
+        fabricGrid: document.getElementById('fabric-grid'),
+        cntRound: document.getElementById('cnt-round'),
+        cntSquare: document.getElementById('cnt-square'),
+        cntBall: document.getElementById('cnt-ball'),
+        selCushion: document.getElementById('sel-cushion'),
+        selLegs: document.getElementById('sel-legs'),
+        chkSamples: document.getElementById('chk-samples'),
+        summaryGrandTotal: document.getElementById('summary-grand-total'),
+        summaryHeadline: document.getElementById('summary-headline'),
+        summaryBaseCost: document.getElementById('summary-base-cost'),
+        summaryFabricCost: document.getElementById('summary-fabric-cost'),
+        summaryAddonsCost: document.getElementById('summary-addons-cost'),
+        summarySubtotal: document.getElementById('summary-subtotal'),
+        summaryGst: document.getElementById('summary-gst'),
+        summaryGrandTotalTable: document.getElementById('summary-grand-total-table'),
+        txtBaseRate: document.getElementById('txt-base-rate'),
+        txtFabricRate: document.getElementById('txt-fabric-rate'),
+        txtPillowCount: document.getElementById('txt-pillow-count'),
+        jsonOutput: document.getElementById('json-output'),
+        btnCopyJson: document.getElementById('btn-copy-json'),
+        btnDownloadJson: document.getElementById('btn-download-json'),
+        btnTheme: document.getElementById('btn-theme'),
+        tabBtns: document.querySelectorAll('.sp-tab-btn'),
+        toast: document.getElementById('sp-toast')
+      };
+
+      // 4. Mathematical Functions
+      function computePartLengthInFeet(ft, inch) {
+        const f = parseFloat(ft) || 0;
+        const i = parseFloat(inch) || 0;
+        return Math.round((f + (i / 12)) * 100) / 100;
+      }
+
+      function computeTotalLength() {
+        const lenA = computePartLengthInFeet(state.partA.ft, state.partA.in);
+        let lenB = 0;
+        let lenC = 0;
+
+        if (state.configuration !== 'Straight Line' && state.configuration !== 'Curved Sofa') {
+          lenB = computePartLengthInFeet(state.partB.ft, state.partB.in);
+        }
+
+        if (['U-Shape', '3+2+1', '3+1+1', '3+2+2'].includes(state.configuration)) {
+          lenC = computePartLengthInFeet(state.partC.ft, state.partC.in);
+        }
+
+        return Math.round((lenA + lenB + lenC) * 100) / 100;
+      }
+
+      function computeSizeString(lenA, lenB, depthA) {
+        if (lenA && lenB && lenB > 0) {
+          return `${lenA}' x ${lenB}'`;
+        } else if (lenA && depthA && depthA > 0) {
+          const depthFt = Math.round((depthA / 12) * 10) / 10;
+          return `${lenA}' x ${depthFt}'`;
+        } else if (lenA) {
+          return `${lenA}'`;
+        }
+        return "Standard";
+      }
+
+      function computeVariantPrice(fabricDelta, totalLength, ratePerFt, consumptionRate) {
+        const baseCost = totalLength * ratePerFt;
+        const fabricCost = consumptionRate * totalLength * fabricDelta;
+        return Math.round(baseCost + fabricCost);
+      }
+
+      function computeAddonsCost() {
+        return (state.pillows.round * 1200) + (state.pillows.square * 1200) + (state.pillows.ball * 2200);
+      }
+
+      // 5. Recalculate & Re-render
+      function recalculate() {
+        const lenA = computePartLengthInFeet(state.partA.ft, state.partA.in);
+        const lenB = computePartLengthInFeet(state.partB.ft, state.partB.in);
+        const lenC = computePartLengthInFeet(state.partC.ft, state.partC.in);
+        const totalLength = computeTotalLength();
+        const sizeStr = computeSizeString(lenA, (state.configuration !== 'Straight Line' && state.configuration !== 'Curved Sofa') ? lenB : 0, state.partA.depth);
+
+        // Update dimension boxes
+        DOM.partAComputed.textContent = `${lenA.toFixed(2)} ft`;
+        DOM.partBComputed.textContent = `${lenB.toFixed(2)} ft`;
+        DOM.partCComputed.textContent = `${lenC.toFixed(2)} ft`;
+
+        DOM.dispTotalLength.textContent = `${totalLength.toFixed(2)} ft`;
+        DOM.dispSizeStr.textContent = sizeStr;
+
+        let formulaText = `Part A (${lenA} ft)`;
+        if (state.configuration !== 'Straight Line' && state.configuration !== 'Curved Sofa') {
+          formulaText += ` + Part B (${lenB} ft)`;
+        }
+        if (['U-Shape', '3+2+1', '3+1+1', '3+2+2'].includes(state.configuration)) {
+          formulaText += ` + Part C (${lenC} ft)`;
+        }
+        formulaText += ` = ${totalLength.toFixed(2)} ft`;
+        DOM.dispFormulaCheck.textContent = formulaText;
+
+        // Active fabric
+        const activeFabric = FABRICS.find(f => f.key === state.activeFabricKey) || FABRICS[0];
+        const baseCost = Math.round(totalLength * state.ratePerFt);
+        const fabricCost = Math.round(state.consumptionRate * totalLength * activeFabric.delta);
+        const addonsCost = computeAddonsCost();
+        const subtotal = baseCost + fabricCost + addonsCost;
+        const gst = Math.round(subtotal * 0.18);
+        const grandTotal = subtotal + gst;
+
+        // Update Price Hero
+        DOM.summaryGrandTotal.textContent = `₹${grandTotal.toLocaleString('en-IN')}`;
+        DOM.summaryGrandTotalTable.textContent = `₹${grandTotal.toLocaleString('en-IN')}`;
+        DOM.summaryHeadline.textContent = `Category ${state.category} (₹${state.ratePerFt.toLocaleString('en-IN')}/ft) · ${totalLength.toFixed(2)} ft ${state.configuration} · ${activeFabric.name}`;
+
+        DOM.txtBaseRate.textContent = `${totalLength.toFixed(2)} ft × ₹${state.ratePerFt.toLocaleString('en-IN')}`;
+        DOM.txtFabricRate.textContent = `${state.consumptionRate} m/ft × ${totalLength.toFixed(2)} ft × ₹${activeFabric.delta}`;
+        
+        const pillowArr = [];
+        if (state.pillows.round > 0) pillowArr.push(`${state.pillows.round} Round`);
+        if (state.pillows.square > 0) pillowArr.push(`${state.pillows.square} Square`);
+        if (state.pillows.ball > 0) pillowArr.push(`${state.pillows.ball} Ball`);
+        DOM.txtPillowCount.textContent = pillowArr.length > 0 ? pillowArr.join(', ') : 'None extra';
+
+        DOM.summaryBaseCost.textContent = `₹${baseCost.toLocaleString('en-IN')}`;
+        DOM.summaryFabricCost.textContent = `₹${fabricCost.toLocaleString('en-IN')}`;
+        DOM.summaryAddonsCost.textContent = `₹${addonsCost.toLocaleString('en-IN')}`;
+        DOM.summarySubtotal.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+        DOM.summaryGst.textContent = `₹${gst.toLocaleString('en-IN')}`;
+
+        // Render Fabrics Grid
+        renderFabricGrid(totalLength);
+
+        // Render JSON Export
+        renderJsonOutput(totalLength, lenA, lenB, lenC, sizeStr, grandTotal, subtotal);
+      }
+
+      function renderFabricGrid(totalLength) {
+        DOM.fabricGrid.innerHTML = '';
+        FABRICS.forEach(f => {
+          const varPrice = computeVariantPrice(f.delta, totalLength, state.ratePerFt, state.consumptionRate);
+          const varGst = Math.round(varPrice * 0.18);
+          const varTotal = varPrice + varGst;
+
+          const card = document.createElement('div');
+          card.className = `sp-fabric-card ${f.key === state.activeFabricKey ? 'active' : ''}`;
+          card.innerHTML = `
+            <img src="${f.image}" alt="${f.name}" class="sp-fabric-thumb" onerror="this.src='assets/plypicker-logo.png'">
+            <div class="sp-fabric-meta">
+              <div class="sp-fabric-name">${f.name}</div>
+              <div class="sp-fabric-delta">${f.delta > 0 ? `+₹${f.delta}/m` : 'Base (Included)'}</div>
+              <div class="sp-fabric-calc-price">₹${varTotal.toLocaleString('en-IN')} <span style="font-size:0.7rem; color:var(--sp-text-muted);">(incl. GST)</span></div>
+            </div>
+          `;
+          card.addEventListener('click', () => {
+            state.activeFabricKey = f.key;
+            recalculate();
+          });
+          DOM.fabricGrid.appendChild(card);
+        });
+      }
+
+      function renderJsonOutput(totalLength, lenA, lenB, lenC, sizeStr, grandTotal, subtotal) {
+        const showPartB = state.configuration !== 'Straight Line' && state.configuration !== 'Curved Sofa';
+        const showPartC = ['U-Shape', '3+2+1', '3+1+1', '3+2+2'].includes(state.configuration);
+
+        // Dual Key-Naming in desc
+        const descObj = {
+          "Design Category": state.category,
+          "design_category": state.category,
+          "Part A Length": String(lenA),
+          "Dim.A.Length": String(lenA),
+          "Dim A Length": String(lenA),
+          "Part A Depth": String(state.partA.depth),
+          "Dim.A.Depth": String(state.partA.depth),
+          "Part B Length": showPartB ? String(lenB) : "",
+          "Dim.B.Length": showPartB ? String(lenB) : "",
+          "Part B Depth": showPartB ? String(state.partB.depth) : "",
+          "Dim.B.Depth": showPartB ? String(state.partB.depth) : "",
+          "Part C Length": showPartC ? String(lenC) : "",
+          "Dim.C.Length": showPartC ? String(lenC) : "",
+          "Configuration": state.configuration,
+          "Size": sizeStr,
+          "Cushion Comfort": state.cushionComfort,
+          "Legs": state.legType
+        };
+
+        // All 9 Auto-Generated Variants
+        const varsArray = FABRICS.map((f, idx) => {
+          const vPrice = computeVariantPrice(f.delta, totalLength, state.ratePerFt, state.consumptionRate);
+          return {
+            city: state.city,
+            product_name: `${state.productName} in ${f.name}`,
+            price: vPrice,
+            discounted_price: vPrice,
+            discounted_percent: 0,
+            consumption_rate: state.consumptionRate,
+            laborPerFloor: 150,
+            applicability: 1,
+            is_active: true,
+            attributes: {
+              var: f.name,
+              color: "Default",
+              finish: f.name,
+              images: state.images.length ? state.images : [f.image]
+            }
+          };
+        });
+
+        let outputData = {};
+
+        if (state.activeTab === 'full-product') {
+          outputData = {
+            product_name: state.productName,
+            brand: state.brand,
+            city: state.city,
+            furniture_category_id: "650c7d3f9b6be37852216adb",
+            sofa_subcategory_id: "650c83879b6be37852216ae0",
+            category: "Sofa",
+            subcategory: "Luxury Sofas",
+            consumption_rate: state.consumptionRate,
+            desc: descObj,
+            base_price: Math.round(totalLength * state.ratePerFt),
+            price: varsArray[0].price,
+            discounted_price: varsArray[0].discounted_price,
+            images: state.images,
+            vars: varsArray
+          };
+        } else if (state.activeTab === 'single-variant') {
+          const activeFabric = FABRICS.find(f => f.key === state.activeFabricKey) || FABRICS[0];
+          const activePrice = computeVariantPrice(activeFabric.delta, totalLength, state.ratePerFt, state.consumptionRate);
+          outputData = {
+            price: activePrice,
+            discounted_price: activePrice,
+            consumption_rate: state.consumptionRate,
+            desc: descObj,
+            attributes: {
+              var: activeFabric.name,
+              color: "Default",
+              finish: activeFabric.name
+            }
+          };
+        } else {
+          // Storefront item
+          outputData = {
+            name: `${state.productName} (${state.configuration})`,
+            brand: state.brand,
+            category: "Sofa",
+            price: grandTotal,
+            image: state.images[0] || 'https://dlkotil4uzvzh.cloudfront.net/sofa-inline/boucle.png',
+            images: state.images,
+            dimensions: {
+              Length: `${totalLength} ft`,
+              Depth: `${state.partA.depth} in`,
+              Configuration: state.configuration,
+              Size: sizeStr
+            },
+            specifications: {
+              "Design Category": `Category ${state.category}`,
+              "Total Length (ft)": totalLength,
+              "Fabric": state.activeFabricKey,
+              "Consumption Rate": `${state.consumptionRate} m/ft`,
+              "Cushion Comfort": state.cushionComfort,
+              "Legs": state.legType
+            }
+          };
+        }
+
+        DOM.jsonOutput.textContent = JSON.stringify(outputData, null, 2);
+      }
+
+      // 6. Event Listeners
+      function setupListeners() {
+        // Theme toggle
+        DOM.btnTheme.addEventListener('click', () => {
+          const cur = document.documentElement.getAttribute('data-theme');
+          const next = cur === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('moderna_theme', next);
+        });
+
+        // Basic inputs
+        DOM.productName.addEventListener('input', e => { state.productName = e.target.value; recalculate(); });
+        DOM.brand.addEventListener('change', e => { state.brand = e.target.value; recalculate(); });
+        DOM.city.addEventListener('change', e => { state.city = e.target.value; recalculate(); });
+        DOM.images.addEventListener('input', e => {
+          state.images = e.target.value.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+          recalculate();
+        });
+        DOM.consumptionRate.addEventListener('input', e => {
+          state.consumptionRate = parseFloat(e.target.value) || 3;
+          recalculate();
+        });
+
+        // Categories
+        DOM.catCards.forEach(card => {
+          card.addEventListener('click', () => {
+            DOM.catCards.forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            state.category = card.dataset.category;
+
+            if (state.category === 'Custom') {
+              state.ratePerFt = parseFloat(DOM.customRate.value) || 9500;
+              DOM.activeCategoryPill.textContent = `Active: Custom (₹${state.ratePerFt.toLocaleString('en-IN')}/ft)`;
+            } else {
+              state.ratePerFt = parseFloat(card.dataset.rate);
+              DOM.activeCategoryPill.textContent = `Active: Cat ${state.category} (₹${state.ratePerFt.toLocaleString('en-IN')}/ft)`;
+            }
+            recalculate();
+          });
+        });
+
+        DOM.customRate.addEventListener('input', e => {
+          if (state.category === 'Custom') {
+            state.ratePerFt = parseFloat(e.target.value) || 0;
+            DOM.activeCategoryPill.textContent = `Active: Custom (₹${state.ratePerFt.toLocaleString('en-IN')}/ft)`;
+            recalculate();
+          }
+        });
+
+        // Configurations
+        DOM.configBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            DOM.configBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.configuration = btn.dataset.config;
+
+            // Visibility of B and C
+            if (state.configuration === 'Straight Line' || state.configuration === 'Curved Sofa') {
+              DOM.boxPartB.style.display = 'none';
+              DOM.boxPartC.style.display = 'none';
+              if (state.configuration === 'Curved Sofa' && state.consumptionRate === 3) {
+                state.consumptionRate = 2; // fallback recommended for curved
+                DOM.consumptionRate.value = 2;
+              }
+            } else if (['U-Shape', '3+2+1', '3+1+1', '3+2+2'].includes(state.configuration)) {
+              DOM.boxPartB.style.display = 'block';
+              DOM.boxPartC.style.display = 'block';
+              if (parseFloat(DOM.dimCFt.value) === 0) {
+                DOM.dimCFt.value = 3;
+                state.partC.ft = 3;
+              }
+            } else {
+              DOM.boxPartB.style.display = 'block';
+              DOM.boxPartC.style.display = 'none';
+            }
+
+            recalculate();
+          });
+        });
+
+        // Dimension inputs
+        const updateDims = () => {
+          state.partA.ft = parseFloat(DOM.dimAFt.value) || 0;
+          state.partA.in = parseFloat(DOM.dimAIn.value) || 0;
+          state.partA.depth = parseFloat(DOM.dimADepth.value) || 30;
+
+          state.partB.ft = parseFloat(DOM.dimBFt.value) || 0;
+          state.partB.in = parseFloat(DOM.dimBIn.value) || 0;
+          state.partB.depth = parseFloat(DOM.dimBDepth.value) || 30;
+
+          state.partC.ft = parseFloat(DOM.dimCFt.value) || 0;
+          state.partC.in = parseFloat(DOM.dimCIn.value) || 0;
+          state.partC.depth = parseFloat(DOM.dimCDepth.value) || 30;
+
+          recalculate();
+        };
+
+        [DOM.dimAFt, DOM.dimAIn, DOM.dimADepth, DOM.dimBFt, DOM.dimBIn, DOM.dimBDepth, DOM.dimCFt, DOM.dimCIn, DOM.dimCDepth].forEach(el => {
+          el.addEventListener('input', updateDims);
+          el.addEventListener('change', updateDims);
+        });
+
+        // Add-ons
+        DOM.selCushion.addEventListener('change', e => { state.cushionComfort = e.target.value; recalculate(); });
+        DOM.selLegs.addEventListener('change', e => { state.legType = e.target.value; recalculate(); });
+        DOM.chkSamples.addEventListener('change', e => { state.sampleKit = e.target.checked; recalculate(); });
+
+        // Tabs
+        DOM.tabBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            DOM.tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.activeTab = btn.dataset.tab;
+            recalculate();
+          });
+        });
+
+        // Copy button
+        DOM.btnCopyJson.addEventListener('click', () => {
+          navigator.clipboard.writeText(DOM.jsonOutput.textContent).then(() => {
+            showToast('✓ Production JSON copied to clipboard!');
+          });
+        });
+
+        // Download button
+        DOM.btnDownloadJson.addEventListener('click', () => {
+          const blob = new Blob([DOM.jsonOutput.textContent], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `${state.productName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-plypicker.json`;
+          a.click();
+          URL.revokeObjectURL(url);
+          showToast('💾 JSON file downloaded successfully!');
+        });
+      }
+
+      window.changeCounter = function(type, delta) {
+        state.pillows[type] = Math.max(0, state.pillows[type] + delta);
+        if (type === 'round') DOM.cntRound.textContent = state.pillows.round;
+        if (type === 'square') DOM.cntSquare.textContent = state.pillows.square;
+        if (type === 'ball') DOM.cntBall.textContent = state.pillows.ball;
+        recalculate();
+      };
+
+      function showToast(msg) {
+        DOM.toast.textContent = msg;
+        DOM.toast.style.display = 'flex';
+        setTimeout(() => { DOM.toast.style.display = 'none'; }, 2200);
+      }
+
+      // Initial boot
+      setupListeners();
+      recalculate();
+    })();
+  </script>
+</body>
+</html>
