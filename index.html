@@ -185,6 +185,22 @@
       <div class="results-count-text" id="results-count-display">
         Showing <strong>90</strong> handcrafted pieces
       </div>
+
+      <!-- Bulk Selection & Action Controls in Toolbar -->
+      <div class="bulk-toolbar-select-group" id="bulk-toolbar-select-group">
+        <label class="bulk-select-all-label" for="bulk-select-all-toggle" title="Select or deselect all visible products">
+          <input type="checkbox" id="bulk-select-all-toggle" class="bulk-select-all-chk">
+          <span class="bulk-custom-checkbox">
+            <svg class="bulk-check-svg" width="10" height="8" viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 5 4.5 8 10.5 1.5"></polyline></svg>
+          </span>
+          <span class="bulk-select-text" id="bulk-select-label-text">Select All</span>
+        </label>
+        <span class="bulk-selection-count-badge" id="bulk-selection-count-badge" style="display:none;">0 selected</span>
+        <button type="button" class="toolbar-bulk-delete-btn" id="btn-toolbar-bulk-delete" style="display:none;" title="Delete selected products from catalog JSONs">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+          <span>Delete (<span class="bulk-btn-count">0</span>)</span>
+        </button>
+      </div>
     </div>
 
     <div class="toolbar-right">
@@ -990,6 +1006,72 @@
         <div id="ubbaco-bulk-list" class="ubbaco-bulk-list">
           <!-- Populated dynamically by app.js -->
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       FLOATING BULK ACTIONS BAR (Appears when 1+ products selected)
+       ========================================================================= -->
+  <aside class="bulk-floating-action-bar" id="bulk-floating-action-bar" style="display:none;" aria-label="Bulk actions toolbar">
+    <div class="bulk-floating-bar-inner">
+      <div class="bulk-floating-info">
+        <span class="bulk-floating-icon">☑️</span>
+        <div class="bulk-floating-text-wrap">
+          <div><strong id="bulk-floating-count">0</strong> <span id="bulk-floating-items-label">pieces selected</span></div>
+          <span class="bulk-floating-hint">Bulk prune directly from catalog JSON files</span>
+        </div>
+      </div>
+      <div class="bulk-floating-actions">
+        <button type="button" class="bulk-bar-btn bulk-btn-select-all" id="btn-bulk-bar-select-all" title="Select all visible items">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+          <span>Select All Visible</span>
+        </button>
+        <button type="button" class="bulk-bar-btn bulk-btn-clear" id="btn-bulk-bar-clear" title="Clear selection">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <span>Clear</span>
+        </button>
+        <button type="button" class="bulk-bar-btn bulk-btn-delete" id="btn-bulk-bar-delete" title="Permanently delete selected products">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+          <span>Delete Selected (<span class="bulk-btn-count">0</span>)</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       BULK DELETE CONFIRMATION MODAL
+       ========================================================================= -->
+  <div class="modal-backdrop" id="bulk-delete-confirm-modal" style="display:none;" role="dialog" aria-modal="true">
+    <div class="modal-box bulk-delete-modal-box">
+      <button class="modal-close-btn" id="btn-close-bulk-delete-modal" title="Cancel">×</button>
+      <div class="bulk-modal-header">
+        <div class="bulk-modal-icon-warn">🗑️</div>
+        <div>
+          <div style="font-size:0.75rem; letter-spacing:0.18em; text-transform:uppercase; color:#E63946; font-weight:700;">Catalog Management</div>
+          <h2 class="bulk-modal-title">Confirm Permanent Bulk Deletion</h2>
+          <p class="bulk-modal-sub" id="bulk-modal-subtext">
+            You are about to delete <strong id="bulk-modal-count-highlight">0</strong> products directly from their underlying catalog JSON files.
+            An automated backup snapshot will be recorded.
+          </p>
+        </div>
+      </div>
+
+      <div class="bulk-modal-list-wrap">
+        <div class="bulk-modal-list-title">Selected Pieces for Pruning (<span id="bulk-modal-item-count">0</span>):</div>
+        <div class="bulk-modal-items-container">
+          <ul class="bulk-modal-items-list" id="bulk-modal-items-list">
+            <!-- Dynamically populated -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="bulk-modal-footer">
+        <button type="button" class="btn-bulk-cancel" id="btn-cancel-bulk-delete">Cancel</button>
+        <button type="button" class="btn-bulk-confirm-danger" id="btn-confirm-bulk-delete">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          <span id="btn-confirm-bulk-text">Yes, Delete from Catalogs</span>
+        </button>
       </div>
     </div>
   </div>

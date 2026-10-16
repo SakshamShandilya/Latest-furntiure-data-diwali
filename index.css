@@ -4452,3 +4452,498 @@ input[type="checkbox"]:checked + .custom-checkbox {
   border-color: var(--accent-gold);
 }
 
+/* ==========================================================================
+   STOREFRONT BULK SELECTION & BULK DELETION ENGINE
+   ========================================================================== */
+
+/* 1. Listing Toolbar Controls */
+.bulk-toolbar-select-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-left: 0.5rem;
+  padding-left: 1.15rem;
+  border-left: 1px solid var(--border-subtle);
+}
+
+.bulk-select-all-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: color var(--transition-fast);
+}
+
+.bulk-select-all-label:hover {
+  color: var(--accent-gold);
+}
+
+.bulk-select-all-chk {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.bulk-custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1.5px solid var(--border-medium);
+  background: var(--bg-surface);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  color: transparent;
+  flex-shrink: 0;
+}
+
+.bulk-select-all-label:hover .bulk-custom-checkbox {
+  border-color: var(--accent-gold);
+}
+
+.bulk-select-all-chk:checked + .bulk-custom-checkbox,
+.bulk-select-all-chk:indeterminate + .bulk-custom-checkbox {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(197, 168, 128, 0.4);
+}
+
+.bulk-selection-count-badge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(197, 168, 128, 0.15);
+  color: var(--accent-gold);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.22rem 0.65rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(197, 168, 128, 0.35);
+  letter-spacing: 0.02em;
+}
+
+.toolbar-bulk-delete-btn {
+  height: 36px;
+  padding: 0 1rem;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, #E63946 0%, #C1121F 100%);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 3px 10px rgba(230, 57, 70, 0.3);
+}
+
+.toolbar-bulk-delete-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(230, 57, 70, 0.45);
+  filter: brightness(1.08);
+}
+
+/* 2. Product Card Selection Checkbox & States */
+.card-bulk-select-wrap {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 12;
+}
+
+.card-bulk-checkbox-label {
+  display: block;
+  cursor: pointer;
+  user-select: none;
+  padding: 4px;
+  margin: -4px;
+}
+
+.product-card-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.card-bulk-custom-box {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1.5px solid rgba(0, 0, 0, 0.24);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="dark"] .card-bulk-custom-box {
+  background: rgba(24, 25, 30, 0.88);
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.card-bulk-checkbox-label:hover .card-bulk-custom-box,
+.product-card:hover .card-bulk-custom-box {
+  border-color: var(--accent-gold);
+  transform: scale(1.06);
+}
+
+.product-card-checkbox:checked + .card-bulk-custom-box {
+  background: var(--accent-gold) !important;
+  border-color: var(--accent-gold) !important;
+  color: #fff !important;
+  box-shadow: 0 3px 12px rgba(197, 168, 128, 0.55) !important;
+}
+
+.product-card.is-bulk-selected {
+  border-color: var(--accent-gold) !important;
+  box-shadow: 0 0 0 2px var(--accent-gold), 0 8px 24px rgba(197, 168, 128, 0.25) !important;
+}
+
+.product-card.is-bulk-selected .product-media-container {
+  background: rgba(197, 168, 128, 0.08);
+}
+
+[data-theme="dark"] .product-card.is-bulk-selected .product-media-container {
+  background: rgba(197, 168, 128, 0.12);
+}
+
+/* 3. Floating Bulk Action Bar (Fixed at viewport bottom) */
+.bulk-floating-action-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1100;
+  max-width: 860px;
+  width: calc(100% - 40px);
+  animation: bulkBarSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes bulkBarSlideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.bulk-floating-bar-inner {
+  background: rgba(18, 19, 23, 0.95);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid rgba(197, 168, 128, 0.45);
+  border-radius: 50px;
+  padding: 0.75rem 1.25rem 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 30px rgba(197, 168, 128, 0.22);
+  color: #fff;
+}
+
+.bulk-floating-info {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.bulk-floating-icon {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.bulk-floating-text-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.bulk-floating-text-wrap div {
+  font-size: 0.94rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.bulk-floating-text-wrap strong {
+  color: var(--accent-gold);
+  font-weight: 700;
+  font-size: 1.12rem;
+}
+
+.bulk-floating-hint {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.02em;
+}
+
+.bulk-floating-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.bulk-bar-btn {
+  height: 38px;
+  padding: 0 1.15rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+}
+
+.bulk-btn-select-all {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bulk-btn-select-all:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.bulk-btn-clear {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid transparent;
+}
+
+.bulk-btn-clear:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.bulk-btn-delete {
+  background: linear-gradient(135deg, #E63946 0%, #C1121F 100%);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(230, 57, 70, 0.45);
+}
+
+.bulk-btn-delete:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(230, 57, 70, 0.6);
+  filter: brightness(1.1);
+}
+
+/* 4. Bulk Delete Confirmation Modal */
+.bulk-delete-modal-box {
+  max-width: 620px;
+  width: 90%;
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-medium);
+  box-shadow: var(--shadow-2xl);
+  padding: 2rem;
+  position: relative;
+}
+
+.bulk-modal-header {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.bulk-modal-icon-warn {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: rgba(230, 57, 70, 0.12);
+  border: 1px solid rgba(230, 57, 70, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.bulk-modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  color: var(--text-primary);
+  margin: 0.25rem 0 0.45rem;
+}
+
+.bulk-modal-sub {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.bulk-modal-sub strong {
+  color: #E63946;
+}
+
+.bulk-modal-list-wrap {
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 1.5rem;
+}
+
+.bulk-modal-list-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.bulk-modal-items-container {
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.bulk-modal-items-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bulk-modal-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+.bulk-modal-item-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.bulk-modal-item-thumb {
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+  object-fit: contain;
+  background: #F4F2EE;
+  border: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .bulk-modal-item-thumb {
+  background: #1C1D22;
+}
+
+.bulk-modal-item-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
+}
+
+.bulk-modal-item-meta {
+  font-size: 0.74rem;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.bulk-modal-item-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  background: rgba(197, 168, 128, 0.12);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.bulk-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+.btn-bulk-cancel {
+  height: 42px;
+  padding: 0 1.35rem;
+  border-radius: var(--radius-pill);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-bulk-cancel:hover {
+  background: var(--bg-surface);
+  border-color: var(--border-medium);
+}
+
+.btn-bulk-confirm-danger {
+  height: 42px;
+  padding: 0 1.5rem;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, #E63946 0%, #C1121F 100%);
+  color: #fff;
+  font-size: 0.86rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 14px rgba(230, 57, 70, 0.35);
+  transition: all var(--transition-fast);
+}
+
+.btn-bulk-confirm-danger:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(230, 57, 70, 0.5);
+  filter: brightness(1.08);
+}
+
+.btn-bulk-confirm-danger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+

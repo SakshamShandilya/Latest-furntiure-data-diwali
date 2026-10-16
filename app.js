@@ -40,7 +40,8 @@
     comparison: JSON.parse(localStorage.getItem('moderna_comparison') || '[]'),
     activeQuickViewProduct: null,
     quickViewImageIndex: 0,
-    sidebarOpenMobile: false
+    sidebarOpenMobile: false,
+    selectedProductIds: new Set()
   };
 
   // Color Definitions for Swatches
@@ -284,6 +285,26 @@
     DOM.btnApplyFiltersDrawer = document.getElementById('btn-apply-filters-drawer');
     DOM.contentContainer = document.querySelector('.content-container');
     DOM.listingToolbar = document.querySelector('.listing-toolbar');
+
+    // Bulk Selection & Deletion Elements
+    DOM.bulkToolbarSelectGroup = document.getElementById('bulk-toolbar-select-group');
+    DOM.bulkSelectAllToggle = document.getElementById('bulk-select-all-toggle');
+    DOM.bulkSelectLabelText = document.getElementById('bulk-select-label-text');
+    DOM.bulkSelectionCountBadge = document.getElementById('bulk-selection-count-badge');
+    DOM.btnToolbarBulkDelete = document.getElementById('btn-toolbar-bulk-delete');
+    DOM.bulkFloatingActionBar = document.getElementById('bulk-floating-action-bar');
+    DOM.bulkFloatingCount = document.getElementById('bulk-floating-count');
+    DOM.btnBulkBarSelectAll = document.getElementById('btn-bulk-bar-select-all');
+    DOM.btnBulkBarClear = document.getElementById('btn-bulk-bar-clear');
+    DOM.btnBulkBarDelete = document.getElementById('btn-bulk-bar-delete');
+    DOM.bulkDeleteConfirmModal = document.getElementById('bulk-delete-confirm-modal');
+    DOM.btnCloseBulkDeleteModal = document.getElementById('btn-close-bulk-delete-modal');
+    DOM.btnCancelBulkDelete = document.getElementById('btn-cancel-bulk-delete');
+    DOM.btnConfirmBulkDelete = document.getElementById('btn-confirm-bulk-delete');
+    DOM.btnConfirmBulkText = document.getElementById('btn-confirm-bulk-text');
+    DOM.bulkModalCountHighlight = document.getElementById('bulk-modal-count-highlight');
+    DOM.bulkModalItemCount = document.getElementById('bulk-modal-item-count');
+    DOM.bulkModalItemsList = document.getElementById('bulk-modal-items-list');
 
     // Breadcrumbs Elements
     DOM.crumbHome = document.getElementById('crumb-home');
@@ -854,6 +875,7 @@
       brand: brandName,
       category: catalog.category || 'Sofa',
       catalogId: catalog.id,
+      catalogFile: catalog.relativePath,
       images,
       dimensionImage,
       videos: detectedVideos,
@@ -2042,6 +2064,7 @@
     renderProductsGrid();
     renderAppliedFilterTags();
     updateResultsCounter();
+    updateBulkSelectionUI();
   }
 
   function renderAppliedFilterTags() {
@@ -2191,8 +2214,9 @@
   }
 
   function createProductCard(p) {
+    const isSelected = state.selectedProductIds.has(p.id);
     const card = document.createElement('article');
-    card.className = 'product-card';
+    card.className = `product-card ${isSelected ? 'is-bulk-selected' : ''}`;
     card.dataset.id = p.id;
 
     const isWishlisted = state.wishlist.some(item => item.id === p.id);
@@ -2203,6 +2227,16 @@
 
     card.innerHTML = `
       <div class="product-media-container" title="Click for Quick View or hover to explore photos">
+        <!-- Card Bulk Selection Checkbox -->
+        <div class="card-bulk-select-wrap" title="Select ${p.name}">
+          <label class="card-bulk-checkbox-label">
+            <input type="checkbox" class="product-card-checkbox" data-product-id="${p.id}" ${isSelected ? 'checked' : ''}>
+            <span class="card-bulk-custom-box">
+              <svg width="10" height="8" viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 5 4.5 8 10.5 1.5"></polyline></svg>
+            </span>
+          </label>
+        </div>
+
         <img class="product-image" src="${p.images[0]}" alt="${p.name}" loading="lazy">
         <div class="card-badges-wrapper">
           ${p.badges.map(b => `<span class="luxury-badge ${b.type}">${b.text}</span>`).join('')}
@@ -2319,10 +2353,26 @@
       });
     }
 
+    // Card Selection Checkbox Event Handlers
+    const chk = card.querySelector('.product-card-checkbox');
+    if (chk) {
+      chk.addEventListener('change', (e) => {
+        e.stopPropagation();
+        toggleProductSelection(p.id, chk.checked);
+      });
+    }
+
+    const chkWrap = card.querySelector('.card-bulk-select-wrap');
+    if (chkWrap) {
+      chkWrap.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    }
+
     // Card Action Triggers: Clicking on specific actions or anywhere on the card to open product detail page
     card.addEventListener('click', (e) => {
-      // Ignore click if clicking interactive slide arrows
-      if (e.target.closest('[data-card-arrow]')) {
+      // Ignore click if clicking interactive slide arrows or bulk checkbox
+      if (e.target.closest('[data-card-arrow]') || e.target.closest('.card-bulk-select-wrap') || e.target.closest('.product-card-checkbox')) {
         return;
       }
 
@@ -3219,6 +3269,250 @@
   }
 
   /* ==========================================================================
+     STOREFRONT BULK SELECTION & BULK DELETION ENGINE
+     ========================================================================== */
+  function toggleProductSelection(productId, isSelected) {
+    if (isSelected) {
+      state.selectedProductIds.add(productId);
+    } else {
+      state.selectedProductIds.delete(productId);
+    }
+
+    const card = DOM.productsGrid ? DOM.productsGrid.querySelector(`.product-card[data-id="${productId}"]`) : null;
+    if (card) {
+      card.classList.toggle('is-bulk-selected', isSelected);
+      const chk = card.querySelector('.product-card-checkbox');
+      if (chk) chk.checked = isSelected;
+    }
+
+    updateBulkSelectionUI();
+  }
+
+  function selectAllVisible(forceState) {
+    const totalVisible = state.filteredProducts.length;
+    if (totalVisible === 0) return;
+
+    let targetState;
+    if (typeof forceState === 'boolean') {
+      targetState = forceState;
+    } else {
+      const allVisSelected = state.filteredProducts.every(p => state.selectedProductIds.has(p.id));
+      targetState = !allVisSelected;
+    }
+
+    state.filteredProducts.forEach(p => {
+      if (targetState) {
+        state.selectedProductIds.add(p.id);
+      } else {
+        state.selectedProductIds.delete(p.id);
+      }
+    });
+
+    if (DOM.productsGrid) {
+      DOM.productsGrid.querySelectorAll('.product-card').forEach(card => {
+        const id = card.dataset.id;
+        const isSel = state.selectedProductIds.has(id);
+        card.classList.toggle('is-bulk-selected', isSel);
+        const chk = card.querySelector('.product-card-checkbox');
+        if (chk) chk.checked = isSel;
+      });
+    }
+
+    updateBulkSelectionUI();
+  }
+
+  function clearAllSelections() {
+    state.selectedProductIds.clear();
+    if (DOM.productsGrid) {
+      DOM.productsGrid.querySelectorAll('.product-card').forEach(card => {
+        card.classList.remove('is-bulk-selected');
+        const chk = card.querySelector('.product-card-checkbox');
+        if (chk) chk.checked = false;
+      });
+    }
+    updateBulkSelectionUI();
+    showToast('Cleared all product selections', '✦');
+  }
+
+  function updateBulkSelectionUI() {
+    const count = state.selectedProductIds.size;
+    const totalVisible = state.filteredProducts.length;
+
+    // Update all .bulk-btn-count counters
+    document.querySelectorAll('.bulk-btn-count').forEach(el => {
+      el.textContent = count.toLocaleString();
+    });
+
+    // Toolbar select all toggle checkbox
+    if (DOM.bulkSelectAllToggle) {
+      if (count === 0 || totalVisible === 0) {
+        DOM.bulkSelectAllToggle.checked = false;
+        DOM.bulkSelectAllToggle.indeterminate = false;
+      } else if (totalVisible > 0 && state.filteredProducts.every(p => state.selectedProductIds.has(p.id))) {
+        DOM.bulkSelectAllToggle.checked = true;
+        DOM.bulkSelectAllToggle.indeterminate = false;
+      } else {
+        DOM.bulkSelectAllToggle.checked = false;
+        DOM.bulkSelectAllToggle.indeterminate = true;
+      }
+    }
+
+    // Toolbar label text
+    if (DOM.bulkSelectLabelText) {
+      DOM.bulkSelectLabelText.textContent = count > 0 ? `Selected (${count})` : 'Select All';
+    }
+
+    // Toolbar selection count badge
+    if (DOM.bulkSelectionCountBadge) {
+      if (count > 0) {
+        DOM.bulkSelectionCountBadge.style.display = 'inline-flex';
+        DOM.bulkSelectionCountBadge.textContent = `${count} selected`;
+      } else {
+        DOM.bulkSelectionCountBadge.style.display = 'none';
+      }
+    }
+
+    // Toolbar Delete button
+    if (DOM.btnToolbarBulkDelete) {
+      DOM.btnToolbarBulkDelete.style.display = count > 0 ? 'inline-flex' : 'none';
+    }
+
+    // Floating Action Bar
+    if (DOM.bulkFloatingActionBar) {
+      if (count > 0) {
+        DOM.bulkFloatingActionBar.style.display = 'block';
+        if (DOM.bulkFloatingCount) DOM.bulkFloatingCount.textContent = count.toLocaleString();
+        const label = document.getElementById('bulk-floating-items-label');
+        if (label) label.textContent = count === 1 ? 'piece selected' : 'pieces selected';
+      } else {
+        DOM.bulkFloatingActionBar.style.display = 'none';
+      }
+    }
+  }
+
+  function openBulkDeleteModal() {
+    const count = state.selectedProductIds.size;
+    if (count === 0) {
+      showToast('Please select at least one piece to delete', '⚠️');
+      return;
+    }
+
+    const selectedProducts = state.catalogDatabase.filter(p => state.selectedProductIds.has(p.id));
+
+    if (DOM.bulkModalCountHighlight) DOM.bulkModalCountHighlight.textContent = count.toLocaleString();
+    if (DOM.bulkModalItemCount) DOM.bulkModalItemCount.textContent = count.toLocaleString();
+
+    if (DOM.bulkModalItemsList) {
+      DOM.bulkModalItemsList.innerHTML = selectedProducts.map(p => `
+        <li class="bulk-modal-item">
+          <div class="bulk-modal-item-info">
+            <img src="${p.images[0] || ''}" alt="${p.name}" class="bulk-modal-item-thumb">
+            <div>
+              <div class="bulk-modal-item-name" title="${p.name}">${p.name}</div>
+              <div class="bulk-modal-item-meta">
+                <span>${p.brand}</span>
+                <span>·</span>
+                <span style="font-family:monospace; opacity:0.8;">${p.catalogFile || ''}</span>
+              </div>
+            </div>
+          </div>
+          <span class="bulk-modal-item-tag">$${p.price.toLocaleString()}</span>
+        </li>
+      `).join('');
+    }
+
+    if (DOM.bulkDeleteConfirmModal) {
+      DOM.bulkDeleteConfirmModal.style.display = 'flex';
+      DOM.bulkDeleteConfirmModal.classList.add('active');
+    }
+  }
+
+  function closeBulkDeleteModal() {
+    if (DOM.bulkDeleteConfirmModal) {
+      DOM.bulkDeleteConfirmModal.style.display = 'none';
+      DOM.bulkDeleteConfirmModal.classList.remove('active');
+    }
+  }
+
+  async function executeBulkDelete() {
+    const count = state.selectedProductIds.size;
+    if (count === 0) return;
+
+    const selectedProducts = state.catalogDatabase.filter(p => state.selectedProductIds.has(p.id));
+    const itemsToDelete = selectedProducts.map(p => ({
+      catalogFile: p.catalogFile || (state.catalogs.find(c => c.id === p.catalogId)?.relativePath) || '',
+      name: p.name,
+      url: p.url || '',
+      id: p.id
+    })).filter(it => it.catalogFile && it.name);
+
+    if (itemsToDelete.length === 0) {
+      showToast('Could not resolve catalog source files for selected items', '⚠️');
+      return;
+    }
+
+    if (DOM.btnConfirmBulkDelete) DOM.btnConfirmBulkDelete.disabled = true;
+    if (DOM.btnConfirmBulkText) DOM.btnConfirmBulkText.textContent = `Deleting ${itemsToDelete.length} pieces...`;
+
+    try {
+      const res = await fetch('/api/delete-products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ itemsToDelete })
+      });
+
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error || `Server returned status ${res.status}`);
+      }
+
+      const resData = await res.json();
+
+      const removedNames = new Set(selectedProducts.map(p => p.name.trim().toLowerCase()));
+      const removedIds = new Set(selectedProducts.map(p => p.id));
+
+      state.catalogDatabase = state.catalogDatabase.filter(p => !removedIds.has(p.id) && !removedNames.has(p.name.trim().toLowerCase()));
+      state.allProducts = state.allProducts.filter(p => !removedIds.has(p.id) && !removedNames.has(p.name.trim().toLowerCase()));
+      state.filteredProducts = state.filteredProducts.filter(p => !removedIds.has(p.id) && !removedNames.has(p.name.trim().toLowerCase()));
+
+      if (window.PRELOADED_DATA) {
+        selectedProducts.forEach(p => {
+          if (window.PRELOADED_DATA[p.catalogId] && Array.isArray(window.PRELOADED_DATA[p.catalogId])) {
+            window.PRELOADED_DATA[p.catalogId] = window.PRELOADED_DATA[p.catalogId].filter(it => {
+              const itName = (it.name || (it.variants && it.variants[0]?.title) || '').trim().toLowerCase();
+              return !removedNames.has(itName);
+            });
+          }
+        });
+      }
+
+      if (resData.catalogs && Array.isArray(resData.catalogs)) {
+        state.catalogs = resData.catalogs;
+      }
+
+      state.selectedProductIds.clear();
+
+      closeBulkDeleteModal();
+
+      updateCategoryAndBrandPool();
+      applyFiltersAndSort();
+      updateBulkSelectionUI();
+      updateMediaAuditStats();
+      renderSidebarFilters();
+      renderBrandsDirectory();
+
+      const numDeleted = resData.removedCount || itemsToDelete.length;
+      showToast(`Successfully deleted ${numDeleted} piece(s) directly from catalog JSON files!`, '🗑️');
+    } catch (err) {
+      console.error('Bulk deletion error:', err);
+      showToast(`Bulk deletion failed: ${err.message}`, '⚠️');
+    } finally {
+      if (DOM.btnConfirmBulkDelete) DOM.btnConfirmBulkDelete.disabled = false;
+      if (DOM.btnConfirmBulkText) DOM.btnConfirmBulkText.textContent = 'Yes, Delete from Catalogs';
+    }
+  }
+
+  /* ==========================================================================
      EVENT LISTENERS & BINDINGS
      ========================================================================== */
   function setupEventListeners() {
@@ -3289,6 +3583,7 @@
         DOM.cartDrawerBackdrop.classList.remove('active');
         DOM.comparisonModal.classList.remove('active');
         if (DOM.mediaAuditDrawerBackdrop) DOM.mediaAuditDrawerBackdrop.classList.remove('active');
+        closeBulkDeleteModal();
       } else if (DOM.quickviewModal && DOM.quickviewModal.classList.contains('active')) {
         if (e.key === 'ArrowRight') {
           e.preventDefault();
@@ -3676,6 +3971,49 @@
           ubbacoBulkActiveTab = btn.getAttribute('data-tab');
           renderUbbacoBulkList();
         });
+      });
+    }
+
+    // Storefront Bulk Selection & Deletion Listeners
+    if (DOM.bulkSelectAllToggle) {
+      DOM.bulkSelectAllToggle.addEventListener('change', () => {
+        selectAllVisible(DOM.bulkSelectAllToggle.checked);
+      });
+    }
+
+    if (DOM.btnToolbarBulkDelete) {
+      DOM.btnToolbarBulkDelete.addEventListener('click', openBulkDeleteModal);
+    }
+
+    if (DOM.btnBulkBarSelectAll) {
+      DOM.btnBulkBarSelectAll.addEventListener('click', () => selectAllVisible(true));
+    }
+
+    if (DOM.btnBulkBarClear) {
+      DOM.btnBulkBarClear.addEventListener('click', clearAllSelections);
+    }
+
+    if (DOM.btnBulkBarDelete) {
+      DOM.btnBulkBarDelete.addEventListener('click', openBulkDeleteModal);
+    }
+
+    if (DOM.btnCloseBulkDeleteModal) {
+      DOM.btnCloseBulkDeleteModal.addEventListener('click', closeBulkDeleteModal);
+    }
+
+    if (DOM.btnCancelBulkDelete) {
+      DOM.btnCancelBulkDelete.addEventListener('click', closeBulkDeleteModal);
+    }
+
+    if (DOM.btnConfirmBulkDelete) {
+      DOM.btnConfirmBulkDelete.addEventListener('click', executeBulkDelete);
+    }
+
+    if (DOM.bulkDeleteConfirmModal) {
+      DOM.bulkDeleteConfirmModal.addEventListener('click', (e) => {
+        if (e.target === DOM.bulkDeleteConfirmModal) {
+          closeBulkDeleteModal();
+        }
       });
     }
   }
