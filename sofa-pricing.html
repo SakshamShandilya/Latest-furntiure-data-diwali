@@ -1111,9 +1111,14 @@
           </select>
         </div>
 
-        <button class="sp-btn-action" id="btn-reset-filters">
-          Reset Filters
-        </button>
+        <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+          <button class="sp-btn-action" id="btn-export-bulk-json" title="Download all currently filtered sofas formatted for MongoDB production upload" style="border-color:var(--sp-gold); color:var(--sp-gold);">
+            📦 Export for Production DB
+          </button>
+          <button class="sp-btn-action" id="btn-reset-filters">
+            Reset Filters
+          </button>
+        </div>
       </div>
 
       <!-- Pricing Directory Table -->
@@ -2421,6 +2426,7 @@
               catalogIndex: sofa.catalogIndex,
               productName: sofa.name,
               updates: {
+                name: sofa.name,
                 category: sofa.category,
                 configuration: sofa.configuration,
                 partALen: sofa.partALen,
@@ -2672,9 +2678,7 @@
         AppState.jsonExportProduct = null;
       };
 
-      function renderJsonModalOutput() {
-        if (!AppState.jsonExportProduct) return;
-        const p = AppState.jsonExportProduct;
+      function buildProductionSofaObject(p, mode = 'full') {
         const totalLen = computeTotalLength(p.configuration, { ft: p.partALen, in: 0 }, { ft: p.partBLen, in: 0 }, { ft: p.partCLen, in: 0 });
         const ratePerFt = getCategoryRate(p.category);
         const baseCost = Math.round(totalLen * ratePerFt);
@@ -2707,13 +2711,15 @@
           "Dim.C.Length": p.partCLen ? String(p.partCLen) : "",
           "Configuration": p.configuration || "Straight Line",
           "Size": sizeStr,
-          "Total Linear Length (ft)": totalLen
+          "Total Linear Length (ft)": totalLen,
+          "Category Rate Per Ft": ratePerFt,
+          "Base Valuation": baseCost
         };
 
-        let outputData;
-        if (AppState.jsonExportMode === 'full') {
-          // Full 9-fabric multi-variant product
-          const variants = FABRICS.map((fabric, idx) => {
+        const imgList = (p.images && p.images.length) ? p.images : (p.image ? [p.image] : []);
+
+        if (mode === 'full') {
+          const variants = FABRICS.map(fabric => {
             const fCost = Math.round(cons * totalLen * fabric.delta);
             const vPrice = baseCost + fCost;
             return {
@@ -2723,6 +2729,8 @@
               price: vPrice,
               discounted_price: vPrice,
               discounted_percent: 0,
+              final_price_incl_gst: Math.round(vPrice * 1.18),
+              gst_18: Math.round(vPrice * 0.18),
               consumption_rate: cons,
               laborPerFloor: 150,
               applicability: 1,
@@ -2731,12 +2739,12 @@
                 var: fabric.name,
                 color: "Default",
                 finish: fabric.name,
-                images: p.images || []
+                images: imgList
               }
             };
           });
 
-          outputData = {
+          return {
             product_name: p.name,
             brand: p.brand || "Baywindow",
             furniture_category_id: "650c7d3f9b6be37852216adb",
@@ -2744,27 +2752,40 @@
             category: "Sofa",
             price: variants[0].price,
             discounted_price: variants[0].discounted_price,
+            final_price_incl_gst: Math.round(variants[0].price * 1.18),
+            gst_18: Math.round(variants[0].price * 0.18),
             consumption_rate: cons,
             is_active: true,
             desc: descObj,
-            images: p.images || [],
+            images: imgList,
             vars: variants
           };
         } else {
-          // Single variant
-          outputData = {
-            price: baseCost + Math.round(cons * totalLen * 700),
-            discounted_price: baseCost + Math.round(cons * totalLen * 700),
+          const fabricCost = Math.round(cons * totalLen * 700);
+          const singlePrice = baseCost + fabricCost;
+          return {
+            product_name: p.name,
+            brand: p.brand || "Baywindow",
+            category: "Sofa",
+            price: singlePrice,
+            discounted_price: singlePrice,
+            final_price_incl_gst: Math.round(singlePrice * 1.18),
+            gst_18: Math.round(singlePrice * 0.18),
             consumption_rate: cons,
             desc: descObj,
             attributes: {
               var: "Boucle",
               color: "Default",
-              finish: "Boucle"
+              finish: "Boucle",
+              images: imgList
             }
           };
         }
+      }
 
+      function renderJsonModalOutput() {
+        if (!AppState.jsonExportProduct) return;
+        const outputData = buildProductionSofaObject(AppState.jsonExportProduct, AppState.jsonExportMode);
         document.getElementById('json-modal-output').textContent = JSON.stringify(outputData, null, 2);
       }
 
@@ -2799,6 +2820,26 @@
         a.click();
         URL.revokeObjectURL(url);
         showToast('💾 JSON file downloaded!');
+      });
+
+      // Bulk Export All / Filtered Sofas formatted for MongoDB Production DB
+      document.getElementById('btn-export-bulk-json').addEventListener('click', () => {
+        const count = AppState.filteredSofas.length;
+        if (count === 0) {
+          alert('No sofas match current filter to export.');
+          return;
+        }
+        const exportArray = AppState.filteredSofas.map(s => buildProductionSofaObject(s, 'full'));
+        const text = JSON.stringify(exportArray, null, 2);
+        const blob = new Blob([text], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const brandTag = AppState.filterBrand !== 'ALL' ? AppState.filterBrand.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'all-brands';
+        a.download = `plypicker-sofas-production-${brandTag}-${count}items.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast(`✓ Exported ${count} sofas formatted for MongoDB Production DB!`);
       });
 
       document.getElementById('cfg-btn-export-mongo').addEventListener('click', () => {
