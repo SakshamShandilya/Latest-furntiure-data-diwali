@@ -1,13 +1,13 @@
 {
-  "updatedAt": "2026-10-16T22:44:42.255Z",
-  "totalCatalogs": 43,
+  "updatedAt": "2026-10-17T08:56:21.107Z",
+  "totalCatalogs": 46,
   "catalogs": [
     {
       "id": "sofa-modani-latest",
       "category": "Sofa",
       "brand": "Modani",
       "rawBrand": "Modani",
-      "displayName": "Modani · Sofa",
+      "displayName": "Modani · Sofa (Latest Edition)",
       "fileName": "Latest _modani_sofas.json",
       "relativePath": "Sofa/Modani/Latest _modani_sofas.json",
       "itemCount": 80,
@@ -87,7 +87,7 @@
       "default": false
     },
     {
-      "id": "accent-chair-rove",
+      "id": "accent-chair-rove-concepts",
       "category": "Accent Chair",
       "brand": "Rove Concepts",
       "rawBrand": "Rove",
@@ -129,7 +129,7 @@
       "default": false
     },
     {
-      "id": "accent-chair-westelm",
+      "id": "accent-chair-west-elm",
       "category": "Accent Chair",
       "brand": "West Elm",
       "rawBrand": "Westelm",
@@ -395,6 +395,34 @@
       "default": false
     },
     {
+      "id": "accent-chair-plypicker-atelier",
+      "category": "Accent Chair",
+      "brand": "Plypicker Atelier",
+      "rawBrand": "accent chair",
+      "displayName": "Plypicker Atelier · Accent Chair (ERP Collection)",
+      "fileName": "chairs_products.json",
+      "relativePath": "Manually uploaded furniture/accent chair/chairs_products.json",
+      "itemCount": 31,
+      "totalImages": 125,
+      "totalVideos": 0,
+      "isLatest": false,
+      "default": false
+    },
+    {
+      "id": "sofa-plypicker-atelier",
+      "category": "Sofa",
+      "brand": "Plypicker Atelier",
+      "rawBrand": "sofa",
+      "displayName": "Plypicker Atelier · Sofa (ERP Collection)",
+      "fileName": "sofa_products.json",
+      "relativePath": "Manually uploaded furniture/sofa/sofa_products.json",
+      "itemCount": 412,
+      "totalImages": 3214,
+      "totalVideos": 0,
+      "isLatest": false,
+      "default": false
+    },
+    {
       "id": "sofa-baywindow",
       "category": "Sofa",
       "brand": "Baywindow",
@@ -451,7 +479,7 @@
       "default": false
     },
     {
-      "id": "sofa-flamingo",
+      "id": "sofa-the-flamingo-life",
       "category": "Sofa",
       "brand": "The Flamingo Life",
       "rawBrand": "Flamingo",
@@ -563,6 +591,20 @@
       "default": false
     },
     {
+      "id": "sofa-wooden-it-be-nice",
+      "category": "Sofa",
+      "brand": "Wooden It Be Nice",
+      "rawBrand": "Wooden it be nice",
+      "displayName": "Wooden It Be Nice · Sofa",
+      "fileName": "wooden_it_be_nice_sofas.json",
+      "relativePath": "Sofa/Wooden it be nice/wooden_it_be_nice_sofas.json",
+      "itemCount": 49,
+      "totalImages": 68,
+      "totalVideos": 0,
+      "isLatest": false,
+      "default": false
+    },
+    {
       "id": "tv-unit-danetti",
       "category": "Tv Unit",
       "brand": "Danetti",
@@ -591,7 +633,7 @@
       "default": false
     },
     {
-      "id": "tv-unit-rove",
+      "id": "tv-unit-rove-concepts",
       "category": "Tv Unit",
       "brand": "Rove Concepts",
       "rawBrand": "Rove",

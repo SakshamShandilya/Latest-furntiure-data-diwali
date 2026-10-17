@@ -255,6 +255,28 @@
       monogram: 'UD',
       accentColor: '#9A6F45',
       banner: 'https://cdn.shopify.com/s/files/1/0611/3768/2492/files/e629979f-c91d-4dc1-8905-e234877ff5a3.png?v=1789217011'
+    },
+    'Wooden It Be Nice': {
+      name: 'Wooden It Be Nice',
+      subtitle: 'Wooden It Be Nice · Artisan Living',
+      tagline: 'Handcrafted Sculptural Curves & Romantic Luxury',
+      description: 'Handcrafted luxury sofas defined by soft enveloping shapes, grand romantic curves, and bespoke artisan upholstery tailored for refined architectural living.',
+      origin: 'Bespoke Atelier',
+      badge: 'Handcrafted Curves',
+      monogram: 'WN',
+      accentColor: '#C49A45',
+      banner: 'https://wooden-it-be-nice.in/wp-content/uploads/2023/03/foto_4_16.jpg'
+    },
+    'Plypicker Atelier': {
+      name: 'Plypicker Atelier',
+      subtitle: 'Plypicker Atelier · Custom Living Collection',
+      tagline: 'Bespoke Linear & Curved Modular Architecture',
+      description: 'Direct-from-workshop bespoke luxury sofas and accent chairs featuring customizable linear lengths, premium bouclé and vegan leather, and precision ergonomic tailoring.',
+      origin: 'Plypicker Custom Atelier',
+      badge: 'Custom Architecture',
+      monogram: 'PA',
+      accentColor: '#D97706',
+      banner: 'https://dlkotil4uzvzh.cloudfront.net/ERP/furniture/Designer%20sofa/34%2001.webp'
     }
   };
 
@@ -545,6 +567,14 @@
 
   function extractPrice(item, catalog) {
     let rawPrice = item.price;
+    if (!rawPrice && Array.isArray(item.vars) && item.vars.length > 0) {
+      for (const v of item.vars) {
+        if (v.price || v.discounted_price) {
+          rawPrice = v.price || v.discounted_price;
+          break;
+        }
+      }
+    }
     if (!rawPrice && Array.isArray(item.variants) && item.variants.length > 0) {
       for (const v of item.variants) {
         if (v.price || v.regular_price || v.member_price) {
@@ -578,11 +608,18 @@
   }
 
   function enrichProduct(item, index, catalog) {
-    const name = item.name || (item.variants && item.variants[0]?.title) || `Luxury Piece #${index + 1}`;
-    const desc = item.description || item.overview || '';
+    const primaryVar = Array.isArray(item.vars) && item.vars.length > 0 ? item.vars[0] : null;
+    const name = item.name || primaryVar?.product_name || (item.variants && item.variants[0]?.title) || (item.plyid ? `${catalog.brand || 'Luxury'} ${item.plyid}` : `Luxury Piece #${index + 1}`);
+    const desc = item.description || item.product_description || primaryVar?.product_description || item.overview || '';
     
     // Normalized unified features
     const features = {};
+    if (primaryVar && primaryVar.desc && typeof primaryVar.desc === 'object') Object.assign(features, primaryVar.desc);
+    if (primaryVar && primaryVar.attributes) {
+      if (primaryVar.attributes.var) features['Material Variant'] = primaryVar.attributes.var;
+      if (primaryVar.attributes.color) features['Color'] = primaryVar.attributes.color;
+    }
+    if (item.plyid) features['PLY ID'] = item.plyid;
     if (item.features && typeof item.features === 'object') Object.assign(features, item.features);
     if (item.the_essentials && typeof item.the_essentials === 'object') Object.assign(features, item.the_essentials);
     if (item.specifications && typeof item.specifications === 'object') Object.assign(features, item.specifications);
@@ -598,6 +635,15 @@
       item.variants.forEach(v => {
         if (v.color && typeof v.color === 'string') variantColors.push(v.color);
         if (v.material && typeof v.material === 'string') variantMaterials.push(v.material);
+      });
+    }
+    if (Array.isArray(item.vars)) {
+      item.vars.forEach(v => {
+        if (v.attributes?.color) variantColors.push(v.attributes.color);
+        if (v.desc?.color) variantColors.push(v.desc.color);
+        if (v.attributes?.var) variantMaterials.push(v.attributes.var);
+        if (v.desc?.Material) variantMaterials.push(v.desc.Material);
+        if (v.desc?.Fabric) variantMaterials.push(v.desc.Fabric);
       });
     }
 
@@ -786,6 +832,12 @@
     }
 
     let rawDim = features.Dimension || features.Size || features.raw || (item.dimensions && (item.dimensions.raw || item.dimensions.INCH || item.dimensions.CM || item.dimensions['Total Height'])) || null;
+    if (!rawDim && primaryVar && primaryVar.desc) {
+      const d = primaryVar.desc;
+      if (d['Dim.A.Length'] || d['Configuration']) {
+        rawDim = `L: ${d['Dim.A.Length'] || 7}ft × D: ${d['Dim.A.Depth'] || 3}ft (${d['Configuration'] || 'Custom'})`;
+      }
+    }
     const dims = parseDimensions(rawDim);
 
     // Images & Dimension Blueprint
@@ -812,6 +864,15 @@
         }
       });
     }
+    if (Array.isArray(item.vars)) {
+      item.vars.forEach(v => {
+        if (v.attributes && Array.isArray(v.attributes.images)) {
+          v.attributes.images.forEach(img => {
+            if (img && typeof img === 'string' && !images.includes(img)) images.push(img);
+          });
+        }
+      });
+    }
     const dimensionImage = item.dimension_image || null;
     if (dimensionImage && !images.includes(dimensionImage)) {
       images.push(dimensionImage);
@@ -834,7 +895,9 @@
     if (dimensionImage) mediaAssets.push('Blueprint Dimensions Included');
 
     let bNorm = catalog.brand || item.brand || 'Modani';
-    if (/ubbaco/i.test(bNorm)) bNorm = 'Ubbaco';
+    if (/wooden\s*it\s*be\s*nice/i.test(bNorm)) bNorm = 'Wooden It Be Nice';
+    else if (/plypicker/i.test(bNorm)) bNorm = 'Plypicker Atelier';
+    else if (/ubbaco/i.test(bNorm)) bNorm = 'Ubbaco';
     else if (/estre/i.test(bNorm)) bNorm = 'Estré';
     else if (/bay\s*window/i.test(bNorm)) bNorm = 'Bay Window';
     else if (/ifur/i.test(bNorm)) bNorm = 'iFur';
@@ -871,7 +934,7 @@
       id: `${catalog.id}-${index}`,
       originalIndex: index,
       name,
-      url: item.url || (item.variants && item.variants[0]?.url) || `https://modani.com`,
+      url: item.url || (item.variants && item.variants[0]?.url) || (primaryVar?.slug ? `https://plypicker.com/product/${primaryVar.slug}` : `https://modani.com`),
       brand: brandName,
       category: catalog.category || 'Sofa',
       catalogId: catalog.id,
