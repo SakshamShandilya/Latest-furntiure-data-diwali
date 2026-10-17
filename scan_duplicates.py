@@ -151,13 +151,48 @@ def load_all_products():
                     v_imgs = item["variants"][0].get("images")
                     if isinstance(v_imgs, list) and len(v_imgs) > 0:
                         img = v_imgs[0]
+                    elif item["variants"][0].get("featured_image"):
+                        img = item["variants"][0].get("featured_image")
+                elif isinstance(item.get("vars"), list) and len(item["vars"]) > 0:
+                    for v in item["vars"]:
+                        v_attrs = v.get("attributes") or {}
+                        v_imgs = v_attrs.get("images")
+                        if isinstance(v_imgs, list) and len(v_imgs) > 0:
+                            img = v_imgs[0]
+                            break
+                elif item.get("dimension_image"):
+                    img = item.get("dimension_image")
 
                 if not img:
                     continue
 
                 prod_id = f"{cat['id']}_item_{idx}"
-                name = item.get("name") or (item.get("variants") and item["variants"][0].get("title")) or f"Piece #{idx+1}"
-                price = item.get("price") or (item.get("variants") and item["variants"][0].get("price")) or 0
+                name = (
+                    item.get("name")
+                    or (item.get("vars") and item["vars"][0].get("product_name"))
+                    or (item.get("variants") and item["variants"][0].get("title"))
+                    or (f"{cat['brand']} {item.get('plyid')}" if item.get("plyid") else f"Piece #{idx+1}")
+                )
+                raw_price = (
+                    item.get("price")
+                    or (item.get("vars") and item["vars"][0].get("price"))
+                    or (item.get("variants") and item["variants"][0].get("price"))
+                    or 0
+                )
+                
+                # Format price
+                price_str = str(raw_price)
+                if isinstance(raw_price, (int, float)):
+                    if raw_price > 20000:
+                        price_str = f"${int(raw_price // 83):,}"
+                    elif raw_price > 0:
+                        price_str = f"${int(raw_price):,}"
+                elif isinstance(raw_price, str) and raw_price.replace(".", "", 1).isdigit():
+                    num = float(raw_price)
+                    if num > 20000:
+                        price_str = f"${int(num // 83):,}"
+                    elif num > 0:
+                        price_str = f"${int(num):,}"
 
                 all_products.append({
                     "id": prod_id,
@@ -167,7 +202,7 @@ def load_all_products():
                     "catalogId": cat["id"],
                     "catalogFile": rel_path,
                     "itemIndex": idx,
-                    "price": str(price),
+                    "price": price_str,
                     "image": img
                 })
         except Exception as e:
